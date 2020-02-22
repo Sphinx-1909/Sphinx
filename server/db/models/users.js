@@ -23,6 +23,14 @@ const User = db.define('users', {
       notEmpty: true,
       isEmail: true,
     },
+    userType: {
+      type: STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+      values: ['admin', 'regUser'],
+    },
     password: {
       type: STRING,
       allowNull: true,

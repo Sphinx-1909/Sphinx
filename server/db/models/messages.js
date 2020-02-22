@@ -1,7 +1,16 @@
 const Sequelize = require('sequelize');
 const db = require('./../db.js');
 
-const { UUID, UUIDV4, STRING, INTEGER, TEXT, DATE, BOOLEAN } = Sequelize;
+const {
+  UUID,
+  UUIDV4,
+  STRING,
+  INTEGER,
+  TEXT,
+  DATE,
+  BOOLEAN,
+  DECIMAL,
+} = Sequelize;
 
 const Message = db.define('messages', {
   id: {
@@ -37,7 +46,6 @@ const Message = db.define('messages', {
   },
   positiveVotes: {
     type: INTEGER,
-    allowNull: false,
     defaultValue: 0,
   },
   negativeVotes: {
@@ -45,12 +53,16 @@ const Message = db.define('messages', {
     allowNull: false,
     defaultValue: 0,
   },
-  location: {
-    type: Sequelize.ARRAY(Sequelize.DECIMAL),
+  latitude: {
+    type: DECIMAL,
+    allowNull: false,
+  },
+  longitude: {
+    type: DECIMAL,
     allowNull: false,
   },
   radius: {
-    type: Sequelize.DECIMAL,
+    type: DECIMAL,
     allowNull: false,
   },
   encrypted: {
@@ -60,6 +72,9 @@ const Message = db.define('messages', {
     type: STRING,
   },
   parentMessageId: {
+    type: UUID,
+  },
+  childMessageId: {
     type: UUID,
   },
   expirationTime: {
