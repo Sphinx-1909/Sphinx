@@ -5,6 +5,7 @@ const Message = require('./models/messages');
 const Session = require('./models/sessions');
 const Channel = require('./models/channels');
 const ChannelUser = require('./models/channelUser');
+const MessageUser = require('./models/messageUser');
 
 //Associations
 // - No Associations yet
@@ -21,13 +22,15 @@ User.belongsTo(Session);
 Message.belongsTo(Channel);
 Channel.hasMany(Message);
 
-//Channel
-User.hasMany(Channel);
-Channel.belongsTo(User);
-
 //ChannelUser
 User.hasMany(ChannelUser);
 Channel.hasMany(ChannelUser);
+
+//MessageUser
+Message.hasMany(MessageUser);
+MessageUser.belongsTo(User);
+MessageUser.belongsTo(Message);
+Message.hasOne(MessageUser);
 
 module.exports = {
   db,

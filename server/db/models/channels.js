@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./../db.js');
 
-const { UUID, UUIDV4, STRING, INTEGER, TEXT, BOOLEAN } = Sequelize;
+const { UUID, UUIDV4, STRING, DECIMAL, TEXT, BOOLEAN } = Sequelize;
 
 const Channel = db.define('channels', {
   id: {
@@ -29,12 +29,16 @@ const Channel = db.define('channels', {
     key: {
       type: STRING,
     },
-    location: {
-      type: Sequelize.ARRAY(Sequelize.DECIMAL),
+    latitude: {
+      type: DECIMAL,
+      allowNull: false,
+    },
+    longitude: {
+      type: DECIMAL,
       allowNull: false,
     },
     radius: {
-      type: Sequelize.DECIMAL,
+      type: DECIMAL,
     },
   },
 });
