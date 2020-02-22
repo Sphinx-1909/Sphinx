@@ -18,18 +18,24 @@ const Channel = db.define('channels', {
       },
     },
   },
-  channelTopic: {
+  channelDescription: {
     type: TEXT,
-    validate: {
-      notEmpty: {
-        args: true,
-      },
+
+    isPrivate: {
+      type: BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
-  },
-  isPrivate: {
-    type: BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
+    key: {
+      type: STRING,
+    },
+    location: {
+      type: Sequelize.ARRAY(Sequelize.DECIMAL),
+      allowNull: false,
+    },
+    radius: {
+      type: Sequelize.DECIMAL,
+    },
   },
 });
 module.exports = Channel;
