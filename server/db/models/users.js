@@ -9,14 +9,6 @@ const User = db.define('users', {
     type: UUID,
     defaultValue: UUIDV4,
   },
-  userType: {
-    type: STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    values: ['Admin', 'oAuth', 'ExistingUser', 'Guest'], //do we want to allow guest?
-  },
   firstName: {
     type: STRING,
   },
