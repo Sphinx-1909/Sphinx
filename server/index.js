@@ -13,11 +13,11 @@ app.use(express.static(path.join(__dirname, '../static')));
 
 // service worker route
 app.use('/service-worker.js', (req, res) => {
-  res.send(path.resolve(__dirname, '..', 'client', 'service-worker.js'));
+  res.send(path.resolve(__dirname, '..', 'staic', 'service-worker.js'));
 });
 
-// enforce HTTPS
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
+// enforce HTTPS ** may be neccessary for the ServiceWorker when deployed to Heroku
+// app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 // api routes
 app.use('/api', require('./api'));
