@@ -1,0 +1,13 @@
+dist: trusty
+language: node_js
+node_js:
+  - '12'
+cache:
+  npm: false
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database 'sphinx';' -U postgres
+script:
+  - npm run lint
+  - npm run test
