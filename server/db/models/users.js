@@ -33,28 +33,29 @@ const User = db.define('users', {
       notEmpty: true,
     },
   },
-  userType: {
-    type: STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    values: ['admin', 'regUser'],
-  },
+  // not needed because admin info stored on channell
+  //userType: {
+  //   type: STRING,
+  //   allowNull: false,
+  //   validate: {
+  //     notEmpty: true,
+  //   },
+  //   values: ['admin', 'regUser'],
+  // },
   password: {
     type: STRING,
     allowNull: true,
     validate: {
       notEmpty: true,
     },
-    latitude: {
-      type: DECIMAL,
-      allowNull: false,
-    },
-    longitude: {
-      type: DECIMAL,
-      allowNull: false,
-    },
+  },
+  latitude: {
+    type: DECIMAL,
+    allowNull: false,
+  },
+  longitude: {
+    type: DECIMAL,
+    allowNull: false,
   },
 });
 
