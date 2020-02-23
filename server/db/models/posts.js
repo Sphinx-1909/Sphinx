@@ -1,3 +1,5 @@
+//Leaving this here if case we want to use post - message structure
+
 const Sequelize = require('sequelize');
 const db = require('./../db.js');
 
@@ -13,20 +15,13 @@ const {
   DOUBLE,
 } = Sequelize;
 
-const Message = db.define('messages', {
+const Post = db.define('messages', {
   id: {
     primaryKey: true,
     type: UUID,
     defaultValue: UUIDV4,
   },
-  // This is not needed. By adding associations it will add these foreign keys
-  // userId: {
-  //   type: UUID,
-  // },
-  // channelId: {
-  //   type: UUID,
-  // },
-  fileType: {
+  postType: {
     type: STRING,
     allowNull: false,
     validate: {
@@ -34,10 +29,15 @@ const Message = db.define('messages', {
     },
     values: ['video', 'text', 'audio', 'image'],
   },
-  messageTitle: {
+  postTitle: {
     type: STRING,
+    validate: {
+      notEmpty: {
+        args: true,
+      },
+    },
   },
-  messageContent: {
+  postContent: {
     // link to youTube video or spotify audio or actual typed message
     type: TEXT,
     validate: {
@@ -74,15 +74,8 @@ const Message = db.define('messages', {
   key: {
     type: STRING,
   },
-  // commented this out for now until we decide if we want to use post - message structure. Also, I dont think we need a a childMessageId
-  // parentMessageId: {
-  //   type: UUID,
-  // },
-  // childMessageId: {
-  //   type: UUID,
-  // },
   expirationTime: {
     type: DATE,
   },
 });
-module.exports = Message;
+module.exports = Post;
