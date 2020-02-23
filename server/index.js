@@ -1,21 +1,30 @@
-const express = require("express");
-const chalk = require("chalk");
-const path = require("path");
-const { db } = require("./db/index");
+const express = require('express');
+const chalk = require('chalk');
+const path = require('path');
+const { db } = require('./db/index');
+const enforce = require('express-sslify');
 
 //initialize express
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 // static Middleware
-app.use(express.static(path.join(__dirname, "../static")));
+app.use(express.static(path.join(__dirname, '../static')));
+
+// service worker route
+app.use('/service-worker.js', (req, res) => {
+  res.send(path.resolve(__dirname, '..', 'client', 'service-worker.js'));
+});
+
+// enforce HTTPS
+app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 // api routes
-app.use("/api", require("./api"));
+app.use('/api', require('./api'));
 
 //route catch
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../static/index.html"));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../static/index.html'));
 });
 
 // start server
