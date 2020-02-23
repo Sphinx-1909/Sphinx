@@ -1,0 +1,11 @@
+{
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended", "prettier"],
+  "parser": "babel-eslint"
+  // "rules": {
+  //   "prettier/prettier": "error"
+  // }
+}
