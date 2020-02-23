@@ -80,5 +80,8 @@ const Message = db.define('messages', {
   expirationTime: {
     type: DATE,
   },
+  groupUnlock: {
+    type: INTEGER,
+  },
 });
 module.exports = Message;
