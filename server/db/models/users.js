@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./../db.js');
 
-const { UUID, UUIDV4, STRING, DECIMAL } = Sequelize;
+const { UUID, UUIDV4, STRING, DECIMAL, DOUBLE } = Sequelize;
 
 const User = db.define('users', {
   id: {
@@ -11,9 +11,15 @@ const User = db.define('users', {
   },
   firstName: {
     type: STRING,
+    validate: {
+      notEmpty: true,
+    },
   },
   lastName: {
     type: STRING,
+    validate: {
+      notEmpty: true,
+    },
   },
   email: {
     type: STRING,
@@ -33,28 +39,28 @@ const User = db.define('users', {
       notEmpty: true,
     },
   },
-  userType: {
-    type: STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    values: ['admin', 'regUser'],
-  },
+  // userType: {
+  //   type: STRING,
+  //   allowNull: false,
+  //   validate: {
+  //     notEmpty: true,
+  //   },
+  //   values: ['admin', 'regUser'],
+  // },
   password: {
     type: STRING,
     allowNull: true,
     validate: {
       notEmpty: true,
     },
-    latitude: {
-      type: DECIMAL,
-      allowNull: false,
-    },
-    longitude: {
-      type: DECIMAL,
-      allowNull: false,
-    },
+  },
+  latitude: {
+    type: DOUBLE(null, 7),
+    allowNull: false,
+  },
+  longitude: {
+    type: DOUBLE(null, 7),
+    allowNull: false,
   },
 });
 

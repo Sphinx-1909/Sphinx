@@ -44,11 +44,9 @@ Message.hasOne(MessageUser);
 
 module.exports = {
   db,
-  models: {
-    User,
-    Message,
-    Session,
-    Channel,
-    ChannelUser,
-  },
+  User,
+  Message,
+  Session,
+  Channel,
+  ChannelUser,
 };
