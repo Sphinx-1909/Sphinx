@@ -15,7 +15,7 @@ const {
   DOUBLE,
 } = Sequelize;
 
-const Post = db.define('messages', {
+const Post = db.define('posts', {
   id: {
     primaryKey: true,
     type: UUID,
