@@ -23,20 +23,29 @@ const User = db.define('users', {
       notEmpty: true,
       isEmail: true,
     },
-    userType: {
-      type: STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-      values: ['admin', 'regUser'],
+  },
+  // you can remove this if you think username is excessive but its somewhat like a privacy layer to prevent people form knowing your email / name if we are going to display info on the user
+  username: {
+    type: STRING,
+    allowNull: true,
+    unique: true,
+    validate: {
+      notEmpty: true,
     },
-    password: {
-      type: STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: true,
-      },
+  },
+  userType: {
+    type: STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+    values: ['admin', 'regUser'],
+  },
+  password: {
+    type: STRING,
+    allowNull: true,
+    validate: {
+      notEmpty: true,
     },
     latitude: {
       type: DECIMAL,
