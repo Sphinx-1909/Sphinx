@@ -18,7 +18,7 @@ const ChannelUser = db.define('channelUser', {
   isModerator: {
     type: BOOLEAN,
   },
-  idAdmin: {
+  isAdmin: {
     type: BOOLEAN,
   },
 });
