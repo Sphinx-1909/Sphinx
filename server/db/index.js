@@ -31,8 +31,8 @@ Message.belongsTo(Channel);
 Channel.hasMany(Message);
 
 //ChannelUser
-User.hasMany(ChannelUser);
-Channel.hasMany(ChannelUser);
+User.hasMany(ChannelUser, { constraints: false });
+Channel.hasMany(ChannelUser, { constraints: false });
 
 // MessageUser table is being stored here for the feature to make sure if a message is seen once it cannot be seen again for that user
 
@@ -49,4 +49,6 @@ module.exports = {
   Session,
   Channel,
   ChannelUser,
+  Post,
+  MessageUser,
 };

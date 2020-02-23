@@ -31,7 +31,7 @@ const User = db.define('users', {
     },
   },
   // you can remove this if you think username is excessive but its somewhat like a privacy layer to prevent people form knowing your email / name if we are going to display info on the user
-  username: {
+  userName: {
     type: STRING,
     allowNull: true,
     unique: true,
@@ -39,6 +39,7 @@ const User = db.define('users', {
       notEmpty: true,
     },
   },
+  // not needed because admin info stored on channell
   // userType: {
   //   type: STRING,
   //   allowNull: false,

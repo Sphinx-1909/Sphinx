@@ -38,7 +38,7 @@ const Channel = db.define('channels', {
     allowNull: false,
   },
   radius: {
-    type: DECIMAL,
+    type: DOUBLE(null, 2),
   },
 });
 module.exports = Channel;
