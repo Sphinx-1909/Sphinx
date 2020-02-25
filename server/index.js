@@ -3,10 +3,58 @@ const chalk = require('chalk');
 const path = require('path');
 const { db } = require('./db/index');
 const enforce = require('express-sslify');
+const axios = require('axios');
+const session = require('express-session');
+
+const { User } = require('./db/index');
 
 //initialize express
 const app = express();
 const PORT = process.env.PORT || 4000;
+
+//body parsing
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+  console.log(chalk.cyan(`${new Date().toString()}: ${req.path}`));
+  next();
+});
+
+// authentication and cookies
+app.use(
+  session({
+    secret: 'secretcookie',
+    resave: false,
+    cookie: {
+      maxAge: 7.2 * Math.exp(10, 6), // 2 hours
+    },
+  })
+);
+
+// session logging
+app.use((req, res, next) => {
+  //console.log('session', req.session);
+  next();
+});
+
+app.use((req, res, next) => {
+  User.findByPk(req.session.userId)
+    .then(userOrNull => {
+      if (!userOrNull) req.loggedIn = false;
+      else {
+        req.loggedIn = true;
+        req.user = userOrNull;
+      }
+
+      next();
+    })
+    .catch(e => {
+      console.log('error searching for a user by session.userId');
+      console.error(e);
+      next();
+    });
+});
 
 // static Middleware
 app.use(express.static(path.join(__dirname, '../static')));
