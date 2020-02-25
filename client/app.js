@@ -3,30 +3,27 @@ import React from 'react';
 import './app.css';
 // react-redux
 import { connect } from 'react-redux';
-//action
-import { setToggleSlideMenu } from './redux/nav/action/nav.action';
+//component
+import BottomMenu from './components/BottomMenu/BottomMenu';
+import Burger from './components/Burger/Burger';
+import Container from './components/container/Container';
+import SlideMenu from './components/SlideMenu/SlideMenu';
 
 class App extends React.Component {
-  componentDidMount() {
-    this.props.setToggleSlideMenu();
-  }
-
-  handleClick = e => {
-    e.preventDefault();
-    this.props.setToggleSlideMenu();
-  };
   render() {
     return (
-      <div>
-        React is working
-        <button onClick={e => this.handleClick(e)}>test</button>
+      <div className="main">
+        <Burger openSlide={this.props.openSlide} />
+        <SlideMenu openSlide={this.props.openSlide} />
+        <Container />
+        <BottomMenu />
       </div>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  setToggleSlideMenu: () => dispatch(setToggleSlideMenu()),
+const mapStateToProps = state => ({
+  openSlide: state.nav.displaySlideMenu,
+  displayOverlay: state.nav.displayOverlay,
 });
-
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
