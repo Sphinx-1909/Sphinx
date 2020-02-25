@@ -27,6 +27,7 @@ Post.hasMany(Message);
 Message.belongsTo(Post);
 
 //Message
+// If we got with post - message system then we need to do Message.belongsTo(Post)
 Message.belongsTo(Channel);
 Channel.hasMany(Message);
 
