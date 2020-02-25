@@ -98,12 +98,12 @@ const seed = async () => {
         positiveVotes: 300,
         negativeVotes: 2,
         latitude: 40.7527,
-        longitude: 73.9772,
+        longitude: -73.9772,
         radius: 2,
         encrypted: false,
         key: 'xxswdks',
         expirationTime: Date(),
-        groupUnlock: 3,
+        // groupUnlock: 3,
       },
     ];
     for (let i = 0; i < GENERATE_MESSAGES; i++) {
@@ -113,13 +113,13 @@ const seed = async () => {
         messageContent: faker.lorem.paragraph(),
         positiveVotes: Math.floor(Math.random() * Math.floor(600)),
         negativeVotes: Math.floor(Math.random() * Math.floor(600)),
-        latitude: faker.address.latitude(),
-        longitude: faker.address.longitude(),
+        latitude: (Math.random() * 100).toFixed(4),
+        longitude: (Math.random() * -100).toFixed(4),
         radius: Math.random() * (4 - 1) + 4,
         encrypted: faker.random.boolean(),
         key: faker.internet.password(),
         expirationTime: Date(),
-        groupUnlock: Math.floor(Math.random() * Math.floor(4)),
+        // groupUnlock: Math.floor(Math.random() * Math.floor(4)),
       });
     }
 
@@ -131,7 +131,7 @@ const seed = async () => {
         isPrivate: false,
         key: 'asdfadfa',
         latitude: 41.7527,
-        longitude: 73.9772,
+        longitude: -73.9772,
       },
     ];
     for (let i = 0; i < GENERATE_CHANNELS; i++) {
