@@ -5,8 +5,10 @@ const { db } = require('./db/index');
 const enforce = require('express-sslify');
 const axios = require('axios');
 const session = require('express-session');
+const moment = require('moment');
 
-const { User } = require('./db/index');
+const { User, Session } = require('./db/index');
+const cookieParser = require('cookie-parser');
 
 //initialize express
 const app = express();
@@ -14,46 +16,44 @@ const PORT = process.env.PORT || 4000;
 
 //body parsing
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use((req, res, next) => {
-  console.log(chalk.cyan(`${new Date().toString()}: ${req.path}`));
-  next();
-});
-
-// authentication and cookies
-app.use(
-  session({
-    secret: 'secretcookie',
-    resave: false,
-    cookie: {
-      maxAge: 7.2 * Math.exp(10, 6), // 2 hours
-    },
-  })
-);
-
-// session logging
-app.use((req, res, next) => {
-  //console.log('session', req.session);
-  next();
-});
-
-app.use((req, res, next) => {
-  User.findByPk(req.session.userId)
-    .then(userOrNull => {
-      if (!userOrNull) req.loggedIn = false;
-      else {
-        req.loggedIn = true;
-        req.user = userOrNull;
-      }
-
-      next();
+  if (req.cookies.sessionId) {
+    User.findOne({
+      where: {
+        sessionId: req.cookies.sessionId,
+      },
     })
-    .catch(e => {
-      console.log('error searching for a user by session.userId');
-      console.error(e);
-      next();
-    });
+      .then(foundUser => {
+        if (foundUser) {
+          req.user = foundUser;
+        }
+        next();
+      })
+      .catch(e => {
+        console.log(chalk.red('Error finding sessionId'));
+        console.error(e);
+        next(e);
+      });
+  } else {
+    Session.create()
+      .then(newSession => {
+        res.cookie('sessionId', newSession.id, {
+          path: '/',
+          expires: moment
+            .utc()
+            .add(1, 'day')
+            .toDate(),
+        });
+        next();
+      })
+      .catch(e => {
+        console.log(chalk.red('Error creating session'));
+        console.error(e);
+        next(e);
+      });
+  }
 });
 
 // static Middleware

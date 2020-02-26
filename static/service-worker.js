@@ -2,6 +2,7 @@ const CACHE_STATIC = 'static-cache-v1';
 const CACHE_DYNAMIC = 'dynamic-cache-v1';
 const FILES_TO_CACHE = [
   '/',
+  '/offline.html',
   '/main.js',
   '/index.html',
   '/favicon.ico',
@@ -41,17 +42,18 @@ self.addEventListener('fetch', event => {
       if (response) {
         return response;
       } else {
-        return fetch(event.request).then(res => {
-          return caches
-            .open(CACHE_DYNAMIC)
-            .then(cache => {
+        return fetch(event.request)
+          .then(res => {
+            return caches.open(CACHE_DYNAMIC).then(cache => {
               cache.put(event.request.url, res.clone());
               return res;
-            })
-            .catch(err => {
-              console.log(err);
             });
-        });
+          })
+          .catch(err => {
+            return caches.open(CACHE_STATIC).then(cache => {
+              return cache.match('/offline.html');
+            });
+          });
       }
     })
   );

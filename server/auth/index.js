@@ -1,20 +1,33 @@
 const router = require('express').Router();
 const { User } = require('../db/index');
 
-router.post('/login', (req, res, next) => {
-  console.log(req.body);
+router.post('/', (req, res, next) => {
   User.findOne({
     where: {
       email: req.body.email,
       password: req.body.password,
     },
   })
-    .then(userOrNull => {
-      if (!userOrNull) return res.sendStatus(401);
-      req.session.userId = userOrNull.id;
-      return res.status(200).send(userOrNull);
+    .then(foundUser => {
+      if (foundUser) {
+        User.update(
+          {
+            sessionId: req.cookies.sessionId,
+          },
+          {
+            where: {
+              id: foundUser.id,
+            },
+          }
+        );
+        res.status(202).send(foundUser);
+      } else {
+        res.status(400).send('No matching user');
+      }
     })
-    .catch(next);
+    .catch(e => {
+      res.status(404).send('User not found');
+    });
 });
 
 router.post('/signup', (req, res, next) => {
@@ -24,19 +37,15 @@ router.post('/signup', (req, res, next) => {
     .then(user => {
       if (!user) return res.status(500).send('error creating user');
       req.session.userId = user.id;
-      if (user.userType === 'admin') {
-        req.session.admin = true;
-      } else {
-        req.session.admin = false;
-      }
-      res.send(user);
+      console.log('signUp user in auth/index.js', user);
+      return res.status(200).send(user);
     })
     .catch(next);
 });
 
 router.get('/signout', (req, res, next) => {
   delete req.session.userId;
-  delete req.session.admin;
+
   res.sendStatus(204);
   next();
 });
