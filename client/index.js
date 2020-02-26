@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 //redux store
 import Store from './redux/store';
+// import * as serviceWorker from './serviceWorker';
 
 render(
   <Provider store={Store}>
@@ -17,3 +18,5 @@ render(
   </Provider>,
   document.getElementById('root')
 );
+
+// serviceWorker.unregister();

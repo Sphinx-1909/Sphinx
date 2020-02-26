@@ -1,6 +1,6 @@
 import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'
+import axios from 'axios';
 
 const containerStyle = {
   width: '100%',
@@ -8,35 +8,35 @@ const containerStyle = {
   flexGrow: '1',
 };
 
-const MapContainer = (containerProps) => {
-
-  const [messages, setMessages] = useState([])
+const MapContainer = containerProps => {
+  const [messages, setMessages] = useState([]);
   const [activeMarker, setActiveMarker] = useState({});
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState({});
-  const [currentPosition, setCurrentPosition] = useState({})
+  const [currentPosition, setCurrentPosition] = useState({});
 
   navigator.geolocation.watchPosition(pos => {
     const coords = {
       lat: pos.coords.latitude,
       lng: pos.coords.longitude,
-    }
-    console.log('current coordinates: ', coords)
-    setCurrentPosition(coords)
-  })
+    };
+    // console.log('current coordinates: ', coords);
+    setCurrentPosition(coords);
+  });
 
   useEffect(() => {
     if (!loaded) {
-      axios.get('http://localhost:4000/api/messages')
+      axios
+        .get('http://localhost:4000/api/messages')
         .then(messages => {
           messages = messages.data;
-          console.log('messages: ', messages)
-          setMessages(messages)
-          setLoaded(true)
+          console.log('messages: ', messages);
+          setMessages(messages);
+          setLoaded(true);
         })
-        .catch(e => console.log('error fetching messages in useEffect: ', e))
+        .catch(e => console.log('error fetching messages in useEffect: ', e));
     }
-  }, [])
+  }, []);
 
   const onMarkerClick = (props, marker, e) => {
     // store the selectedMessage in local state
@@ -45,7 +45,7 @@ const MapContainer = (containerProps) => {
     setActiveMarker(marker);
     // some conditional logic based on whether the message is "viewable" (is user in range)
     // ...
-  }
+  };
 
   return (
     <Map
@@ -56,9 +56,9 @@ const MapContainer = (containerProps) => {
     >
       <Marker
         icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
-        position={currentPosition} />
-      {
-        messages.length > 0 &&
+        position={currentPosition}
+      />
+      {messages.length > 0 &&
         messages.map((msg, idx) => {
           return (
             <Marker
@@ -67,13 +67,12 @@ const MapContainer = (containerProps) => {
               position={{ lat: msg.latitude, lng: msg.longitude }}
               onClick={onMarkerClick}
             />
-          )
-        })
-      }
+          );
+        })}
     </Map>
-  )
-}
+  );
+};
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyBuvzQNuDiQUkXKwp5lUIc3fDLYkKS5Ru8'
+  apiKey: 'AIzaSyBuvzQNuDiQUkXKwp5lUIc3fDLYkKS5Ru8',
 })(MapContainer);
