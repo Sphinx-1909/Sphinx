@@ -14,9 +14,15 @@ const MapContainer = (containerProps) => {
   const [activeMarker, setActiveMarker] = useState({});
   const [loaded, setLoaded] = useState(false)
   const [selectedMessage, setSelectedMessage] = useState({});
+  const [currentPosition, setCurrentPosition] = useState({})
 
-  const currentPosition = navigator.geolocation.getCurrentPosition(pos => {
-    return pos.coords;
+  navigator.geolocation.watchPosition(pos => {
+    const coords = {
+      lat: pos.coords.latitude,
+      lng: pos.coords.longitude,
+    }
+    console.log('current coordinates: ', coords)
+    setCurrentPosition(coords)
   })
 
   useEffect(() => {
@@ -41,43 +47,16 @@ const MapContainer = (containerProps) => {
     // ...
   }
 
-  // const onClose = (props) => {
-  //   if (showingInfoWindow) {
-  //     setShowingInfoWindow(false);
-  //     setActiveMarker(null);
-  //   }
-  // }
-
-  // const handleInterested = (show) => {
-  //   console.log('in handleInterested')
-  //   setShowModal(true);
-  //   setSelectedShow(show);
-  // }
-
-  // shows.forEach(show => {
-  //   navigator.geolocation.getCurrentPosition(pos => {
-  //     const OriginLatLng = new containerProps.google.maps.LatLng(
-  //       parseFloat(pos.coords.latitude),
-  //       parseFloat(pos.coords.longitude)
-  //     );
-  //     const DestLatLng = new containerProps.google.maps.LatLng(
-  //       parseFloat(show.lat),
-  //       parseFloat(show.lng)
-  //     );
-  //     const distance = containerProps.google.maps.geometry.spherical.computeDistanceBetween(OriginLatLng, DestLatLng)
-  //     show.distance = distance;
-  //   });
-  // })
-
   return (
     <Map
       google={containerProps.google}
       zoom={14}
       containerStyle={containerStyle}
-      // style={{ width: '10%', height: '10%' }}
       initialCenter={{ lat: 40.7831, lng: -73.9352 }}
     >
-      <Marker name='hi' key={1} position={{ lat: 40.7831, lng: -73.9352 }} onClick={onMarkerClick} />
+      <Marker
+        icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
+        position={currentPosition} />
       {
         messages.length > 0 &&
         messages.map((msg, idx) => {
