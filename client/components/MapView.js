@@ -50,7 +50,7 @@ const MapContainer = (containerProps) => {
     setSelectedMessage(props);
     // store the selectedMarker in local state
     setActiveMarker(marker);
-    // some conditional logic based on whether the message is "viewable" (is user in range)
+    // display message in overlay
     // ...
   }
 
@@ -75,10 +75,7 @@ const MapContainer = (containerProps) => {
       parseFloat(msg.latitude),
       parseFloat(msg.longitude)
     );
-    // console.log('curLatLng: ', curLatLng);
-    // console.log('msgLatLng: ', msgLatLng)
     const distance = containerProps.google.maps.geometry.spherical.computeDistanceBetween(curLatLng, msgLatLng)
-    // console.log('distance: ', distance)
     return distance;
   }
 
