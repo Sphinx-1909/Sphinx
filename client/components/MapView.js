@@ -14,13 +14,16 @@ const MapContainer = (containerProps) => {
   const [activeMarker, setActiveMarker] = useState({});
   const [loaded, setLoaded] = useState(false)
   const [selectedMessage, setSelectedMessage] = useState({});
+  const [currentPosition, setCurrentPosition] = useState({})
 
-  const currentPosition = navigator.geolocation.getCurrentPosition(pos => {
-    console.log('pos.coords: ', pos.coords)
-    // return pos.coords;
+  navigator.geolocation.watchPosition(pos => {
+    const coords = {
+      lat: pos.coords.latitude,
+      lng: pos.coords.longitude,
+    }
+    console.log('current coordinates: ', coords)
+    setCurrentPosition(coords)
   })
-
-  console.log('current position: ', currentPosition)
 
   useEffect(() => {
     if (!loaded) {
@@ -51,6 +54,9 @@ const MapContainer = (containerProps) => {
       containerStyle={containerStyle}
       initialCenter={{ lat: 40.7831, lng: -73.9352 }}
     >
+      <Marker
+        icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
+        position={currentPosition} />
       {
         messages.length > 0 &&
         messages.map((msg, idx) => {
