@@ -10,10 +10,12 @@ import Burger from './components/Burger/Burger';
 import Container from './components/container/Container';
 import SlideMenu from './components/SlideMenu/SlideMenu';
 import { fetchChannels } from './redux/channels'
+import { fetchUnreadMessages } from './redux/messages';
 
 class App extends React.Component {
   async componentDidMount() {
     await this.props.fetchChannels()
+    await this.props.fetchUnreadMessages()
     // Request to get notifications
     Notification.requestPermission(function (status) {
       console.log('Notification permission status:', status);
@@ -39,7 +41,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchChannels: () => dispatch(fetchChannels())
+    fetchChannels: () => dispatch(fetchChannels()),
+    fetchUnreadMessages: () => dispatch(fetchUnreadMessages())
   }
 }
 

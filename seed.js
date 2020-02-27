@@ -105,7 +105,7 @@ const seed = async () => {
         key: 'xxswdks',
         expirationTime: Date(),
         channelId: channelIds[0],
-        userId: userIds[0],
+        senderId: userIds[0],
       },
     ];
     for (let i = 0; i < GENERATE_MESSAGES; i++) {
@@ -122,7 +122,7 @@ const seed = async () => {
         key: faker.internet.password(),
         expirationTime: Date(),
         channelId: channelIds[i + 1],
-        userId: userIds[i + 1],
+        senderId: userIds[i + 1],
       });
     }
 

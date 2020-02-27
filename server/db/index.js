@@ -9,8 +9,8 @@ const ChannelUser = require('./models/channelUser');
 //Associations
 
 //User
-User.hasMany(Message);
-Message.belongsTo(User);
+User.hasMany(Message, { as: 'sender' });
+Message.belongsTo(User, { as: 'sender' });
 
 //Sessions
 Session.hasOne(User);
