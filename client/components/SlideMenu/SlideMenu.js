@@ -11,24 +11,25 @@ class SlideMenu extends React.Component {
     const { authentication } = this.props;
     console.log(authentication);
     // const { isLoggedIn } = authentication;
-  //   if (isLoggedIn) {
-  //     return (
-  //       <div>
-  //         <Link to="/account" style={{ textDecoration: 'none' }}>
-  //           Account
-  //         </Link>
-  //         <Button onClick={this.props.signout}>Log Out!</Button>
-  //       </div>
-  //     );
-  //   }
-  //   return (
-  //     <div>
-  //       <Link to="/login" style={{ textDecoration: 'none' }}>
-  //         <Button>Log in / Register</Button>
-  //       </Link>
-  //     </div>
-  //   );
-  // };
+    //   if (isLoggedIn) {
+    //     return (
+    //       <div>
+    //         <Link to="/account" style={{ textDecoration: 'none' }}>
+    //           Account
+    //         </Link>
+    //         <Button onClick={this.props.signout}>Log Out!</Button>
+    //       </div>
+    //     );
+    //   }
+    //   return (
+    //     <div>
+    //       <Link to="/login" style={{ textDecoration: 'none' }}>
+    //         <Button>Log in / Register</Button>
+    //       </Link>
+    //     </div>
+    //   );
+    // };
+  };
   render() {
     return (
       <div
