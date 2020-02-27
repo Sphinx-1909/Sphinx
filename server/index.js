@@ -61,11 +61,16 @@ app.use(express.static(path.join(__dirname, '../static')));
 
 // service worker route
 app.use('/service-worker.js', (req, res) => {
-  res.send(path.resolve(__dirname, '..', 'staic', 'service-worker.js'));
+  // res.send(path.resolve(__dirname, '../static', 'service-worker.js'));
+  //Are you sure the bottom one is right? This was the original code excluding the typo of staic
+  res.send(path.resolve(__dirname, '..', 'static', 'service-worker.js'));
 });
 
 // enforce HTTPS ** may be neccessary for the ServiceWorker when deployed to Heroku
 // app.use(enforce.HTTPS({ trustProtoHeader: true }));
+
+//auth
+app.use(require('./auth'));
 
 // api routes
 app.use('/api', require('./api'));
