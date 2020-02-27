@@ -1,6 +1,7 @@
 import React from 'react';
 //css
 import './app.css';
+
 // react-redux
 import { connect } from 'react-redux';
 //component
@@ -10,6 +11,13 @@ import Container from './components/container/Container';
 import SlideMenu from './components/SlideMenu/SlideMenu';
 
 class App extends React.Component {
+  componentDidMount() {
+    // Request to get notifications
+    Notification.requestPermission(function(status) {
+      console.log('Notification permission status:', status);
+    });
+  }
+
   render() {
     return (
       <div className="main">

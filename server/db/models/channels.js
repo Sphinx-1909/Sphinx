@@ -9,6 +9,7 @@ const Channel = db.define('channels', {
     type: UUID,
     defaultValue: UUIDV4,
   },
+
   channelTitle: {
     type: STRING,
     allowNull: false,

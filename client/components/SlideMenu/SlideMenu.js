@@ -2,7 +2,7 @@ import React from 'react';
 //css
 import './SlideMenu.css';
 //import { StyledMenu } from './Menu.styled';
-
+import { Link } from 'react-router-dom';
 class SlideMenu extends React.Component {
   render() {
     return (
@@ -16,7 +16,7 @@ class SlideMenu extends React.Component {
       >
         <a>CHANNELS</a>
         <a>SETTINGS</a>
-        <a>ACCOUNT</a>
+        <Link to="/account">Account</Link>
       </div>
     );
   }

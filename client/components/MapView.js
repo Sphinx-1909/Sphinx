@@ -9,11 +9,10 @@ const containerStyle = {
   flexGrow: '1',
 };
 
-const MapContainer = (containerProps) => {
-
-  const [messages, setMessages] = useState([])
+const MapContainer = containerProps => {
+  const [messages, setMessages] = useState([]);
   const [activeMarker, setActiveMarker] = useState({});
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState({});
   const [currentPosition, setCurrentPosition] = useState({})
   const [geoSupported, setGeoSupported] = useState(true)
@@ -34,16 +33,17 @@ const MapContainer = (containerProps) => {
 
   useEffect(() => {
     if (!loaded) {
-      axios.get('http://localhost:4000/api/messages')
+      axios
+        .get('http://localhost:4000/api/messages')
         .then(messages => {
           messages = messages.data;
-          console.log('messages: ', messages)
-          setMessages(messages)
-          setLoaded(true)
+          console.log('messages: ', messages);
+          setMessages(messages);
+          setLoaded(true);
         })
-        .catch(e => console.log('error fetching messages in useEffect: ', e))
+        .catch(e => console.log('error fetching messages in useEffect: ', e));
     }
-  }, [])
+  }, []);
 
   const onMarkerClick = (props, marker, e) => {
     console.log('i am clickable!')
@@ -53,7 +53,7 @@ const MapContainer = (containerProps) => {
     setActiveMarker(marker);
     // display message in overlay
     // ...
-  }
+  };
 
   const openMsgIcon = {
     url: 'https://image.flaticon.com/icons/svg/1483/1483336.svg',
@@ -114,5 +114,5 @@ const MapContainer = (containerProps) => {
 }
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyBuvzQNuDiQUkXKwp5lUIc3fDLYkKS5Ru8'
+  apiKey: 'AIzaSyBuvzQNuDiQUkXKwp5lUIc3fDLYkKS5Ru8',
 })(MapContainer);
