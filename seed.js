@@ -6,15 +6,13 @@ const {
   ChannelUser,
   Channel,
   Message,
-  Post,
   User,
 } = require('./server/db/index');
 
-const GENERATE_CHANNELUSERS = 23;
-const GENERATE_CHANNELS = 10;
-const GENERATE_MESSAGES = 20;
-const GENERATE_POSTS = 15;
-const GENERATE_USERS = 21;
+const GENERATE_CHANNELUSERS = 30;
+const GENERATE_CHANNELS = 30;
+const GENERATE_MESSAGES = 30;
+const GENERATE_USERS = 30;
 
 const postHelper = i => {
   // let postTypeValues= ['video', 'text', 'audio', 'image'],
@@ -57,71 +55,8 @@ const seed = async () => {
         longitude: faker.address.longitude(),
       });
     }
-    // generate list of posts
-    let postList = [
-      {
-        postType: 'video',
-        postTitle: 'Crazy tourist',
-        postContent: 'https://www.youtube.com/watch?v=mLimnpQIwgY',
-        positiveVotes: 300,
-        negativeVotes: 2,
-        latitude: 40.7527,
-        longitude: 73.9772,
-        radius: 3,
-        encrypted: false,
-        key: 'aaa',
-        expirationTime: Date(),
-      },
-    ];
-    for (let i = 0; i < GENERATE_POSTS; i++) {
-      postList.push({
-        postType: postHelper(i),
-        postTitle: faker.hacker.phrase(),
-        postContent: faker.lorem.paragraph(),
-        positiveVotes: Math.floor(Math.random() * Math.floor(600)),
-        negativeVotes: Math.floor(Math.random() * Math.floor(600)),
-        latitude: faker.address.latitude(),
-        longitude: faker.address.longitude(),
-        radius: Math.floor(Math.random() * Math.floor(4)),
-        encrypted: faker.random.boolean(),
-        key: faker.internet.password(),
-        expirationTime: Date(),
-      });
-    }
 
-    //generate list of messages
-    let messageList = [
-      {
-        fileType: 'video',
-        messageTitle: 'Crazy tourist',
-        messageContent: 'https://www.youtube.com/watch?v=mLimnpQIwgY',
-        positiveVotes: 300,
-        negativeVotes: 2,
-        latitude: 40.7527,
-        longitude: -73.9772,
-        radius: 2,
-        encrypted: false,
-        key: 'xxswdks',
-        expirationTime: Date(),
-        // groupUnlock: 3,
-      },
-    ];
-    for (let i = 0; i < GENERATE_MESSAGES; i++) {
-      messageList.push({
-        fileType: postHelper(i),
-        messageTitle: faker.hacker.phrase(),
-        messageContent: faker.lorem.paragraph(),
-        positiveVotes: Math.floor(Math.random() * Math.floor(600)),
-        negativeVotes: Math.floor(Math.random() * Math.floor(600)),
-        latitude: (Math.random() * 100).toFixed(4),
-        longitude: (Math.random() * -100).toFixed(4),
-        radius: Math.random() * (4 - 1) + 4,
-        encrypted: faker.random.boolean(),
-        key: faker.internet.password(),
-        expirationTime: Date(),
-        // groupUnlock: Math.floor(Math.random() * Math.floor(4)),
-      });
-    }
+
 
     //generate list of channels
     let channelList = [
@@ -148,32 +83,67 @@ const seed = async () => {
     await db.sync({ force: true });
     await User.bulkCreate(userList);
     await Channel.bulkCreate(channelList);
-    await Message.bulkCreate(messageList);
-    await Post.bulkCreate(postList);
 
-    //helper function to get userId
     const users = await User.findAll();
     const userIds = users.map(user => user.id);
-    // helper function to get channelId
+
     const channels = await Channel.findAll();
-    console.log(channels[0].id);
     const channelIds = channels.map(channel => channel.id);
+
+    //generate list of messages
+    let messageList = [
+      {
+        fileType: 'video',
+        messageTitle: 'Crazy tourist',
+        messageContent: 'https://www.youtube.com/watch?v=mLimnpQIwgY',
+        positiveVotes: 300,
+        negativeVotes: 2,
+        latitude: 40.7527,
+        longitude: -73.9772,
+        radius: 2,
+        encrypted: false,
+        key: 'xxswdks',
+        expirationTime: Date(),
+        channelId: channelIds[0],
+        userId: userIds[0],
+      },
+    ];
+    for (let i = 0; i < GENERATE_MESSAGES; i++) {
+      messageList.push({
+        fileType: postHelper(i),
+        messageTitle: faker.hacker.phrase(),
+        messageContent: faker.lorem.paragraph(),
+        positiveVotes: Math.floor(Math.random() * Math.floor(600)),
+        negativeVotes: Math.floor(Math.random() * Math.floor(600)),
+        latitude: (Math.random() * 100).toFixed(4),
+        longitude: (Math.random() * -100).toFixed(4),
+        radius: Math.random() * (4 - 1) + 4,
+        encrypted: faker.random.boolean(),
+        key: faker.internet.password(),
+        expirationTime: Date(),
+        channelId: channelIds[i + 1],
+        userId: userIds[i + 1],
+      });
+    }
+
+    await Message.bulkCreate(messageList);
+
 
     //generate list of channelusers
     let channelUserList = [
       {
         isModerator: true,
-        isAdmin: false,
-        userId: userIds[Math.floor(Math.random() * userIds.length)],
-        channelId: channelIds[Math.floor(Math.random() * channelIds.length)],
+        isOwner: false,
+        userId: userIds[0],
+        channelId: channelIds[0],
       },
     ];
     for (let i = 0; i < GENERATE_CHANNELUSERS; i++) {
       channelUserList.push({
         isModerator: faker.random.boolean(),
-        isAdmin: faker.random.boolean(),
-        userId: userIds[Math.floor(Math.random() * userIds.length)],
-        channelId: channelIds[Math.floor(Math.random() * channelIds.length)],
+        isOwner: faker.random.boolean(),
+        userId: userIds[i + 1],
+        channelId: channelIds[i + 1],
       });
     }
 

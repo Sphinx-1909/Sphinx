@@ -16,6 +16,9 @@ const MapContainer = containerProps => {
   const [selectedMessage, setSelectedMessage] = useState({});
   const [currentPosition, setCurrentPosition] = useState({})
   const [geoSupported, setGeoSupported] = useState(true)
+  const [displayMessage, setDisplayMessage] = useState(false)
+
+  const minDistance = 10000;
 
   if (!navigator.geolocation) {
     setGeoSupported(false);
@@ -26,6 +29,7 @@ const MapContainer = containerProps => {
         lng: pos.coords.longitude,
       }
       if (coords.lat !== currentPosition.lat || coords.lng !== currentPosition.lng) {
+        // console.log('coords: ', coords)
         setCurrentPosition(coords)
       }
     })
@@ -45,15 +49,18 @@ const MapContainer = containerProps => {
     }
   }, []);
 
-  const onMarkerClick = (props, marker, e) => {
-    console.log('i am clickable!')
+  const onMarkerClick = (props, marker, e, msg, distance) => {
+    if (distance > minDistance) return;
     // store the selectedMessage in local state
-    setSelectedMessage(props);
+    setSelectedMessage(msg);
     // store the selectedMarker in local state
     setActiveMarker(marker);
     // display message in overlay
+    setDisplayMessage(true);
     // ...
   };
+
+  // console.log('container props: ', containerProps)
 
   const openMsgIcon = {
     url: 'https://image.flaticon.com/icons/svg/1483/1483336.svg',
@@ -65,9 +72,11 @@ const MapContainer = containerProps => {
     scaledSize: new containerProps.google.maps.Size(50, 50),
   }
 
-  const minDistance = 10000;
-
   const computeDistance = (msg, curPos) => {
+    // console.log('curPos.lat: ', parseFloat(curPos.lat));
+    // console.log('curPos.lng: ', parseFloat(curPos.lng));
+    // console.log('msg.latitude: ', msg.latitude);
+    // console.log('msg.longitude: ', msg.longitude);
     const curLatLng = new containerProps.google.maps.LatLng(
       parseFloat(curPos.lat),
       parseFloat(curPos.lng)
@@ -77,39 +86,55 @@ const MapContainer = containerProps => {
       parseFloat(msg.longitude)
     );
     const distance = containerProps.google.maps.geometry.spherical.computeDistanceBetween(curLatLng, msgLatLng)
+    // console.log('distance in computeDistance: ', distance)
     return distance;
   }
 
+  // console.log('displayMessage: ', displayMessage)
+
   return (
-    geoSupported ?
-      <Map
-        google={containerProps.google}
-        zoom={14}
-        containerStyle={containerStyle}
-        initialCenter={{ lat: 40.7831, lng: -73.9352 }}
-      >
-        <Marker
-          icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
-          scaledSize={new containerProps.google.maps.Size(10, 10)}
-          position={currentPosition} />
-        {
-          messages.length > 0 &&
-          messages.map((msg, idx) => {
-            const distance = computeDistance(msg, currentPosition)
-            return (
-              <Marker
-                icon={distance < minDistance ? openMsgIcon : closedMsgIcon}
-                name={msg.messageTitle}
-                key={idx}
-                position={{ lat: msg.latitude, lng: msg.longitude }}
-                onClick={distance < minDistance && onMarkerClick}
-              />
-            )
-          })
-        }
-      </Map>
-      :
-      <div className='container'>Location access must be turned on to view messages!</div>
+    <>
+      {
+        displayMessage ? (
+          <div>
+            <h2>{selectedMessage.messageTitle}</h2>
+            <p>{selectedMessage.messageContent}</p>
+            <button onClick={() => setDisplayMessage(false)}>Close</button>
+          </div>
+        ) : (
+            geoSupported ?
+              <Map
+                google={containerProps.google}
+                zoom={14}
+                containerStyle={containerStyle}
+                initialCenter={currentPosition.lat ? currentPosition : { lat: 40.7831, lng: -73.9352 }}
+              >
+                <Marker
+                  icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
+                  scaledSize={new containerProps.google.maps.Size(10, 10)}
+                  position={currentPosition} />
+                {
+                  messages.length > 0 &&
+                  messages.map((msg, idx) => {
+                    const distance = computeDistance(msg, currentPosition)
+                    // console.log('distance: ', distance)
+                    return (
+                      <Marker
+                        icon={distance < minDistance ? openMsgIcon : closedMsgIcon}
+                        name={msg.messageTitle}
+                        key={idx}
+                        position={{ lat: msg.latitude, lng: msg.longitude }}
+                        onClick={(props, marker, e) => onMarkerClick(props, marker, e, msg, distance)}
+                      />
+                    )
+                  })
+                }
+              </Map>
+              :
+              <div className='container'>Location access must be turned on to view messages!</div>
+          )
+      }
+    </>
   )
 }
 

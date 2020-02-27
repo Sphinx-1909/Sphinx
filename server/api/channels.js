@@ -1,21 +1,44 @@
 const router = require('express').Router();
-const { Channel } = require('../db/index');
+const { Channel, User, Message } = require('../db/index');
 
 router.get('/', (req, res, next) => {
-  Channel.findAll()
-    .then(channels => {
-      res.status(200).send(channels);
+  // ** copy a userId from your local channelUsers table and paste it below **
+  const userId = 'f6a8a2c7-ffaa-4dee-bb35-fcf9793aa28e'
+  // the above should eventually be changed to: const userId = req.user.id;
+  if (userId) {
+    User.findOne({
+      where: {
+        id: userId,
+      }
     })
-    .catch(e => {
-      console.error(e);
-      next(e);
-    });
+      .then(user => {
+        if (user) {
+          user.getChannels({
+            include: [{
+              model: Message,
+            }]
+          })
+            .then(subscriptions => res.status(200).send(subscriptions))
+            .catch(e => console.log('error finding subscriptions: ', e))
+        } else {
+          res.status(400).send('user not found')
+        }
+      })
+  } else {
+    Channel.findAll({
+      where: {
+        userId,
+      },
+    })
+      .then(channelUsers => res.status(200).send(channelUsers))
+      .catch(e => console.log('error finding channelusers: ', e))
+  }
 });
 
 router.get('/:id', (req, res, next) => {
   Channel.findByPk(req.params.id)
     .then(channel => {
-      if (!channel) res.status(404).send('Channel is not found!');
+      if (!channel) return res.status(404).send('Channel is not found!');
       res.status(200).send(channel);
     })
     .catch(e => {

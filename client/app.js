@@ -9,11 +9,13 @@ import BottomMenu from './components/BottomMenu/BottomMenu';
 import Burger from './components/Burger/Burger';
 import Container from './components/container/Container';
 import SlideMenu from './components/SlideMenu/SlideMenu';
+import { fetchChannels } from './redux/channels'
 
 class App extends React.Component {
-  componentDidMount() {
+  async componentDidMount() {
+    await this.props.fetchChannels()
     // Request to get notifications
-    Notification.requestPermission(function(status) {
+    Notification.requestPermission(function (status) {
       console.log('Notification permission status:', status);
     });
   }
@@ -34,4 +36,11 @@ const mapStateToProps = state => ({
   openSlide: state.nav.displaySlideMenu,
   displayOverlay: state.nav.displayOverlay,
 });
-export default connect(mapStateToProps)(App);
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchChannels: () => dispatch(fetchChannels())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
