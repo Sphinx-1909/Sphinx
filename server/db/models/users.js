@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./../db.js');
 
-const { UUID, UUIDV4, STRING, DECIMAL, DOUBLE } = Sequelize;
+const { UUID, UUIDV4, STRING, DOUBLE } = Sequelize;
 
 const User = db.define('users', {
   id: {
@@ -39,15 +39,6 @@ const User = db.define('users', {
       notEmpty: true,
     },
   },
-  // not needed because admin info stored on channell
-  // userType: {
-  //   type: STRING,
-  //   allowNull: false,
-  //   validate: {
-  //     notEmpty: true,
-  //   },
-  //   values: ['admin', 'regUser'],
-  // },
   password: {
     type: STRING,
     allowNull: true,

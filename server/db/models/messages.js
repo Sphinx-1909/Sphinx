@@ -19,13 +19,6 @@ const Message = db.define('messages', {
     type: UUID,
     defaultValue: UUIDV4,
   },
-  // This is not needed. By adding associations it will add these foreign keys
-  // userId: {
-  //   type: UUID,
-  // },
-  // channelId: {
-  //   type: UUID,
-  // },
   fileType: {
     type: STRING,
     allowNull: false,
@@ -74,13 +67,6 @@ const Message = db.define('messages', {
   key: {
     type: STRING,
   },
-  // commented this out for now until we decide if we want to use post - message structure. Also, I dont think we need a a childMessageId
-  // parentMessageId: {
-  //   type: UUID,
-  // },
-  // childMessageId: {
-  //   type: UUID,
-  // },
   expirationTime: {
     type: DATE,
   },

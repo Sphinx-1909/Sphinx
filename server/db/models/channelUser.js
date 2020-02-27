@@ -9,16 +9,10 @@ const ChannelUser = db.define('channelUser', {
     type: UUID,
     defaultValue: UUIDV4,
   },
-  userId: {
-    type: UUID,
-  },
-  channelId: {
-    type: UUID,
-  },
   isModerator: {
     type: BOOLEAN,
   },
-  isAdmin: {
+  isOwner: {
     type: BOOLEAN,
   },
 });
