@@ -26,8 +26,9 @@ const MapContainer = (containerProps) => {
         lat: pos.coords.latitude,
         lng: pos.coords.longitude,
       }
-      console.log('current coordinates: ', coords)
-      setCurrentPosition(coords)
+      if (coords.lat !== currentPosition.lat || coords.lng !== currentPosition.lng) {
+        setCurrentPosition(coords)
+      }
     })
   }
 
