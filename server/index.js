@@ -67,6 +67,9 @@ app.use('/service-worker.js', (req, res) => {
 // enforce HTTPS ** may be neccessary for the ServiceWorker when deployed to Heroku
 // app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
+//auth
+app.use(require('./auth'));
+
 // api routes
 app.use('/api', require('./api'));
 
