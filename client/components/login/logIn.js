@@ -19,23 +19,27 @@ export default class LogIn extends Component {
     // ev.preventDefault();
     // const {email, password} = this.state;
     // if ()
-    axios.post('/login', this.state).then(() => {
-      this.setState({
-        loggedIn: true,
-        logInError: false,
-      }).catch(() => {
+    axios
+      .post('/login', this.state)
+      .then(() => {
+        console.log();
+        this.setState({
+          loggedIn: true,
+          logInError: false,
+        });
+      })
+      .catch(() => {
         this.setState({
           logInError: true,
         });
       });
-    });
   };
   render() {
     return (
       <div style={{ backgroundColor: this.state.logInError ? 'red' : 'gray' }}>
         <input name={'email'} onChange={this.handleChange} />
         <input name={'password'} onChange={this.handleChange} />
-        <button> Login</button>
+        <button onClick={ev => this.handleLogin(ev)}> Login</button>
       </div>
     );
   }
