@@ -2,6 +2,8 @@ import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import './container/Container.css'
+import { connect } from 'react-redux';
+import { fetchUnreadMessages, markAsRead } from '../redux/messages';
 
 const containerStyle = {
   width: '100%',
@@ -9,8 +11,7 @@ const containerStyle = {
   flexGrow: '1',
 };
 
-const MapContainer = containerProps => {
-  const [messages, setMessages] = useState([]);
+const MapContainer = props => {
   const [activeMarker, setActiveMarker] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState({});
@@ -19,6 +20,8 @@ const MapContainer = containerProps => {
   const [displayMessage, setDisplayMessage] = useState(false)
 
   const minDistance = 10000;
+
+  const { messages } = props;
 
   if (!navigator.geolocation) {
     setGeoSupported(false);
@@ -35,20 +38,6 @@ const MapContainer = containerProps => {
     })
   }
 
-  useEffect(() => {
-    if (!loaded) {
-      axios
-        .get('http://localhost:4000/api/messages')
-        .then(messages => {
-          messages = messages.data;
-          console.log('messages: ', messages);
-          setMessages(messages);
-          setLoaded(true);
-        })
-        .catch(e => console.log('error fetching messages in useEffect: ', e));
-    }
-  }, []);
-
   const onMarkerClick = (props, marker, e, msg, distance) => {
     if (distance > minDistance) return;
     // store the selectedMessage in local state
@@ -60,16 +49,16 @@ const MapContainer = containerProps => {
     // ...
   };
 
-  // console.log('container props: ', containerProps)
+  // console.log('container props: ', props)
 
   const openMsgIcon = {
     url: 'https://image.flaticon.com/icons/svg/1483/1483336.svg',
-    scaledSize: new containerProps.google.maps.Size(50, 50),
+    scaledSize: new props.google.maps.Size(50, 50),
   }
 
   const closedMsgIcon = {
     url: 'https://image.flaticon.com/icons/svg/1483/1483234.svg',
-    scaledSize: new containerProps.google.maps.Size(50, 50),
+    scaledSize: new props.google.maps.Size(50, 50),
   }
 
   const computeDistance = (msg, curPos) => {
@@ -77,17 +66,22 @@ const MapContainer = containerProps => {
     // console.log('curPos.lng: ', parseFloat(curPos.lng));
     // console.log('msg.latitude: ', msg.latitude);
     // console.log('msg.longitude: ', msg.longitude);
-    const curLatLng = new containerProps.google.maps.LatLng(
+    const curLatLng = new props.google.maps.LatLng(
       parseFloat(curPos.lat),
       parseFloat(curPos.lng)
     );
-    const msgLatLng = new containerProps.google.maps.LatLng(
+    const msgLatLng = new props.google.maps.LatLng(
       parseFloat(msg.latitude),
       parseFloat(msg.longitude)
     );
-    const distance = containerProps.google.maps.geometry.spherical.computeDistanceBetween(curLatLng, msgLatLng)
+    const distance = props.google.maps.geometry.spherical.computeDistanceBetween(curLatLng, msgLatLng)
     // console.log('distance in computeDistance: ', distance)
     return distance;
+  }
+
+  const handleClose = async () => {
+    await markAsRead(selectedMessage.id);
+    setDisplayMessage(false);
   }
 
   // console.log('displayMessage: ', displayMessage)
@@ -99,19 +93,19 @@ const MapContainer = containerProps => {
           <div>
             <h2>{selectedMessage.messageTitle}</h2>
             <p>{selectedMessage.messageContent}</p>
-            <button onClick={() => setDisplayMessage(false)}>Close</button>
+            <button onClick={handleClose}>Close</button>
           </div>
         ) : (
             geoSupported ?
               <Map
-                google={containerProps.google}
+                google={props.google}
                 zoom={14}
                 containerStyle={containerStyle}
                 initialCenter={currentPosition.lat ? currentPosition : { lat: 40.7831, lng: -73.9352 }}
               >
                 <Marker
                   icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
-                  scaledSize={new containerProps.google.maps.Size(10, 10)}
+                  scaledSize={new props.google.maps.Size(10, 10)}
                   position={currentPosition} />
                 {
                   messages.length > 0 &&
@@ -138,6 +132,21 @@ const MapContainer = containerProps => {
   )
 }
 
-export default GoogleApiWrapper({
+const Wrapper = GoogleApiWrapper({
   apiKey: 'AIzaSyBuvzQNuDiQUkXKwp5lUIc3fDLYkKS5Ru8',
 })(MapContainer);
+
+const mapState = ({ unreadMessages }) => {
+  return {
+    messages: unreadMessages,
+  };
+};
+
+const mapDispatch = dispatch => {
+  return {
+    fetchMessages: () => dispatch(fetchUnreadMessages()),
+    markAsRead: msgId => dispatch(markAsRead(msgId)),
+  }
+}
+
+export default connect(mapState, mapDispatch)(Wrapper)
