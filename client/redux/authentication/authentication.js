@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const SIGN_IN = 'SIGN_IN';
-const SIGN_OUT = 'SIGN_OUT';
-const LOG_IN_ERROR = 'LOG_IN_ERROR';
+export const SIGN_IN = 'SIGN_IN';
+export const SIGN_OUT = 'SIGN_OUT';
+export const LOG_IN_ERROR = 'LOG_IN_ERROR';
 
 export const signIn = data => {
   return {
@@ -33,11 +33,11 @@ export const removeLogInError = () => {
 };
 
 export const logInAttempt = logInData => {
-  console.log('login datapasse', logInData);
+  console.log('login datapassed in', logInData);
 
-  return async (dispatch, getState) => {
+  return async dispatch => {
     await axios
-      .post('/login', logInfo)
+      .post('/login', logInData)
       .then(res => {
         return dispatch(signIn(res.data));
       })
@@ -49,14 +49,31 @@ export const logInAttempt = logInData => {
   };
 };
 export const logOutAttempt = () => {
+  console.log('logging out');
   return dispatch => {
     axios
 
       .get('/signout')
       .then(() => {
-        dispatch(signOut());
+        return dispatch(signOut());
       })
 
+      .catch(e => {
+        console.error(e);
+        return dispatch(signOut());
+      });
+  };
+};
+export const initialLogInAttempt = () => {
+  console.log('!!!initial');
+  return dispatch => {
+    return axios
+      .get('/me')
+      .then(res => {
+        const user = res.data;
+        console.log('!!!!!user', user);
+        return dispatch(signIn(user));
+      })
       .catch(e => {
         console.error(e);
         return dispatch(signOut());
@@ -70,25 +87,26 @@ const initialState = {
 };
 
 const authenticationReducer = (state = initialState, action) => {
-  const isLoggedIn = action.isLoggedIn;
-  const logInError = action.logInError;
+  //const isLoggedIn = action.isLoggedIn;
+  // const logInError = action.logInError;
+  console.log('reducer state/action', state, action);
   switch (action.type) {
     case SIGN_IN: {
       return {
         ...state,
-        isLoggedIn,
+        isLoggedIn: action.isLoggedIn,
       };
     }
     case SIGN_OUT: {
       return {
         ...state,
-        isLoggedIn,
+        isLoggedIn: action.isLoggedIn,
       };
     }
     case LOG_IN_ERROR: {
       return {
         ...state,
-        logInError,
+        logInError: action.logInError,
       };
     }
     default:

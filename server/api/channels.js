@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { Channel } = require('../db/index');
 
 router.get('/', (req, res, next) => {
+  console.log('req in channels', req);
   Channel.findAll()
     .then(channels => {
       res.status(200).send(channels);

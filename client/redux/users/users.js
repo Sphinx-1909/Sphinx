@@ -1,13 +1,13 @@
 import axios from 'axios';
 //action types
-const SET_USER = 'SET_ALLUSER';
+const SET_USERS = 'SET_ALLUSERS';
 const ADD_USER = 'ADD_USER';
 
 //action creators
-const setUser = user => {
+const setUsers = users => {
   return {
-    type: SET_USER,
-    user,
+    type: SET_USERS,
+    users,
   };
 };
 const addUser = user => {
@@ -18,11 +18,11 @@ const addUser = user => {
 };
 
 //thunks
-export const fetchUser = () => {
+export const fetchUsers = () => {
   return dispatch => {
     return axios
       .get('/me')
-      .then(response => dispatch(setUser(response.data)))
+      .then(response => dispatch(setUsers(response.data)))
       .catch(e => console.log('Error in thunk:', e));
   };
 };
@@ -47,7 +47,7 @@ export const updateUser = (userId, user) => {
         console.log(response);
         return axios
           .get('/api/user/')
-          .then(response => dispatch(fetchUser(response.data)));
+          .then(response => dispatch(fetchUsers(response.data)));
       })
       .catch(e => console.log('Error in thunk:', e.message));
   };
@@ -55,9 +55,9 @@ export const updateUser = (userId, user) => {
 
 const initialState = [];
 
-export const userReducer = (state = initialState, action) => {
+export const usersReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_USER:
+    case SET_USERS:
       return action.users;
     case ADD_USER:
       return [...state, action.user];
@@ -67,4 +67,4 @@ export const userReducer = (state = initialState, action) => {
   }
 };
 
-export default userReducer;
+export default usersReducer;

@@ -32,9 +32,9 @@ class LogIn extends Component {
         <input name={'email'} onChange={this.handleChange} />
         <input name={'password'} onChange={this.handleChange} />
         <button onClick={ev => this.handleLogin(ev)}> Log In</button>
-        <link to="/register" style={{ textDecoration: 'none' }}>
+        <Link to="/register" style={{ textDecoration: 'none' }}>
           Sign Up
-        </link>
+        </Link>
       </div>
     );
   }

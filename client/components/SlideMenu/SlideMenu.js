@@ -4,33 +4,40 @@ import { connect } from 'react-redux';
 import './SlideMenu.css';
 //import { StyledMenu } from './Menu.styled';
 import { Link } from 'react-router-dom';
-import LogIn from '../login/login';
+
 import { logOutAttempt } from '../../redux/authentication/authentication';
 class SlideMenu extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   loginStatus = () => {
     const { authentication } = this.props;
-    console.log(authentication);
-    // const { isLoggedIn } = authentication;
-    //   if (isLoggedIn) {
-    //     return (
-    //       <div>
-    //         <Link to="/account" style={{ textDecoration: 'none' }}>
-    //           Account
-    //         </Link>
-    //         <Button onClick={this.props.signout}>Log Out!</Button>
-    //       </div>
-    //     );
-    //   }
-    //   return (
-    //     <div>
-    //       <Link to="/login" style={{ textDecoration: 'none' }}>
-    //         <Button>Log in / Register</Button>
-    //       </Link>
-    //     </div>
-    //   );
-    // };
+    //console.log('this.props have authentication?', this.props);
+    const { isLoggedIn } = authentication;
+    if (isLoggedIn) {
+      return (
+        <div>
+          <Link to="/account" style={{ textDecoration: 'none' }}>
+            Account
+          </Link>
+          <button onClick={this.props.signout}>Log Out!</button>
+        </div>
+      );
+    }
+    return (
+      <div>
+        <Link to="/login" style={{ textDecoration: 'none' }}>
+          <button>Log in / Register</button>
+        </Link>
+      </div>
+    );
   };
+
   render() {
+    const { authenticaion } = this.props;
+    console.log(this.props);
     return (
       <div
         className="slideMenu"
@@ -42,7 +49,7 @@ class SlideMenu extends React.Component {
       >
         <a>CHANNELS</a>
         <a>SETTINGS</a>
-        {/*} {this.loginStatus()}*/}
+        {this.loginStatus()}
       </div>
     );
   }
