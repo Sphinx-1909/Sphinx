@@ -35,6 +35,7 @@ export const fetchUnreadMessages = () => {
 };
 
 export const markAsRead = (msgId) => {
+  console.log('in markAsRead')
   return (dispatch) => {
     axios.post(`/api/messages/read/${msgId}`)
       .then(() => dispatch(fetchUnreadMessages()))
