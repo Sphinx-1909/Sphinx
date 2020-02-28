@@ -44,7 +44,7 @@ class Container extends React.Component {
   }
 
   render() {
-    return <div className="container">{/*} <MapView />*/}</div>;
+    return <div className="container">{<MapView />}</div>;
   }
 }
 

@@ -30,8 +30,13 @@ class App extends React.Component {
         <SlideMenu openSlide={this.props.openSlide} />
         <Container />
         <BottomMenu />
-
-        {this.props.activeUser.id ? 'Hi User' : <LogIn />}
+        <div style={{ backgroundColor: 'white' }}>
+          {this.props.activeUser.id ? (
+            `${this.props.activeUser.firstName}`
+          ) : (
+            <LogIn />
+          )}
+        </div>
       </div>
     );
   }
