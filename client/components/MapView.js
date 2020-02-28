@@ -77,7 +77,7 @@ const MapContainer = props => {
     const distance = props.google.maps.geometry.spherical.computeDistanceBetween(curLatLng, msgLatLng)
     // console.log('distance in computeDistance: ', distance)
     return distance;
-  }
+  };
 
   const handleClose = async () => {
     await markAsRead(selectedMessage.id);

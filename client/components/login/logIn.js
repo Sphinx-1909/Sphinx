@@ -1,46 +1,54 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import {
+  logInAttempt,
+  removeLogInError,
+} from '../../redux/authentication/authentication';
 
-export default class LogIn extends Component {
-  state = {
-    email: '',
-    password: '',
-    loggedIn: false,
-    logInError: false,
-  };
+class LogIn extends Component {
+  constructor() {
+    super();
+    this.state = {
+      email: '',
+      password: '',
+    };
+  }
 
   handleChange = ({ target: { name, value } }) => {
     this.setState({
-      logInError: false,
       [name]: value,
     });
   };
   handleLogin = ev => {
-    // ev.preventDefault();
-    // const {email, password} = this.state;
-    // if ()
-    axios
-      .post('/login', this.state)
-      .then(() => {
-        console.log();
-        this.setState({
-          loggedIn: true,
-          logInError: false,
-        });
-      })
-      .catch(() => {
-        this.setState({
-          logInError: true,
-        });
-      });
+    ev.preventDefault();
+    const { email, password } = this.state;
+    this.props.login({ email, password });
   };
   render() {
     return (
       <div style={{ backgroundColor: this.state.logInError ? 'red' : 'gray' }}>
         <input name={'email'} onChange={this.handleChange} />
         <input name={'password'} onChange={this.handleChange} />
-        <button onClick={ev => this.handleLogin(ev)}> Login</button>
+        <button onClick={ev => this.handleLogin(ev)}> Log In</button>
+        <Link to="/register" style={{ textDecoration: 'none' }}>
+          Sign Up
+        </Link>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  authentication: state.authentication,
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: info => dispatch(logInAttempt(info)),
+    removeLogInError: () => dispatch(removeLogInError()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

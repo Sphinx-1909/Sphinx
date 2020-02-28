@@ -45,6 +45,10 @@ router.post('/signup', (req, res, next) => {
     .catch(next);
 });
 
+// Check to see if user is logged in at each app start. <App /> component
+// Check if there is a session associated with their browser-cookie. *
+// if there is we want to find user in DB and return user info to front end and mark their status as logged in
+
 router.get('/signout', (req, res, next) => {
   delete req.session.userId;
 
@@ -53,12 +57,13 @@ router.get('/signout', (req, res, next) => {
 });
 
 router.get('/me', (req, res, next) => {
-  if (req.loggedIn) return res.send(req.user);
+  console.log('req.user', req.user);
+  if (req.user) return res.send(req.user);
   // res.status(401).send('no prior login!');
-  res.status(401);
-  const err = new Error('Not logged in');
-  console.error(err);
-  next();
+  res.status(401).send('Unauthorized');
+  // const err = new Error('Not logged in');
+  // console.error(err);
+  // next();
 });
 
 module.exports = router;

@@ -28,6 +28,7 @@ app.use((req, res, next) => {
       .then(foundUser => {
         if (foundUser) {
           req.user = foundUser;
+          //req.russell = 'You found a user!!';
         }
         next();
       })
