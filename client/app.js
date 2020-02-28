@@ -19,7 +19,7 @@ class App extends React.Component {
     await this.props.initialLogInAttempt();
     await this.props.fetchChannels()
     await this.props.fetchUnreadMessages()
-    
+
     // Request to get notifications
     Notification.requestPermission(function (status) {
       console.log('Notification permission status:', status);
@@ -35,23 +35,19 @@ class App extends React.Component {
           <SlideMenu openSlide={this.props.openSlide} />
           <Container />
           <BottomMenu />
-<div style={{ backgroundColor: 'white' }}>
-          {this.props.activeUser.id ? (
-            `${this.props.activeUser.firstName}`
-          ) : (
-            <LogIn />
-          )}
-        </div>
+          <div style={{ backgroundColor: 'white' }}>
+            {this.props.activeUser.id ? (
+              `${this.props.activeUser.firstName}`
+            ) : (
+                <LogIn />
+              )}
+          </div>
         </div>
       </main>
     );
   }
 }
-const mapDispatchToProps = dispatch => {
-  return {
-    initialLogInAttempt: () => dispatch(initialLogInAttempt()),
-  };
-};
+
 const mapStateToProps = state => ({
   openSlide: state.nav.displaySlideMenu,
   displayOverlay: state.nav.displayOverlay,
@@ -61,6 +57,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
+    initialLogInAttempt: () => dispatch(initialLogInAttempt()),
     fetchChannels: () => dispatch(fetchChannels()),
     fetchUnreadMessages: () => dispatch(fetchUnreadMessages())
   }

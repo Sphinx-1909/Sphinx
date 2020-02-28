@@ -89,7 +89,7 @@ const initialState = {
 const authenticationReducer = (state = initialState, action) => {
   //const isLoggedIn = action.isLoggedIn;
   // const logInError = action.logInError;
-  console.log('reducer state/action', state, action);
+  // console.log('reducer state/action', state, action);
   switch (action.type) {
     case SIGN_IN: {
       return {
