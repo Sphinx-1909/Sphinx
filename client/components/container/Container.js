@@ -1,4 +1,6 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import ChannelSearch from '../Channel/SearchFrom';
 //css
 import './Container.css';
 import MapView from '../MapView';
@@ -44,7 +46,16 @@ class Container extends React.Component {
   }
 
   render() {
-    return <div className="container">{<MapView />}</div>;
+    return (
+      <div className="container">
+        <Router>
+          <Switch>
+            <Route path="/" component={MapView} exact />
+            <Route path="/channelsearch" component={ChannelSearch} exact />
+          </Switch>
+        </Router>
+      </div>
+    );
   }
 }
 

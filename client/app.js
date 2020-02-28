@@ -9,15 +9,19 @@ import BottomMenu from './components/BottomMenu/BottomMenu';
 import Burger from './components/Burger/Burger';
 import Container from './components/container/Container';
 import SlideMenu from './components/SlideMenu/SlideMenu';
+import { fetchChannels } from './redux/channels'
+import { fetchUnreadMessages } from './redux/messages';
 import { initialLogInAttempt } from './redux/authentication/authentication';
 import LogIn from './components/login/login';
 
 class App extends React.Component {
-  componentDidMount() {
-    console.log('props in CDM', this.props);
-    this.props.initialLogInAttempt();
+  async componentDidMount() {
+    await this.props.initialLogInAttempt();
+    await this.props.fetchChannels()
+    await this.props.fetchUnreadMessages()
+    
     // Request to get notifications
-    Notification.requestPermission(function(status) {
+    Notification.requestPermission(function (status) {
       console.log('Notification permission status:', status);
     });
   }
@@ -25,19 +29,21 @@ class App extends React.Component {
   render() {
     console.log('props in render', this.props);
     return (
-      <div className="main">
-        <Burger openSlide={this.props.openSlide} />
-        <SlideMenu openSlide={this.props.openSlide} />
-        <Container />
-        <BottomMenu />
-        <div style={{ backgroundColor: 'white' }}>
+      <main>
+        <div className="main">
+          <Burger openSlide={this.props.openSlide} />
+          <SlideMenu openSlide={this.props.openSlide} />
+          <Container />
+          <BottomMenu />
+<div style={{ backgroundColor: 'white' }}>
           {this.props.activeUser.id ? (
             `${this.props.activeUser.firstName}`
           ) : (
             <LogIn />
           )}
         </div>
-      </div>
+        </div>
+      </main>
     );
   }
 }
@@ -52,4 +58,12 @@ const mapStateToProps = state => ({
   activeUser: state.activeUser,
   authentication: state.authentication,
 });
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchChannels: () => dispatch(fetchChannels()),
+    fetchUnreadMessages: () => dispatch(fetchUnreadMessages())
+  }
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(App);
