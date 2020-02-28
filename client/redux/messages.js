@@ -13,7 +13,6 @@ const setMessages = messages => {
 //thunks
 export const fetchUnreadMessages = () => {
   return async dispatch => {
-    // first get subscriptions
     try {
       const subscriptions = (await axios.get('/api/channels')).data
       const readMessages = (await axios.get('/api/messages/read')).data
@@ -29,17 +28,25 @@ export const fetchUnreadMessages = () => {
         })
       })
       return dispatch(setMessages(unreadMessages))
-    } catch {
-      console.log('error in fetchUnreadMessages thunk')
+    } catch (e) {
+      console.log('error in fetchUnreadMessages thunk: ', e)
     }
   };
 };
 
 export const markAsRead = (msgId) => {
-  return () => {
+  return (dispatch) => {
     axios.post(`/api/messages/read/${msgId}`)
-      .then(() => fetchUnreadMessages())
+      .then(() => dispatch(fetchUnreadMessages()))
       .catch(e => console.log('error in markAsRead thunk: ', e))
+  }
+}
+
+export const addMessage = (msg) => {
+  return () => {
+    axios.post('/api/messages', msg)
+      .then(() => console.log('success posting new message!'))
+      .catch(e => console.log('error in addMessage thunk: ', e))
   }
 }
 

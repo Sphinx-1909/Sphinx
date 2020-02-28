@@ -11,7 +11,8 @@ import Burger from './components/Burger/Burger';
 import SlideMenu from './components/SlideMenu/SlideMenu';
 import MapView from './components/MapView';
 import LogIn from './components/login/logIn';
-import ChannelSearch from './components/Channel/SearchFrom';
+import ChannelSearch from './components/Channel/SearchForm';
+import AddMessage from './components/message/AddMessage';
 import { fetchChannels } from './redux/channels';
 import { fetchUnreadMessages } from './redux/messages';
 import { initialLogInAttempt } from './redux/authentication/authentication';
@@ -22,7 +23,7 @@ class App extends React.Component {
     await this.props.fetchChannels();
     await this.props.fetchUnreadMessages();
     // Request to get notifications
-    Notification.requestPermission(function(status) {
+    Notification.requestPermission(function (status) {
       console.log('Notification permission status:', status);
     });
   }
@@ -71,6 +72,7 @@ class App extends React.Component {
           <SlideMenu openSlide={this.props.openSlide} />
           <div className="container">
             <Route path="/" component={MapView} exact />
+            <Route path="/post" component={AddMessage} exact />
             <Route path="/channelsearch" component={ChannelSearch} exact />
             <Route path="/login" component={LogIn} exact />
           </div>

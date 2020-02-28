@@ -11,6 +11,26 @@
   align-content: center;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-transform: none;
+  font-size: 3rem;
+  width: 75%;
+  margin: 2em;
+  padding: 2em;
+}
+
+button {
+  width: 5em;
+  height: 3em;
+  background-color: blue;
+  color: white;
+  font-weight: bold;
+}
+
 .container {
   width: 100%;
   height: 90%;

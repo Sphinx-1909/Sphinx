@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { Op } = require("sequelize");
 const { Channel, User, Message } = require('../db/index');
 const USER_ID = require('../../utils')
 
@@ -15,6 +16,13 @@ router.get('/', (req, res, next) => {
         user.getChannels({
           include: [{
             model: Message,
+            required: false,
+            where: {
+              // don't include messages sent by current user
+              senderId: {
+                [Op.not]: user.id
+              }
+            }
           }]
         })
           .then(subscriptions => res.status(200).send(subscriptions))
@@ -46,6 +54,38 @@ router.post('/', (req, res, next) => {
       console.error(e);
       next(e);
     });
+});
+
+router.post('/subscribe/:channelId', (req, res, next) => {
+  const { channelId } = req.params;
+  User.findOne({
+    where: {
+      id: USER_ID,
+    }
+  })
+    .then(user => {
+      if (user) {
+        Channel.findOne({
+          where: {
+            id: channelId,
+          }
+        })
+          .then(channel => {
+            if (channel) {
+              user.addChannel(channel)
+                .then(subscription => res.status(200).send(subscription))
+                .catch(e => {
+                  res.status(400).send('error creating subscription: ', e)
+                  next(e)
+                })
+            } else {
+              res.status(400).send('channel not found')
+            }
+          })
+      } else {
+        res.status(400).send('user not found')
+      }
+    })
 });
 
 router.put('/:id', (req, res, next) => {

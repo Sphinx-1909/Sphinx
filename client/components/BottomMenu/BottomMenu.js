@@ -21,8 +21,10 @@ class BottomMenu extends React.Component {
             <Search fill="#fff" width={80} />
           </Link>
         </div>
-        <div className="bottomMenu_icon" onClick={e => alert('not wired up')}>
-          <Add fill="#fff" width={80} />
+        <div className="bottomMenu_icon">
+          <Link to="/post">
+            <Add fill="#fff" width={80} />
+          </Link>
         </div>
         <div className="bottomMenu_icon" onClick={e => alert('not wired up')}>
           <Feed fill="#fff" width={80} />
@@ -34,12 +36,12 @@ class BottomMenu extends React.Component {
             </Link>
           </div>
         ) : (
-          <div className="bottomMenu_icon">
-            <Link to="/login">
-              <Login fill="#fff" width={80} />
-            </Link>
-          </div>
-        )}
+            <div className="bottomMenu_icon">
+              <Link to="/login">
+                <Login fill="#fff" width={80} />
+              </Link>
+            </div>
+          )}
       </div>
     );
   }
