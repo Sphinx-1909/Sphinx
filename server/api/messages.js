@@ -74,7 +74,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  Message.create(req.body)
+  Message.create({ ...req.body, senderId: USER_ID })
     .then(newMessage => {
       res.status(201).send(newMessage);
     })

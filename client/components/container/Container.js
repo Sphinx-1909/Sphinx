@@ -1,9 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import ChannelSearch from '../Channel/SearchFrom';
+import ChannelSearch from '../Channel/SearchForm';
 //css
 import './Container.css';
 import MapView from '../MapView';
+import AddMessage from '../message/AddMessage'
 
 class Container extends React.Component {
   componentDidMount() {
@@ -50,8 +51,9 @@ class Container extends React.Component {
       <div className="container">
         <Router>
           <Switch>
-            <Route path="/" component={MapView} exact />
+            {/* <Route path="/" component={MapView} exact /> */}
             <Route path="/channelsearch" component={ChannelSearch} exact />
+            <Route path="/post" component={AddMessage} exact />
           </Switch>
         </Router>
       </div>

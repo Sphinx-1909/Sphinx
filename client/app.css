@@ -10,3 +10,19 @@
   justify-content: flex-start;
   align-content: center;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
+button {
+  width: 5em;
+  height: 3em;
+  background-color: blue;
+  color: white;
+  font-weight: bold;
+}
