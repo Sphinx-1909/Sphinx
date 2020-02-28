@@ -16,7 +16,7 @@ class SlideMenu extends React.Component {
       >
         <a>CHANNELS</a>
         <a>SETTINGS</a>
-        <Link to="/account">Account</Link>
+        <a>ACCOUNT</a>
       </div>
     );
   }
