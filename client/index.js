@@ -2,16 +2,20 @@ import React from 'react';
 import { render } from 'react-dom';
 //components
 import App from './app';
-//react-router-dom
-import { BrowserRouter } from 'react-router-dom';
 //redux
 import { Provider } from 'react-redux';
+//React Router Dom
+import { BrowserRouter, Switch } from 'react-router-dom';
 //redux store
 import Store from './redux/store';
 
 render(
   <Provider store={Store}>
-    <App />
+    <BrowserRouter>
+      <Switch>
+        <App />
+      </Switch>
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );
