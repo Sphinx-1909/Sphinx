@@ -26,4 +26,4 @@ class ChannelSearch extends Component {
   }
 }
 
-export default connect(null, null)(ChannelSearch);
+export default ChannelSearch;
