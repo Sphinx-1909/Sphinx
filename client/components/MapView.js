@@ -1,13 +1,12 @@
 import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'
-import './container/Container.css'
+import axios from 'axios';
+import './container/Container.css';
 import { connect } from 'react-redux';
 import { fetchUnreadMessages, markAsRead } from '../redux/messages';
 
 const containerStyle = {
-  width: '100%',
-  height: '60%',
+  position: 'static',
   flexGrow: '1',
 };
 
@@ -15,9 +14,9 @@ const MapContainer = props => {
   const [activeMarker, setActiveMarker] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState({});
-  const [currentPosition, setCurrentPosition] = useState({})
-  const [geoSupported, setGeoSupported] = useState(true)
-  const [displayMessage, setDisplayMessage] = useState(false)
+  const [currentPosition, setCurrentPosition] = useState({});
+  const [geoSupported, setGeoSupported] = useState(true);
+  const [displayMessage, setDisplayMessage] = useState(false);
 
   const minDistance = 10000;
 
@@ -30,12 +29,15 @@ const MapContainer = props => {
       const coords = {
         lat: pos.coords.latitude,
         lng: pos.coords.longitude,
-      }
-      if (coords.lat !== currentPosition.lat || coords.lng !== currentPosition.lng) {
+      };
+      if (
+        coords.lat !== currentPosition.lat ||
+        coords.lng !== currentPosition.lng
+      ) {
         // console.log('coords: ', coords)
-        setCurrentPosition(coords)
+        setCurrentPosition(coords);
       }
-    })
+    });
   }
 
   const onMarkerClick = (props, marker, e, msg, distance) => {
@@ -54,12 +56,12 @@ const MapContainer = props => {
   const openMsgIcon = {
     url: 'https://image.flaticon.com/icons/svg/1483/1483336.svg',
     scaledSize: new props.google.maps.Size(50, 50),
-  }
+  };
 
   const closedMsgIcon = {
     url: 'https://image.flaticon.com/icons/svg/1483/1483234.svg',
     scaledSize: new props.google.maps.Size(50, 50),
-  }
+  };
 
   const computeDistance = (msg, curPos) => {
     // console.log('curPos.lat: ', parseFloat(curPos.lat));
@@ -74,7 +76,10 @@ const MapContainer = props => {
       parseFloat(msg.latitude),
       parseFloat(msg.longitude)
     );
-    const distance = props.google.maps.geometry.spherical.computeDistanceBetween(curLatLng, msgLatLng)
+    const distance = props.google.maps.geometry.spherical.computeDistanceBetween(
+      curLatLng,
+      msgLatLng
+    );
     // console.log('distance in computeDistance: ', distance)
     return distance;
   };
@@ -82,55 +87,65 @@ const MapContainer = props => {
   const handleClose = async () => {
     await markAsRead(selectedMessage.id);
     setDisplayMessage(false);
-  }
+  };
 
   // console.log('displayMessage: ', displayMessage)
 
   return (
     <>
-      {
-        displayMessage ? (
-          <div>
-            <h2>{selectedMessage.messageTitle}</h2>
-            <p>{selectedMessage.messageContent}</p>
-            <button onClick={handleClose}>Close</button>
-          </div>
-        ) : (
-            geoSupported ?
-              <Map
-                google={props.google}
-                zoom={14}
-                containerStyle={containerStyle}
-                initialCenter={currentPosition.lat ? currentPosition : { lat: 40.7831, lng: -73.9352 }}
-              >
+      {displayMessage ? (
+        <div>
+          <h2>{selectedMessage.messageTitle}</h2>
+          <p>{selectedMessage.messageContent}</p>
+          <button onClick={handleClose}>Close</button>
+        </div>
+      ) : geoSupported ? (
+        <Map
+          google={props.google}
+          disableDefaultUI={true}
+          zoom={14}
+          style={{
+            width: '100%',
+            height: '90%',
+            overfloe: 'hidden',
+            position: 'static',
+          }}
+          initialCenter={
+            currentPosition.lat
+              ? currentPosition
+              : { lat: 40.7831, lng: -73.9352 }
+          }
+        >
+          <Marker
+            icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
+            scaledSize={new props.google.maps.Size(10, 10)}
+            position={currentPosition}
+          />
+          {messages.length > 0 &&
+            messages.map((msg, idx) => {
+              const distance = computeDistance(msg, currentPosition);
+              // console.log('distance: ', distance)
+              return (
                 <Marker
-                  icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
-                  scaledSize={new props.google.maps.Size(10, 10)}
-                  position={currentPosition} />
-                {
-                  messages.length > 0 &&
-                  messages.map((msg, idx) => {
-                    const distance = computeDistance(msg, currentPosition)
-                    // console.log('distance: ', distance)
-                    return (
-                      <Marker
-                        icon={distance < minDistance ? openMsgIcon : closedMsgIcon}
-                        name={msg.messageTitle}
-                        key={idx}
-                        position={{ lat: msg.latitude, lng: msg.longitude }}
-                        onClick={(props, marker, e) => onMarkerClick(props, marker, e, msg, distance)}
-                      />
-                    )
-                  })
-                }
-              </Map>
-              :
-              <div className='container'>Location access must be turned on to view messages!</div>
-          )
-      }
+                  icon={distance < minDistance ? openMsgIcon : closedMsgIcon}
+                  name={msg.messageTitle}
+                  key={idx}
+                  position={{ lat: msg.latitude, lng: msg.longitude }}
+                  onClick={(props, marker, e) =>
+                    onMarkerClick(props, marker, e, msg, distance)
+                  }
+                />
+              );
+            })}
+        </Map>
+      ) : (
+        <div className="container">
+          Location access must be turned on to view messages!
+        </div>
+      )}
     </>
-  )
-}
+  );
+};
 
 const Wrapper = GoogleApiWrapper({
   apiKey: 'AIzaSyBuvzQNuDiQUkXKwp5lUIc3fDLYkKS5Ru8',
@@ -146,7 +161,7 @@ const mapDispatch = dispatch => {
   return {
     fetchMessages: () => dispatch(fetchUnreadMessages()),
     markAsRead: msgId => dispatch(markAsRead(msgId)),
-  }
-}
+  };
+};
 
-export default connect(mapState, mapDispatch)(Wrapper)
+export default connect(mapState, mapDispatch)(Wrapper);

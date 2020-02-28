@@ -28,9 +28,9 @@ class SlideMenu extends React.Component {
     }
     return (
       <div>
-        <a href="/login" style={{ textDecoration: 'none' }}>
+        <Link to="/login">
           <button>Log in / Register</button>
-        </a>
+        </Link>
       </div>
     );
   };
