@@ -22,9 +22,6 @@ router.get('/', (req, res, next) => {
               senderId: {
                 [Op.not]: user.id
               }
-              // [Op.not]: [
-              //   { senderId: user.id }
-              // ]
             }
           }]
         })
