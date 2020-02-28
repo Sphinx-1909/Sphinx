@@ -1,11 +1,52 @@
 import React from 'react';
 //css
 import './BottomMenu.css';
+//React-Redux
+import { connect } from 'react-redux';
+//React Router Dom
+import { Link } from 'react-router-dom';
+//icons
+import Search from './searchIcon';
+import Feed from './feedIcon';
+import Add from './AddIcon';
+import Login from './loginIcon';
+import User from './userIcon';
 
 class BottomMenu extends React.Component {
   render() {
-    return <div className="bottomMenu">this is the bottom menu</div>;
+    return (
+      <div className="bottomMenu">
+        <div className="bottomMenu_icon">
+          <Link to="/channelsearch">
+            <Search fill="#fff" width={80} />
+          </Link>
+        </div>
+        <div className="bottomMenu_icon" onClick={e => alert('not wired up')}>
+          <Add fill="#fff" width={80} />
+        </div>
+        <div className="bottomMenu_icon" onClick={e => alert('not wired up')}>
+          <Feed fill="#fff" width={80} />
+        </div>
+        {this.props.activeUser.id ? (
+          <div className="bottomMenu_icon">
+            <Link to="/user">
+              <User fill="#fff" width={80} />
+            </Link>
+          </div>
+        ) : (
+          <div className="bottomMenu_icon">
+            <Link to="/login">
+              <Login fill="#fff" width={80} />
+            </Link>
+          </div>
+        )}
+      </div>
+    );
   }
 }
 
-export default BottomMenu;
+const mapStateToProps = state => ({
+  activeUser: state.activeUser,
+});
+
+export default connect(mapStateToProps)(BottomMenu);

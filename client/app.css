@@ -10,3 +10,16 @@
   justify-content: flex-start;
   align-content: center;
 }
+
+.container {
+  width: 100%;
+  height: 90%;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 10.5rem;
+  font-weight: bold;
+  align-self: center;
+  color: white;
+  flex-grow: 1;
+  background-color: tomato;
+}
