@@ -20,12 +20,14 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="main">
-        <Burger openSlide={this.props.openSlide} />
-        <SlideMenu openSlide={this.props.openSlide} />
-        <Container />
-        <BottomMenu />
-      </div>
+      <main>
+        <div className="main">
+          <Burger openSlide={this.props.openSlide} />
+          <SlideMenu openSlide={this.props.openSlide} />
+          <Container />
+          <BottomMenu />
+        </div>
+      </main>
     );
   }
 }
