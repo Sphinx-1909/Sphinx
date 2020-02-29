@@ -16,6 +16,8 @@ import SlideMenu from './components/SlideMenu/SlideMenu';
 import Feed from './components/Feed/feed';
 import MapView from './components/MapView';
 import LogIn from './components/login/logIn';
+import EditAccount from './components/EditAccount/EditAccount';
+import MyAccount from './components/MyAccount/MyAccount';
 import ChannelSearch from './components/Channel/SearchForm';
 import AddMessage from './components/message/AddMessage';
 import { fetchChannels } from './redux/channels';
@@ -102,6 +104,8 @@ class App extends React.Component {
             <Route path="/post" component={AddMessage} exact />
             <Route path="/channelsearch" component={ChannelSearch} exact />
             <Route path="/login" component={LogIn} exact />
+            <Route path="/user" component={MyAccount} exact />
+            <Route path="/editaccount" component={EditAccount} exact />
           </div>
           <BottomMenu />
         </div>

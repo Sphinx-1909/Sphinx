@@ -42,4 +42,5 @@ button {
   color: white;
   flex-grow: 1;
   background-color: tomato;
+  overflow: scroll;
 }
