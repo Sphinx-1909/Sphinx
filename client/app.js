@@ -13,6 +13,7 @@ import BottomMenu from './components/BottomMenu/BottomMenu';
 import Burger from './components/Burger/Burger';
 //import Container from './components/container/Container';
 import SlideMenu from './components/SlideMenu/SlideMenu';
+import Feed from './components/Feed/feed';
 import MapView from './components/MapView';
 import LogIn from './components/login/logIn';
 import ChannelSearch from './components/Channel/SearchForm';
@@ -97,6 +98,7 @@ class App extends React.Component {
           <SlideMenu openSlide={this.props.openSlide} />
           <div className="container">
             <Route path="/" component={MapView} exact />
+            <Route path="/feed" component={Feed} exact />
             <Route path="/post" component={AddMessage} exact />
             <Route path="/channelsearch" component={ChannelSearch} exact />
             <Route path="/login" component={LogIn} exact />
