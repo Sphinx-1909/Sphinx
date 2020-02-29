@@ -15,25 +15,12 @@
 
 <body>
   <div id="root"></div>
-  <!-- <script>
+    <!-- <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/service-worker.js').then(reg => {
             console.log('Service worker registered.', reg);
-          });
-        });
-      }
-    </script> -->
-
-  <!-- This will tell you if the service worker is actually working or not by attempting to register the service worker-->
-    <!-- <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-            console.log('Worker registration successful', registration.scope);
-          }, function(err) {
-            console.log('Worker registration failed', err);
-          }).catch(function(err) {
+          }).catch((err)=> {
             console.log(err);
           });
         });

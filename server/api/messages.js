@@ -1,30 +1,32 @@
 const router = require('express').Router();
-const { Message, User } = require('../db/index');
-const USER_ID = require('../../utils')
+const { Message, User, Subscriptions } = require('../db/index');
+const USER_ID = require('../../utils');
+const webpush = require('web-push');
 
 // get all READ messages for user
 
 router.get('/read', (req, res, next) => {
-  const userId = USER_ID
+  const userId = USER_ID;
   // the above should eventually be changed to: const userId = req.user.id;
   User.findOne({
     where: {
       id: userId,
-    }
+    },
   })
     .then(user => {
       if (user) {
-        user.getMessages()
+        user
+          .getMessages()
           .then(readMessages => res.status(200).send(readMessages))
           .catch(e => {
-            res.status(404).send('messages not found', e)
-            next(e)
-          })
+            res.status(404).send('messages not found', e);
+            next(e);
+          });
       } else {
-        res.status(400).send('user not found')
+        res.status(400).send('user not found');
       }
     })
-    .catch(e => console.log('error finding subscriptions: ', e))
+    .catch(e => console.log('error finding subscriptions: ', e));
 });
 
 // mark a message as read
@@ -32,33 +34,32 @@ router.get('/read', (req, res, next) => {
 router.post('/read/:messageId', (req, res, next) => {
   const { messageId } = req.params;
   // ** copy a userId from your local channelUsers table and paste it below **
-  const userId = USER_ID
+  const userId = USER_ID;
   // the above should eventually be changed to: const userId = req.user.id;
   Message.findOne({
     where: {
       id: messageId,
+    },
+  }).then(message => {
+    if (message) {
+      User.findOne({
+        where: {
+          id: userId,
+        },
+      }).then(user => {
+        if (user) {
+          message
+            .addUser(user)
+            .then(read => res.status(200).send(read))
+            .catch(e => console.log('error adding readBy: ', e));
+        } else {
+          res.status(404).send('user not found');
+        }
+      });
+    } else {
+      res.status(404).send('message not found');
     }
-  })
-    .then(message => {
-      if (message) {
-        User.findOne({
-          where: {
-            id: userId,
-          }
-        })
-          .then(user => {
-            if (user) {
-              message.addUser(user)
-                .then(read => res.status(200).send(read))
-                .catch(e => console.log('error adding readBy: ', e))
-            } else {
-              res.status(404).send('user not found')
-            }
-          })
-      } else {
-        res.status(404).send('message not found')
-      }
-    })
+  });
 });
 
 router.get('/:id', (req, res, next) => {
@@ -76,6 +77,35 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   Message.create({ ...req.body, senderId: USER_ID })
     .then(newMessage => {
+      //PUSH NOTIFICATION CODE *************
+      webpush.setVapidDetails(
+        'mailto:info@sphinx.com',
+        'BJZp_1rq7Cjl2Ij8-9GI4UnTG2jCB5MUvWyZRFh93VP9Wy2SKjNBDqiW-X1sQHud0Pc2BmNOsylUVSDznPTGk4g',
+        'x1vE_-P1CGwt2B3us3QHXbaEHlQ94eIBsUAYJu8HGKs'
+      );
+      Subscriptions.findAll().then(sub => {
+        sub.forEach(subscription => {
+          const pushConfig = {
+            endpoint: subscription.endpoint,
+            keys: {
+              auth: subscription.auth,
+              p256dh: subscription.p256dh,
+            },
+          };
+          webpush
+            .sendNotification(
+              pushConfig,
+              JSON.stringify({
+                title: 'new message',
+                content: 'new messages added',
+              })
+            )
+            .catch(e => {
+              console.log(e);
+            });
+        });
+      });
+      //PUSH NOTIFICATION CODE *************
       res.status(201).send(newMessage);
     })
     .catch(e => {
