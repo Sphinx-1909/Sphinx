@@ -4,6 +4,10 @@ import './app.css';
 // react-redux
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
+//Utils
+import { urlBase64ToUint8Array } from './utils/utils';
+//axios
+import axios from 'axios';
 //component
 import BottomMenu from './components/BottomMenu/BottomMenu';
 import Burger from './components/Burger/Burger';
@@ -23,48 +27,69 @@ class App extends React.Component {
     await this.props.fetchChannels();
     await this.props.fetchUnreadMessages();
     // Request to get notifications
-    Notification.requestPermission(function (status) {
-      console.log('Notification permission status:', status);
+    Notification.requestPermission(result => {
+      if (result !== 'granted') {
+        //console.log('no notification granted!');
+      } else {
+        this.configurePushSub();
+      }
     });
   }
 
-  //Testing push notification
-  //https://developers.google.com/web/ilt/pwa/introduction-to-push-notifications
-  // displayNotification() {
-  //   if (Notification.permission == 'granted') {
-  //     console.log('Should have displayed notificaiton');
-  //     navigator.serviceWorker.getRegistration().then(reg => {
-  //       const options = {
-  //         body:
-  //           'The test notification worked on componentDidMount in the container',
-  //         //sample image
-  //         icon: 'images/example.png',
-  //         // for phone vibration
-  //         // vibrate: [100, 50, 100],
-  //         data: {
-  //           dateOfArrival: Date.now(),
-  //           primaryKey: 1,
-  //         },
-  //         actions: [
-  //           {
-  //             action: 'explore',
-  //             title: 'Explore this new world',
-  //             icon: 'images/checkmark.png',
-  //           },
-  //           {
-  //             action: 'close',
-  //             title: 'Close notification',
-  //             icon: 'images/xmark.png',
-  //           },
-  //         ],
-  //       };
-  //       reg.showNotification('Hello world!', options);
-  //     });
-  //   }
-  // }
+  displayConfirmNotification = () => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready.then(swreg => {
+        swreg.showNotification('Succesfully Subcribed!', options);
+      });
+    }
+    let options = {
+      body: 'you have succesfully subscribed to our notification service',
+      icon: '../static/images/icon-120x120.png',
+      //image: '.../',
+      vibrate: [100, 50, 100],
+      badge: '../static/images/icon-120x120.png',
+    };
+  };
+
+  configurePushSub = () => {
+    if (!('serviceWorker' in navigator)) {
+      return;
+    }
+    let reg;
+    navigator.serviceWorker.ready
+      .then(swreg => {
+        reg = swreg;
+        return swreg.pushManager.getSubscription();
+      })
+      .then(sub => {
+        if (sub === null) {
+          // create new subscription
+          let vapidPubKey =
+            'BJZp_1rq7Cjl2Ij8-9GI4UnTG2jCB5MUvWyZRFh93VP9Wy2SKjNBDqiW-X1sQHud0Pc2BmNOsylUVSDznPTGk4g';
+          let convertedPubVapidkey = urlBase64ToUint8Array(vapidPubKey);
+          return reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: convertedPubVapidkey,
+          });
+        } else {
+          //going todo something else
+        }
+      })
+      .then(newSub => {
+        const endpoint = newSub.endpoint;
+        const p256dh = newSub.toJSON().keys.p256dh;
+        const auth = newSub.toJSON().keys.auth;
+        return axios.post('/api/subscription', { endpoint, p256dh, auth });
+      })
+      .then(res => {
+        this.displayConfirmNotification();
+      })
+      .catch(e => {
+        console.log('subscription error', e);
+      });
+  };
 
   render() {
-    console.log('props in render', this.props);
     return (
       <main>
         <div className="main">
