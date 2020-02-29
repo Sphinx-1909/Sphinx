@@ -13,13 +13,14 @@ const setChannels = channels => {
 //thunks
 export const fetchChannels = () => {
   return dispatch => {
-    return axios.get('/api/channels')
+    return axios
+      .get('/api/channels')
       .then(channels => dispatch(setChannels(channels.data)))
       .catch(e => console.log('Error in thunk:', e));
   };
 };
 
-const initialState = []
+const initialState = [];
 
 export const channelsReducer = (state = initialState, action) => {
   switch (action.type) {

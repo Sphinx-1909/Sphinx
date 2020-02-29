@@ -57,7 +57,7 @@ router.get('/signout', (req, res, next) => {
 });
 
 router.get('/me', (req, res, next) => {
-  console.log('req.user', req.user);
+  //console.log('req.user', req.user);
   if (req.user) return res.send(req.user);
   // res.status(401).send('no prior login!');
   res.status(401).send('Unauthorized');

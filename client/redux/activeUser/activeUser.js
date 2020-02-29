@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { SIGN_IN, SIGN_OUT } from '../authentication/authentication';
-
+import history from '../../history';
 const EDIT_USER = 'EDIT_USER';
 
 // inital state
@@ -14,6 +14,7 @@ const initialState = {
 
 // action creators
 const editActiveUser = editedUser => {
+  console.log('editedUser in action creator', editedUser);
   return {
     type: EDIT_USER,
     editedUser,
@@ -23,20 +24,20 @@ const editActiveUser = editedUser => {
 // thunks
 
 export const modifyUser = edits => {
+  console.log('edits inside ActiveUser', edits);
   return async (dispatch, getState) => {
-    const user = getState().activeUser;
-    let editedUser = {};
-    if (getState().authentication.isLoggedIn) {
-      editedUser = (await axios.put(`/users/${user.id}`, edits)).data;
-    } else {
-      editedUser = {
-        ...user,
-        ...edits,
-      };
-      console.log('edited guest user in Modify User thunk:', editedUser);
-    }
+    try {
+      const user = getState().activeUser;
+      console.log(' const user = getState().activeUser', user);
 
-    return dispatch(editActiveUser(editedUser));
+      const editedUser = (await axios.put(`/api/users/${user.id}`, edits)).data;
+      console.log('edited user to post', editedUser);
+      dispatch(editActiveUser(editedUser));
+      // redirect to wherevs
+      history.push('/user');
+    } catch (e) {
+      console.log('error in edit user', e);
+    }
   };
 };
 

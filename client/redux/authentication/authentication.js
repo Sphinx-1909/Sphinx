@@ -33,7 +33,7 @@ export const removeLogInError = () => {
 };
 
 export const logInAttempt = logInData => {
-  console.log('login datapassed in', logInData);
+  //console.log('login datapassed in', logInData);
 
   return async dispatch => {
     await axios
@@ -71,7 +71,7 @@ export const initialLogInAttempt = () => {
       .get('/me')
       .then(res => {
         const user = res.data;
-        console.log('!!!!!user', user);
+        //console.log('!!!!!user', user);
         return dispatch(signIn(user));
       })
       .catch(e => {
