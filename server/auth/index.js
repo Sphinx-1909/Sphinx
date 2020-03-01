@@ -38,6 +38,8 @@ router.post('/signup', (req, res, next) => {
   })
     .then(user => {
       if (!user) return res.status(500).send('error creating user');
+      console.log('req.session', req.session);
+      console.log('req.cookie', req.cookie);
       req.session.userId = user.id;
       console.log('signUp user in auth/index.js', user);
       return res.status(200).send(user);
@@ -45,25 +47,20 @@ router.post('/signup', (req, res, next) => {
     .catch(next);
 });
 
-// Check to see if user is logged in at each app start. <App /> component
-// Check if there is a session associated with their browser-cookie. *
-// if there is we want to find user in DB and return user info to front end and mark their status as logged in
-
 router.get('/signout', (req, res, next) => {
-  delete req.session.userId;
+  console.log('delete in index req.session.userId', req.cookies);
 
-  res.sendStatus(204);
-  next();
+  res
+    .status(204)
+    .clearCookie('sessionId')
+    .send();
+  // next();
 });
 
 router.get('/me', (req, res, next) => {
-  //console.log('req.user', req.user);
   if (req.user) return res.send(req.user);
-  // res.status(401).send('no prior login!');
+
   res.status(401).send('Unauthorized');
-  // const err = new Error('Not logged in');
-  // console.error(err);
-  // next();
 });
 
 module.exports = router;

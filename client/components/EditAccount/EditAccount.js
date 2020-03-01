@@ -96,7 +96,7 @@ class EditAccount extends React.Component {
           <input
             type={'password'}
             placeholder={`${this.props.activeUser.password}`}
-            name={'psw'}
+            name={'password'}
             onChange={this.handleChange}
           />
 

@@ -67,8 +67,8 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/:id', (req, res, next) => {
-  console.log('req.params.id', req.params.id);
-  console.log('req.body', req.body);
+  // console.log('req.params.id', req.params.id);
+  //console.log('req.body', req.body);
   User.findByPk(req.params.id)
     .then(userOrNull => {
       if (userOrNull) {

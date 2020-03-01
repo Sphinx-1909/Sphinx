@@ -1,16 +1,50 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { modifyUser } from '../../redux/activeUser/activeUser';
-import './EditAccount.css';
+import { createUserAndLogIn } from '../../redux/activeUser/activeUser';
+import './SignUp.css';
 
-class EditAccount extends React.Component {
+class SignUp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      firstName: '',
+      lastName: '',
+      password: '',
+      repeatPassword: '',
+      email: '',
+      userName: '',
+    };
   }
+
+  handleChange = ({ target: { name, value } }) => {
+    this.setState({
+      [name]: value,
+    });
+  };
+  handleLogin = ev => {
+    ev.preventDefault();
+    const {
+      firstName,
+      lastName,
+      repeatPassword,
+      userName,
+      email,
+      password,
+    } = this.state;
+
+    this.props.createUserAndLogIn(this.state);
+  };
+  // componentWillUpdate(prevProps) {
+  //   const { activeUser } = this.props;
+  //   if (prevProps.activeUser.firstName !== "" && prevProps.activeUser.lastName !==""){
+
+  //   }
+
+  //   //console.log('activeUser', activeUser);
+  // }
   render() {
-    console.log('props in EditAccount', this.props);
+    console.log('props in signUp', this.props);
     return (
       <div>
         <form
@@ -36,7 +70,7 @@ class EditAccount extends React.Component {
             <input
               type={'password'}
               placeholder={'Enter Password'}
-              name={'psw'}
+              name={'password'}
               required
             />
 
@@ -46,21 +80,10 @@ class EditAccount extends React.Component {
             <input
               type={'password'}
               placeholder={'Repeat Password'}
-              name={'psw-repeat'}
+              name={'repeatPassword'}
               required
             />
-
-            <label>
-              <input
-                type={'checkbox'}
-                checked={'checked'}
-                name={'remember'}
-                style={{ marginBottom: '15px' }}
-              />{' '}
-              Remember me
-            </label>
-
-            <div class="clearfix">
+            <div>
               <button type="button" class="cancelbtn">
                 Cancel
               </button>
@@ -81,8 +104,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    editUser: edits => dispatch(modifyUser(edits)),
+    createUserAndLogIn: newUserData =>
+      dispatch(createUserAndLogIn(newUserData)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditAccount);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
