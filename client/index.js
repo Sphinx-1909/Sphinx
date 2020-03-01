@@ -5,17 +5,18 @@ import App from './app';
 //redux
 import { Provider } from 'react-redux';
 //React Router Dom
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { Router, Switch } from 'react-router-dom';
 //redux store
 import Store from './redux/store';
+import history from './history';
 
 render(
   <Provider store={Store}>
-    <BrowserRouter>
+    <Router history={history}>
       <Switch>
         <App />
       </Switch>
-    </BrowserRouter>
+    </Router>
   </Provider>,
   document.getElementById('root')
 );

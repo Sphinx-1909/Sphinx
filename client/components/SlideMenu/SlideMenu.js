@@ -37,7 +37,6 @@ class SlideMenu extends React.Component {
 
   render() {
     const { authenticaion } = this.props;
-    console.log(this.props);
     return (
       <div
         className="slideMenu"

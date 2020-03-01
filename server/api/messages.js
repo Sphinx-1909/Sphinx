@@ -1,6 +1,7 @@
 const router = require('express').Router();
-const { Message, User, Channel } = require('../db/index');
 const USER_ID = require('../../utils');
+const { Message, User, Subscriptions, Channel } = require('../db/index');
+const webpush = require('web-push');
 
 // adding this route as it helps with debugging when looking at the JSON. Can remove later
 // get all messages
@@ -97,6 +98,35 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   Message.create({ ...req.body, senderId: USER_ID })
     .then(newMessage => {
+      //PUSH NOTIFICATION CODE *************
+      webpush.setVapidDetails(
+        'mailto:info@sphinx.com',
+        'BJZp_1rq7Cjl2Ij8-9GI4UnTG2jCB5MUvWyZRFh93VP9Wy2SKjNBDqiW-X1sQHud0Pc2BmNOsylUVSDznPTGk4g',
+        'x1vE_-P1CGwt2B3us3QHXbaEHlQ94eIBsUAYJu8HGKs'
+      );
+      Subscriptions.findAll().then(sub => {
+        sub.forEach(subscription => {
+          const pushConfig = {
+            endpoint: subscription.endpoint,
+            keys: {
+              auth: subscription.auth,
+              p256dh: subscription.p256dh,
+            },
+          };
+          webpush
+            .sendNotification(
+              pushConfig,
+              JSON.stringify({
+                title: 'new message',
+                content: 'new messages added',
+              })
+            )
+            .catch(e => {
+              console.log(e);
+            });
+        });
+      });
+      //PUSH NOTIFICATION CODE *************
       res.status(201).send(newMessage);
     })
     .catch(e => {

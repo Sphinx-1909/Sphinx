@@ -6,6 +6,8 @@ apiRouter.use('/users', require('./users'));
 apiRouter.use('/messages', require('./messages'));
 apiRouter.use('/channels', require('./channels'));
 apiRouter.use('/channelusers', require('./channelUsers'));
+apiRouter.use('/subscription', require('./subscriptions'));
+
 
 // API catch and let pass
 apiRouter.use((req, res, next) => {

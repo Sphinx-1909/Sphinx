@@ -12,7 +12,8 @@
     "lint": "./node_modules/.bin/eslint ./server --fix & ./node_modules/.bin/eslint ./client --fix",
     "seed": "node seed.js",
     "test": "NODE_ENV='test' mocha ./tests --recursive",
-    "test:watch": "NODE_ENV='test' mocha ./tests --recursive --watch"
+    "test:watch": "NODE_ENV='test' mocha ./tests --recursive --watch",
+    "web-push": "web-push"
   },
   "author": "",
   "license": "ISC",
@@ -28,6 +29,7 @@
     "express-sslify": "^1.2.0",
     "faker": "^4.1.0",
     "google-maps-react": "^2.0.2",
+    "history": "^4.10.1",
     "mocha": "^7.0.1",
     "moment": "^2.24.0",
     "nodemon": "^2.0.1",
@@ -41,7 +43,8 @@
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "sequelize": "^5.21.2"
+    "sequelize": "^5.21.2",
+    "web-push": "^3.4.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",

@@ -18,30 +18,32 @@ class BottomMenu extends React.Component {
       <div className="bottomMenu">
         <div className="bottomMenu_icon">
           <Link to="/channelsearch">
-            <Search fill="#fff" width={80} />
+            <Search width={80} />
           </Link>
         </div>
         <div className="bottomMenu_icon">
           <Link to="/post">
-            <Add fill="#fff" width={80} />
+            <Add width={80} />
           </Link>
         </div>
-        <div className="bottomMenu_icon" onClick={e => alert('not wired up')}>
-          <Feed fill="#fff" width={80} />
+        <div className="bottomMenu_icon">
+          <Link to="/feed">
+            <Feed width={80} />
+          </Link>
         </div>
         {this.props.activeUser.id ? (
           <div className="bottomMenu_icon">
             <Link to="/user">
-              <User fill="#fff" width={80} />
+              <User width={80} />
             </Link>
           </div>
         ) : (
-            <div className="bottomMenu_icon">
-              <Link to="/login">
-                <Login fill="#fff" width={80} />
-              </Link>
-            </div>
-          )}
+          <div className="bottomMenu_icon">
+            <Link to="/login">
+              <Login fill="#fff" width={80} />
+            </Link>
+          </div>
+        )}
       </div>
     );
   }
