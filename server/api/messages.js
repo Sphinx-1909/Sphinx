@@ -1,30 +1,52 @@
 const router = require('express').Router();
-const { Message, User } = require('../db/index');
-const USER_ID = require('../../utils')
+const { Message, User, Channel } = require('../db/index');
+const USER_ID = require('../../utils');
+
+// adding this route as it helps with debugging when looking at the JSON. Can remove later
+// get all messages
+
+router.get('/', (req, res, next) => {
+  Message.findAll({
+    include: [
+      {
+        model: Channel,
+      },
+    ],
+  })
+    .then(message => {
+      if (!message) res.status(404).send('Messages is not found!');
+      res.status(200).send(message);
+    })
+    .catch(e => {
+      console.error(e);
+      next(e);
+    });
+});
 
 // get all READ messages for user
 
 router.get('/read', (req, res, next) => {
-  const userId = USER_ID
+  const userId = USER_ID;
   // the above should eventually be changed to: const userId = req.user.id;
   User.findOne({
     where: {
       id: userId,
-    }
+    },
   })
     .then(user => {
       if (user) {
-        user.getMessages()
+        user
+          .getMessages()
           .then(readMessages => res.status(200).send(readMessages))
           .catch(e => {
-            res.status(404).send('messages not found', e)
-            next(e)
-          })
+            res.status(404).send('messages not found', e);
+            next(e);
+          });
       } else {
-        res.status(400).send('user not found')
+        res.status(400).send('user not found');
       }
     })
-    .catch(e => console.log('error finding subscriptions: ', e))
+    .catch(e => console.log('error finding subscriptions: ', e));
 });
 
 // mark a message as read
@@ -32,33 +54,32 @@ router.get('/read', (req, res, next) => {
 router.post('/read/:messageId', (req, res, next) => {
   const { messageId } = req.params;
   // ** copy a userId from your local channelUsers table and paste it below **
-  const userId = USER_ID
+  const userId = USER_ID;
   // the above should eventually be changed to: const userId = req.user.id;
   Message.findOne({
     where: {
       id: messageId,
+    },
+  }).then(message => {
+    if (message) {
+      User.findOne({
+        where: {
+          id: userId,
+        },
+      }).then(user => {
+        if (user) {
+          message
+            .addUser(user)
+            .then(read => res.status(200).send(read))
+            .catch(e => console.log('error adding readBy: ', e));
+        } else {
+          res.status(404).send('user not found');
+        }
+      });
+    } else {
+      res.status(404).send('message not found');
     }
-  })
-    .then(message => {
-      if (message) {
-        User.findOne({
-          where: {
-            id: userId,
-          }
-        })
-          .then(user => {
-            if (user) {
-              message.addUser(user)
-                .then(read => res.status(200).send(read))
-                .catch(e => console.log('error adding readBy: ', e))
-            } else {
-              res.status(404).send('user not found')
-            }
-          })
-      } else {
-        res.status(404).send('message not found')
-      }
-    })
+  });
 });
 
 router.get('/:id', (req, res, next) => {
