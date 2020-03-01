@@ -1,36 +1,51 @@
 const router = require('express').Router();
-const { Op } = require("sequelize");
+const { Op } = require('sequelize');
 const { Channel, User, Message } = require('../db/index');
-const USER_ID = require('../../utils')
+const USER_ID = require('../../utils');
+
+//get all channels
+router.get('/all', (req, res, next) => {
+  Channel.findAll()
+    .then(channels => {
+      if (!channels) res.status(404).send('Channels is not found!');
+      res.status(200).send(channels);
+    })
+    .catch(e => {
+      console.error(e);
+      next(e);
+    });
+});
 
 router.get('/', (req, res, next) => {
-  const userId = USER_ID
+  const userId = USER_ID;
   // the above should eventually be changed to: const userId = req.user.id;
   User.findOne({
     where: {
       id: userId,
-    }
-  })
-    .then(user => {
-      if (user) {
-        user.getChannels({
-          include: [{
-            model: Message,
-            required: false,
-            where: {
-              // don't include messages sent by current user
-              senderId: {
-                [Op.not]: user.id
-              }
-            }
-          }]
+    },
+  }).then(user => {
+    if (user) {
+      user
+        .getChannels({
+          include: [
+            {
+              model: Message,
+              required: false,
+              where: {
+                // don't include messages sent by current user
+                senderId: {
+                  [Op.not]: user.id,
+                },
+              },
+            },
+          ],
         })
-          .then(subscriptions => res.status(200).send(subscriptions))
-          .catch(e => console.log('error finding subscriptions: ', e))
-      } else {
-        res.status(400).send('user not found')
-      }
-    })
+        .then(subscriptions => res.status(200).send(subscriptions))
+        .catch(e => console.log('error finding subscriptions: ', e));
+    } else {
+      res.status(400).send('user not found');
+    }
+  });
 });
 
 router.get('/:id', (req, res, next) => {
@@ -61,31 +76,30 @@ router.post('/subscribe/:channelId', (req, res, next) => {
   User.findOne({
     where: {
       id: USER_ID,
+    },
+  }).then(user => {
+    if (user) {
+      Channel.findOne({
+        where: {
+          id: channelId,
+        },
+      }).then(channel => {
+        if (channel) {
+          user
+            .addChannel(channel)
+            .then(subscription => res.status(200).send(subscription))
+            .catch(e => {
+              res.status(400).send('error creating subscription: ', e);
+              next(e);
+            });
+        } else {
+          res.status(400).send('channel not found');
+        }
+      });
+    } else {
+      res.status(400).send('user not found');
     }
-  })
-    .then(user => {
-      if (user) {
-        Channel.findOne({
-          where: {
-            id: channelId,
-          }
-        })
-          .then(channel => {
-            if (channel) {
-              user.addChannel(channel)
-                .then(subscription => res.status(200).send(subscription))
-                .catch(e => {
-                  res.status(400).send('error creating subscription: ', e)
-                  next(e)
-                })
-            } else {
-              res.status(400).send('channel not found')
-            }
-          })
-      } else {
-        res.status(400).send('user not found')
-      }
-    })
+  });
 });
 
 router.put('/:id', (req, res, next) => {

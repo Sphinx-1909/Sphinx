@@ -46,7 +46,9 @@ class SlideMenu extends React.Component {
             : 'translateX(-100%)',
         }}
       >
-        <a>CHANNELS</a>
+        <Link to="/mychannels">
+          <a>CHANNELS</a>
+        </Link>
         <a>SETTINGS</a>
         {this.loginStatus()}
       </div>

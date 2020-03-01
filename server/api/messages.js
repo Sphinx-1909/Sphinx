@@ -1,7 +1,28 @@
 const router = require('express').Router();
-const { Message, User, Subscriptions } = require('../db/index');
 const USER_ID = require('../../utils');
+const { Message, User, Subscriptions, Channel } = require('../db/index');
 const webpush = require('web-push');
+
+// adding this route as it helps with debugging when looking at the JSON. Can remove later
+// get all messages
+
+router.get('/', (req, res, next) => {
+  Message.findAll({
+    include: [
+      {
+        model: Channel,
+      },
+    ],
+  })
+    .then(message => {
+      if (!message) res.status(404).send('Messages is not found!');
+      res.status(200).send(message);
+    })
+    .catch(e => {
+      console.error(e);
+      next(e);
+    });
+});
 
 // get all READ messages for user
 
