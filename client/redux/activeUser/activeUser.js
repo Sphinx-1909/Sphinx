@@ -2,6 +2,7 @@ import axios from 'axios';
 import { SIGN_IN, SIGN_OUT } from '../authentication/authentication';
 import history from '../../history';
 const EDIT_USER = 'EDIT_USER';
+export const SIGN_UP = 'SIGN_UP';
 
 // inital state
 const initialState = {
@@ -21,7 +22,28 @@ const editActiveUser = editedUser => {
   };
 };
 
+export const signUp = createdUser => {
+  return {
+    type: SIGN_UP,
+    createdUser,
+  };
+};
+
 // thunks
+
+export const createUserAndLogIn = newUserData => {
+  console.log('newUserData inside ActiveUser', newUserData);
+  return async dispatch => {
+    try {
+      const createdUser = (await axios.post(`/api/signup`, newUserData)).data;
+
+      console.log('create user thunk response data: ', createdUser);
+      dispatch(signUp(createdUser));
+    } catch (e) {
+      console.log('Error in thunk:', e);
+    }
+  };
+};
 
 export const modifyUser = edits => {
   console.log('edits inside ActiveUser', edits);
@@ -42,15 +64,15 @@ export const modifyUser = edits => {
 };
 
 const activeUserReducer = (state = initialState, action) => {
-  const activeUser = action.activeUser;
-  const editedUser = action.editedUser;
   switch (action.type) {
     case SIGN_IN:
-      return activeUser;
+      return action.activeUser;
     case EDIT_USER:
-      return editedUser;
+      return action.editedUser;
     case SIGN_OUT:
       return initialState;
+    case SIGN_UP:
+      return action.createdUser;
     default:
       return state;
   }
