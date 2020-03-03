@@ -7,10 +7,9 @@ const ChannelsList = props => (
   <List style={{ overflow: 'auto', height: '600px' }}>
     {props.channels.map((channel, idx) => (
       <ChannelLineItem
-        channelName={channel.channelTitle}
+        channelDetails={channel}
         key={`channel.${idx}`}
         divider={idx !== props.channels.length - 1}
-        // onButtonClick={() => null} //need to do this later to subscribe
       />
     ))}
   </List>
