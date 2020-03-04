@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { subscribeToChannel, unsubscribeToChannel } from '../../redux/channels';
+import { subscribeToChannel } from '../../redux/channels';
 
 import {
   List,
@@ -50,8 +50,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     subscribeToChannel: channelId => dispatch(subscribeToChannel(channelId)),
-    unsubscribeToChannel: channelId =>
-      dispatch(unsubscribeToChannel(channelId)),
   };
 };
 
