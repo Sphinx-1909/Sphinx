@@ -158,7 +158,7 @@ const seed = async () => {
         encrypted: faker.random.boolean(),
         key: faker.internet.password(),
         expirationTime: Date(),
-        channelId: channelIds[i + 1],
+        channelId: channelIds[Math.floor(Math.random() * channelIds.length)],
         senderId: userIds[i + 1],
       });
     }
@@ -179,7 +179,7 @@ const seed = async () => {
         isModerator: faker.random.boolean(),
         isOwner: faker.random.boolean(),
         userId: userIds[i + 1],
-        channelId: channelIds[i + 1],
+        channelId: channelIds[Math.floor(Math.random() * channelIds.length)],
       });
     }
 
