@@ -9,6 +9,9 @@
   flex-direction: column;
   justify-content: flex-start;
   align-content: center;
+  overflow: hidden;
+  background: repeating-linear-gradient(-45deg, #ccc 0 2px, transparent 0 9px);
+  background-color: bisque;
 }
 
 form {
@@ -26,14 +29,14 @@ form {
 button {
   width: 5em;
   height: 3em;
-  background-color: blue;
+  background-color: rgb(87, 87, 87);
   color: white;
   font-weight: bold;
 }
 
 .container {
   width: 100%;
-  height: 90%;
+  height: 100%;
   text-align: center;
   text-transform: uppercase;
   font-size: 10.5rem;
@@ -41,6 +44,8 @@ button {
   align-self: center;
   color: white;
   flex-grow: 1;
-  background-color: tomato;
+  background: repeating-linear-gradient(-45deg, #ccc 0 2px, transparent 0 9px);
+  background-color: bisque;
   overflow: scroll;
+  position: relative;
 }

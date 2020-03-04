@@ -19,7 +19,7 @@ class Burger extends React.Component {
           style={{
             opacity: this.props.openSlide ? '0' : '1',
             transform: this.props.openSlide
-              ? 'translateX(20px)'
+              ? 'translateX(0px)'
               : 'translateX(0)',
           }}
         />

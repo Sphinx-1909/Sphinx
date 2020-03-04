@@ -15,32 +15,40 @@ import User from './userIcon';
 class BottomMenu extends React.Component {
   render() {
     return (
-      <div className="bottomMenu">
+      <div
+        className="bottomMenu"
+        style={{
+          transform:
+            this.props.openSlide === false
+              ? 'translateY(0)'
+              : 'translateY(200%)',
+        }}
+      >
         <div className="bottomMenu_icon">
           <Link to="/channelsearch">
-            <Search width={80} />
+            <Search width={40} />
           </Link>
         </div>
         <div className="bottomMenu_icon">
           <Link to="/post">
-            <Add width={80} />
+            <Add width={40} />
           </Link>
         </div>
         <div className="bottomMenu_icon">
           <Link to="/feed">
-            <Feed width={80} />
+            <Feed width={40} />
           </Link>
         </div>
         {this.props.activeUser.id ? (
           <div className="bottomMenu_icon">
             <Link to="/user">
-              <User width={80} />
+              <User width={40} />
             </Link>
           </div>
         ) : (
           <div className="bottomMenu_icon">
             <Link to="/login">
-              <Login fill="#fff" width={80} />
+              <Login fill="#fff" width={40} />
             </Link>
           </div>
         )}
