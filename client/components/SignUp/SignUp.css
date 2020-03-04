@@ -1,4 +1,4 @@
-.editUser {
+.createUser {
   width: 100%;
   height: 100%;
   display: flex;
@@ -6,7 +6,7 @@
   justify-content: space-around;
 }
 
-.editUser_form {
+.createUser_form {
   width: 70vw;
   height: 100%;
   text-align: center;

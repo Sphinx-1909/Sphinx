@@ -2,15 +2,10 @@ const { db } = require('./server/db');
 const chalk = require('chalk');
 const pkg = require('./package.json');
 const faker = require('faker');
-const {
-  ChannelUser,
-  Channel,
-  Message,
-  User,
-} = require('./server/db/index');
+const { ChannelUser, Channel, Message, User } = require('./server/db/index');
 
 const GENERATE_CHANNELUSERS = 30;
-const GENERATE_CHANNELS = 30;
+//const GENERATE_CHANNELS = 30;
 const GENERATE_MESSAGES = 30;
 const GENERATE_USERS = 30;
 
@@ -24,6 +19,21 @@ const postHelper = i => {
     return ' audio';
   }
   return 'image';
+};
+
+const generateRandomLat = () => {
+  let min = 40.702057,
+    max = 42.758896;
+  let randomLat = (Math.random() * (max - min) + min).toFixed(6);
+  return randomLat;
+};
+
+const generateRandomLong = () => {
+  let min = -74.014635,
+    max = -73.98513;
+  let randomLong = (Math.random() * (max - min) + min).toFixed(6);
+
+  return randomLong;
 };
 
 const seed = async () => {
@@ -56,29 +66,55 @@ const seed = async () => {
       });
     }
 
-
-
     //generate list of channels
     let channelList = [
       {
         channelTitle: 'Weird Shit',
-        channelDescription: 'The craziest, weirdest shit out there',
+        channelDescription:
+          'THE channel for the craziest, weirdest shit out there',
         isPrivate: false,
         key: 'asdfadfa',
         latitude: 41.7527,
         longitude: -73.9772,
       },
+      {
+        channelTitle: 'NYC Movie Scene Locations',
+        channelDescription:
+          'Visit the locations from your favorite movies and learn the history behind shot',
+        isPrivate: false,
+        key: 'xyasdfadfa',
+        latitude: 40.758898,
+        longitude: -73.98513,
+      },
+      {
+        channelTitle: 'From Gangsters To Gentrification',
+        channelDescription:
+          "New York Mob Murder Scenes Then And Now. Grisly scenes from when John Gotti and Al Capone orchestrated hits on the streets of a violent New York that simply doesn't exist anymore",
+        isPrivate: false,
+        key: 'qqsdfaa',
+        latitude: 42.758897,
+        longitude: -71.98513,
+      },
+      {
+        channelTitle: 'Public Bathroom Ratings',
+        channelDescription:
+          'Find out where to go if you’re nowhere near your hotel, apartment, an unsupervised wall of Trump Tower',
+        isPrivate: false,
+        key: 'qqsdfaa',
+        latitude: 42.758896,
+        longitude: -70.98513,
+      },
     ];
-    for (let i = 0; i < GENERATE_CHANNELS; i++) {
-      channelList.push({
-        channelTitle: faker.lorem.words(),
-        channelDescription: faker.lorem.sentence(),
-        isPrivate: faker.random.boolean(),
-        key: faker.internet.password(),
-        latitude: faker.address.latitude(),
-        longitude: faker.address.longitude(),
-      });
-    }
+    // for (let i = 0; i < GENERATE_CHANNELS; i++) {
+    //   channelList.push({
+    //     channelTitle: faker.lorem.words(),
+    //     channelDescription: faker.lorem.sentence(),
+    //     isPrivate: faker.random.boolean(),
+    //     key: faker.internet.password(),
+    //     latitude: faker.address.latitude(),
+    //     longitude: faker.address.longitude(),
+    //   });
+    // }
 
     await db.sync({ force: true });
     await User.bulkCreate(userList);
@@ -98,8 +134,8 @@ const seed = async () => {
         messageContent: 'https://www.youtube.com/watch?v=mLimnpQIwgY',
         positiveVotes: 300,
         negativeVotes: 2,
-        latitude: 40.7527,
-        longitude: -73.9772,
+        latitude: 40.704701,
+        longitude: -74.010751,
         radius: 2,
         encrypted: false,
         key: 'xxswdks',
@@ -108,6 +144,7 @@ const seed = async () => {
         senderId: userIds[0],
       },
     ];
+
     for (let i = 0; i < GENERATE_MESSAGES; i++) {
       messageList.push({
         fileType: postHelper(i),
@@ -115,8 +152,8 @@ const seed = async () => {
         messageContent: faker.lorem.paragraph(),
         positiveVotes: Math.floor(Math.random() * Math.floor(600)),
         negativeVotes: Math.floor(Math.random() * Math.floor(600)),
-        latitude: (Math.random() * 100).toFixed(4),
-        longitude: (Math.random() * -100).toFixed(4),
+        latitude: generateRandomLat(),
+        longitude: generateRandomLong(),
         radius: Math.random() * (4 - 1) + 4,
         encrypted: faker.random.boolean(),
         key: faker.internet.password(),
@@ -127,7 +164,6 @@ const seed = async () => {
     }
 
     await Message.bulkCreate(messageList);
-
 
     //generate list of channelusers
     let channelUserList = [

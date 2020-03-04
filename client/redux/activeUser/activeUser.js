@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { SIGN_IN, SIGN_OUT } from '../authentication/authentication';
+import { signIn } from '../authentication/authentication';
 import history from '../../history';
 const EDIT_USER = 'EDIT_USER';
 export const SIGN_UP = 'SIGN_UP';
@@ -32,13 +33,14 @@ export const signUp = createdUser => {
 // thunks
 
 export const createUserAndLogIn = newUserData => {
-  console.log('newUserData inside ActiveUser', newUserData);
+  console.log('n!!!!ewUserData inside ActiveUser', newUserData);
   return async dispatch => {
     try {
-      const createdUser = (await axios.post(`/api/signup`, newUserData)).data;
+      const createdUser = (await axios.post(`/api/users`, newUserData)).data;
 
       console.log('create user thunk response data: ', createdUser);
       dispatch(signUp(createdUser));
+      dispatch(signIn(createdUser));
     } catch (e) {
       console.log('Error in thunk:', e);
     }
@@ -56,7 +58,7 @@ export const modifyUser = edits => {
       console.log('edited user to post', editedUser);
       dispatch(editActiveUser(editedUser));
       // redirect to wherevs
-      history.push('/user');
+      history.push('/');
     } catch (e) {
       console.log('error in edit user', e);
     }

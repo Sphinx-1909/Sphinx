@@ -8,7 +8,6 @@ apiRouter.use('/channels', require('./channels'));
 apiRouter.use('/channelusers', require('./channelUsers'));
 apiRouter.use('/subscription', require('./subscriptions'));
 
-
 // API catch and let pass
 apiRouter.use((req, res, next) => {
   const err = new Error('API route not found');
