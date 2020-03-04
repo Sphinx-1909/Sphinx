@@ -48,11 +48,9 @@ const User = db.define('users', {
   },
   latitude: {
     type: DOUBLE(null, 7),
-    allowNull: false,
   },
   longitude: {
     type: DOUBLE(null, 7),
-    allowNull: false,
   },
 });
 

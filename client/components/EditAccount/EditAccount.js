@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { modifyUser } from '../../redux/activeUser/activeUser';
 import './EditAccount.css';
 import history from '../../history';
@@ -99,21 +98,19 @@ class EditAccount extends React.Component {
             name={'password'}
             onChange={this.handleChange}
           />
-
-          <button
-            onClick={() => history.push('/user')}
-            type="button"
-            class="cancelbtn"
-          >
-            Cancel
-          </button>
-
           <button
             onSubmit={ev => this.handleSubmit(ev)}
             type="submit"
             class="saveupbtn"
           >
             Save
+          </button>
+          <button
+            onClick={() => history.push('/')}
+            type="button"
+            class="cancelbtn"
+          >
+            Cancel
           </button>
         </form>
       </div>
