@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ChannelsList from './ChannelsList';
+import MyChannelLineItem from './MyChannelLineItem';
+import { List } from '@material-ui/core';
 
 class MyChannelSubscriptions extends Component {
   componentDidMount() {
@@ -12,8 +13,15 @@ class MyChannelSubscriptions extends Component {
   render() {
     return (
       <div>
-        <div>My Channel Subscriptions</div>
-        <ChannelsList channels={this.props.channelData.myChannels} />
+        <List style={{ overflow: 'auto', height: '600px' }}>
+          {this.props.channelData.myChannels.map((channel, idx) => (
+            <MyChannelLineItem
+              channelDetails={channel}
+              key={`channel.${idx}`}
+              divider={idx !== this.props.channelData.myChannels.length - 1}
+            />
+          ))}
+        </List>
       </div>
     );
   }

@@ -11,17 +11,21 @@ import {
   Typography,
   Button,
 } from '@material-ui/core';
-import Add from '@material-ui/icons/Add';
+import Eject from '@material-ui/icons/Eject';
 
-class ChannelLineItem extends Component {
+class MyChannelLineItem extends Component {
   constructor(props) {
     super(props);
   }
-  clickToSubscribeToChannel = (ev, channelId) => {
+
+  // unsubscribe currently works but needs to be refreshed WIP.
+  // TODO: FIX IT
+  clickToUnsubscribeToChannel = (ev, channelId) => {
     ev.preventDefault();
-    console.log('WHAT IS THE CHANNELID', channelId);
-    this.props.subscribeToChannel(channelId);
+    console.log('WHAT IS THE CHANNELID ON UNSUB', channelId);
+    this.props.unsubscribeToChannel(channelId);
   };
+
   render() {
     return (
       <ListItem divider={this.props.divider}>
@@ -31,11 +35,11 @@ class ChannelLineItem extends Component {
           <ListItem
             button={true}
             onClick={ev =>
-              this.clickToSubscribeToChannel(ev, this.props.channelDetails.id)
+              this.clickToUnsubscribeToChannel(ev, this.props.channelDetails.id)
             }
           >
             {/* TODO: make an ternary op to change button from Add to a subscribe button / icon */}
-            <Add />
+            <Eject />
           </ListItem>
         </ListItemSecondaryAction>
       </ListItem>
@@ -55,4 +59,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChannelLineItem);
+export default connect(mapStateToProps, mapDispatchToProps)(MyChannelLineItem);

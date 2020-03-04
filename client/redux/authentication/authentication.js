@@ -3,6 +3,7 @@ import axios from 'axios';
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';
 export const LOG_IN_ERROR = 'LOG_IN_ERROR';
+export const SIGN_UP = 'SIGN_UP';
 
 export const signIn = data => {
   return {
@@ -65,13 +66,11 @@ export const logOutAttempt = () => {
   };
 };
 export const initialLogInAttempt = () => {
-  console.log('!!!initial');
   return dispatch => {
     return axios
       .get('/me')
       .then(res => {
         const user = res.data;
-        //console.log('!!!!!user', user);
         return dispatch(signIn(user));
       })
       .catch(e => {

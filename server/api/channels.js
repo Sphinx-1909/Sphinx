@@ -97,7 +97,10 @@ router.post('/subscribe/:channelId', (req, res, next) => {
       }).then(channel => {
         if (channel) {
           user
-            .addChannel(channel)
+            .addChannel(channel, {
+              //added this because default when joining is always false for moderators and owner. Channel admin should have way to make people moderator but i guess this is a T2 or stretch goal
+              through: { isModerator: false, isOwner: false },
+            })
             .then(subscription => res.status(200).send(subscription))
             .catch(e => {
               res.status(400).send('error creating subscription: ', e);
@@ -107,6 +110,21 @@ router.post('/subscribe/:channelId', (req, res, next) => {
           res.status(400).send('channel not found');
         }
       });
+    } else {
+      res.status(400).send('user not found');
+    }
+  });
+});
+
+router.delete('/unsubscribe/:channelId', (req, res, next) => {
+  const { channelId } = req.params;
+  User.findOne({
+    where: {
+      id: USER_ID,
+    },
+  }).then(user => {
+    if (user) {
+      user.removeChannel(channelId);
     } else {
       res.status(400).send('user not found');
     }

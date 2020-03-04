@@ -6,6 +6,8 @@ import {
   logInAttempt,
   removeLogInError,
 } from '../../redux/authentication/authentication';
+import './logIn.css';
+import history from '../../history';
 
 class LogIn extends Component {
   constructor() {
@@ -26,15 +28,31 @@ class LogIn extends Component {
     const { email, password } = this.state;
     this.props.login({ email, password });
   };
+  componentWillUpdate(prevProps) {
+    if (prevProps.authentication.isLoggedIn === true) {
+      history.push('/');
+    }
+  }
+
   render() {
     return (
-      <div style={{ backgroundColor: this.state.logInError ? 'red' : 'gray' }}>
-        <input name={'email'} onChange={this.handleChange} />
-        <input name={'password'} onChange={this.handleChange} />
-        <button onClick={ev => this.handleLogin(ev)}> Log In</button>
-        <a href="/register" style={{ textDecoration: 'none' }}>
+      <div className="logInUser">
+        <form onSubmit={ev => this.handleLogin(ev)} className="logInUser_form">
+          <h3>Sign into your account</h3>
+          <input type="email" name={'email'} onChange={this.handleChange} />
+          <input
+            type="password"
+            name={'password'}
+            onChange={this.handleChange}
+          />
+          <button onClick={ev => this.handleLogin(ev)}> Log In</button>
+
+          <button onClick={() => history.push('/signup')}> Sign up</button>
+
+          {/* <a href="/register" style={{ textDecoration: 'none' }}>
           Sign Up
-        </a>
+        </a> */}
+        </form>
       </div>
     );
   }

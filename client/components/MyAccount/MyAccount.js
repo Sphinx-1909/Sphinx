@@ -1,14 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchOneUser } from '../../redux/oneUser/oneUser';
-import { fetchChannels } from '../../redux/channels';
-
+import { logOutAttempt } from '../../redux/authentication/authentication';
+import history from '../../history';
 import './MyAccount.css';
 class MyAccount extends React.Component {
   constructor(props) {
     super(props);
   }
+  handleLogOut = ev => {
+    console.log('hitting handleLogOut method?', ev);
+    this.props.signout();
+    history.push('/');
+  };
 
   render() {
     console.log('props in MYAccount', this.props.activeUser);
@@ -25,6 +29,13 @@ class MyAccount extends React.Component {
           <Link to="/editaccount">
             <button>Edit</button>
           </Link>
+          <button
+            onClick={ev => this.handleLogOut(ev)}
+            type="button"
+            class="logoutbtn"
+          >
+            log-out
+          </button>
         </div>
       </div>
     );
@@ -32,15 +43,14 @@ class MyAccount extends React.Component {
 }
 const mapStateToProps = state => ({
   activeUser: state.activeUser,
+  authentication: state.authentication,
   //channels: state.channels,
 });
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     //channelthunk: () => dispatch(fetchChannels()),
-//   };
-// };
+const mapDispatchToProps = dispatch => ({
+  signout: () => dispatch(logOutAttempt()),
+});
 
-export default connect(mapStateToProps)(MyAccount);
+export default connect(mapStateToProps, mapDispatchToProps)(MyAccount);
 
 //display subscriptions

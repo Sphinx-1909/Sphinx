@@ -1,74 +1,109 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { modifyUser } from '../../redux/activeUser/activeUser';
-import './EditAccount.css';
+import { createUserAndLogIn } from '../../redux/activeUser/activeUser';
+import './SignUp.css';
+import history from '../../history';
 
-class EditAccount extends React.Component {
+class SignUp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      firstName: '',
+      lastName: '',
+      password: '',
+      repeatPassword: '',
+      email: '',
+      userName: '',
+    };
   }
+
+  handleChange = ({ target: { name, value } }) => {
+    this.setState({
+      [name]: value,
+    });
+  };
+  handleSubmit = ev => {
+    ev.preventDefault();
+    console.log('this.state inside SignUp', this.state);
+    if (this.state.reTypePassword !== this.state.password) {
+      alert("Passwords don't match");
+    } else {
+      const { firstName, lastName, userName, email, password } = this.state;
+      this.props.createUserAndLogIn({
+        firstName,
+        lastName,
+        userName,
+        email,
+        password,
+      });
+    }
+  };
+  componentWillUpdate(prevProps) {
+    if (prevProps.authentication.isLoggedIn === true) {
+      history.push('/');
+    }
+  }
+
   render() {
-    console.log('props in EditAccount', this.props);
+    console.log('props in signUp', this.props);
     return (
-      <div>
-        <form
-          onSubmit={ev => ev.preventDefault()}
-          style={{ border: '1px solid #ccc' }}
-        >
-          <div class="container">
-            <h1>Sign Up</h1>
-            <p>Please fill in this form to create an account.</p>
-            <label for={'email'}>
-              <b>Email</b>
-            </label>
-            <input
-              type={'text'}
-              placeholder={'Enter Email'}
-              name={'email'}
-              required
-            />
+      <div className="createUser">
+        <form onSubmit={ev => ev.handleSubmit(ev)} className="createUser_form">
+          <h3>Create an account</h3>
 
-            <label for={'psw'}>
-              <b>Password</b>
-            </label>
-            <input
-              type={'password'}
-              placeholder={'Enter Password'}
-              name={'psw'}
-              required
-            />
+          <label>
+            <b>first name</b>
+          </label>
 
-            <label for={'psw-repeat'}>
-              <b>Repeat Password</b>
-            </label>
-            <input
-              type={'password'}
-              placeholder={'Repeat Password'}
-              name={'psw-repeat'}
-              required
-            />
+          <input
+            type="firstName"
+            name="firstName"
+            onChange={this.handleChange}
+          />
 
-            <label>
-              <input
-                type={'checkbox'}
-                checked={'checked'}
-                name={'remember'}
-                style={{ marginBottom: '15px' }}
-              />{' '}
-              Remember me
-            </label>
+          <label>
+            <b>last name</b>
+          </label>
 
-            <div class="clearfix">
-              <button type="button" class="cancelbtn">
-                Cancel
-              </button>
-              <button type="submit" class="signupbtn">
-                Sign Up
-              </button>
-            </div>
-          </div>
+          <input type="lastName" name="lastName" onChange={this.handleChange} />
+
+          <label>
+            <b>username</b>
+          </label>
+
+          <input type="userName" name="userName" onChange={this.handleChange} />
+
+          <label>
+            <b>Email</b>
+          </label>
+          <input type="text" name="email" onChange={this.handleChange} />
+
+          <label>
+            <b>Password</b>
+          </label>
+          <input type="password" name="password" onChange={this.handleChange} />
+          <label>
+            <b>Re-type Password</b>
+          </label>
+          <input
+            type="password"
+            name="reTypePassword"
+            onChange={this.handleChange}
+          />
+          <button
+            onClick={ev => this.handleSubmit(ev)}
+            type="submit"
+            class="signupbtn"
+          >
+            Save
+          </button>
+          <button
+            onClick={() => history.push('/')}
+            type="button"
+            class="cancelbtn"
+          >
+            Cancel
+          </button>
         </form>
       </div>
     );
@@ -77,12 +112,15 @@ class EditAccount extends React.Component {
 
 const mapStateToProps = state => ({
   activeUser: state.activeUser,
+  authentication: state.authentication,
 });
 
 const mapDispatchToProps = dispatch => {
   return {
-    editUser: edits => dispatch(modifyUser(edits)),
+    createUserAndLogIn: newUserData =>
+      dispatch(createUserAndLogIn(newUserData)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditAccount);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+// need to add error message if passwords don't match
