@@ -21,8 +21,10 @@ router.get('/', (req, res, next) => {
   if (req.user) {
     userId = req.user.id
   } else {
+    // console.log('no req.user')
     userId = USER_ID
   }
+  // console.log("userId: ", userId)
   // the above should eventually be changed to: const userId = req.user.id;
   User.findOne({
     where: {

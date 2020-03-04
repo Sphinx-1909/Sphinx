@@ -11,6 +11,7 @@ router.post('/login', (req, res, next) => {
     },
   })
     .then(foundUser => {
+      // console.log('req.cookies.sessionId: ', req.cookies.sessionId)
       if (foundUser) {
         User.update(
           {

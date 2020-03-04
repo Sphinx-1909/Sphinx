@@ -19,12 +19,10 @@ router.post('/', (req, res, next) => {
 })
 
 router.post('/file', upload.single('media'), (req, res, next) => {
-  console.log('req.file: ', req.file)
   const params = {
-    // ACL: 'public-read',
     Bucket: bucketName,
     Body: fs.createReadStream(req.file.path),
-    Key: 'a great key!'
+    Key: req.body.key
   };
   s3.upload(params, (err, data) => {
     if (err) {

@@ -16,12 +16,12 @@ function TakeVideo(props) {
 
   function handleRecordingComplete(data) {
     // setDataUri(data)
-    console.log('data (blob): ', data)
+    // console.log('data (blob): ', data)
     setBlob(data)
-    console.log('blob: ', blob)
+    // console.log('blob: ', blob)
     const videoUrl = URL.createObjectURL(data)
     setBlobUrl(videoUrl)
-    console.log('videoUrl: ', videoUrl)
+    // console.log('videoUrl: ', videoUrl)
   }
 
 

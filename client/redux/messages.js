@@ -48,7 +48,7 @@ export const addMessage = (msg, media, file) => {
     axios.post('/api/messages', msg)
       .then(msg => {
         console.log('success posting new message to DB!', msg.data)
-        if (media) {
+        if (media !== 'upload') {
           if (!file) {
             console.log('msg: ', msg, 'media: ', media, 'file: ', file)
             axios.post('/api/aws', { Key: msg.data.id, Body: media })
@@ -65,7 +65,7 @@ export const addMessage = (msg, media, file) => {
               .then(res => console.log('success uploading file to AWS! ', res))
               .catch(e => console.log('error uploading file to AWS: ', e))
           }
-        }
+        } else return;
       })
       .catch(e => console.log('error in addMessage thunk: ', e))
   }

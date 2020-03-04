@@ -4,20 +4,25 @@ import axios from 'axios';
 // import FormData from 'form-data';
 // import multer from 'multer';
 import { addMessage } from '../../redux/messages';
+import { v4 as uuidv4 } from 'uuid';
+import { PostSuccess } from './PostSuccess';
+
+const key = uuidv4();
 
 const UploadFile = (props) => {
 
   const [selectedFile, setSelectedFile] = useState(null)
+  const [success, setSuccess] = useState(false)
 
   const handleFileSelect = ev => {
     console.log('ev.target.files[0]: ', ev.target.files[0])
     setSelectedFile(ev.target.files[0])
   }
 
-  const handleUpload = async (ev) => {
-    ev.preventDefault();
+  const handleUpload = async () => {
     const postBody = {
       // will need to change fileType below according to file extension
+      id: key,
       fileType: 'video',
       messageTitle: props.title,
       messageContent: 'file uploaded to AWS',
@@ -26,34 +31,24 @@ const UploadFile = (props) => {
       radius: 1,
       channelId: props.channelId,
     };
-    const formData = new FormData();
-    formData.append('file', selectedFile)
-    // for (const pair of formData.entries()) {
-    //   console.log(pair[0] + ', ' + pair[1]);
-    // }
-    // console.log('formData in handleUpload: ', formData)
-    axios.post('/api/aws/file',
-      formData
-      // {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data'
-      //   }
-      // }
-    )
-      .then((res) => {
-        console.log('SUCCESS!!: ', res.data)
-      })
-      .catch(() => console.log('FAILURE!!'));
-    // await props.addMessage(postBody, formData, true)
+
+    await props.addMessage(postBody, 'upload', true)
+    setSuccess(true)
   }
 
   return (
-    // onSubmit={ev => ev.preventDefault()}
-    // onClick={ev => handleUpload(ev)}
-    <form action="/api/aws/file" enctype="multipart/form-data" method="POST" >
-      <input type='file' name="media" onChange={ev => handleFileSelect(ev)} />
-      <button type='submit'>Upload</button>
-    </form>
+    success ? (
+      <PostSuccess />
+    ) : (
+        <div>
+          <iframe name="hiddenFrame" width="0" height="0" border="0" style={{ display: 'none' }}></iframe>
+          <form action="/api/aws/file" target="hiddenFrame" encType="multipart/form-data" method="POST" >
+            <input type='file' name="media" onChange={ev => handleFileSelect(ev)} />
+            <input type='text' name='key' value={key} style={{ display: 'none' }} />
+            <button type='submit' onClick={handleUpload}>Upload</button>
+          </form>
+        </div >
+      )
   )
 }
 
