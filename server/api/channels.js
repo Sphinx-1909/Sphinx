@@ -17,7 +17,12 @@ router.get('/all', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-  const userId = USER_ID;
+  let userId;
+  if (req.user) {
+    userId = req.user.id
+  } else {
+    userId = USER_ID
+  }
   // the above should eventually be changed to: const userId = req.user.id;
   User.findOne({
     where: {
@@ -73,9 +78,15 @@ router.post('/', (req, res, next) => {
 
 router.post('/subscribe/:channelId', (req, res, next) => {
   const { channelId } = req.params;
+  let userId;
+  if (req.user) {
+    userId = req.user.id
+  } else {
+    userId = USER_ID
+  }
   User.findOne({
     where: {
-      id: USER_ID,
+      id: userId,
     },
   }).then(user => {
     if (user) {

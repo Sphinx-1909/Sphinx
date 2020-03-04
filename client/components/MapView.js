@@ -16,6 +16,8 @@ const MapContainer = props => {
   const [currentPosition, setCurrentPosition] = useState({});
   const [geoSupported, setGeoSupported] = useState(true);
   const [displayMessage, setDisplayMessage] = useState(false);
+  const [dataUri, setDataUri] = useState('')
+  const [initialLoad, setInitialLoad] = useState(false);
 
   const minDistance = 10000;
 
@@ -33,21 +35,44 @@ const MapContainer = props => {
         coords.lat !== currentPosition.lat ||
         coords.lng !== currentPosition.lng
       ) {
-        // console.log('coords: ', coords)
         setCurrentPosition(coords);
       }
     });
   }
 
-  const onMarkerClick = (props, marker, e, msg, distance) => {
+  console.log('currentPosition: ', currentPosition)
+
+
+
+  // BELOW FOR TESTING PURPOSES ONLY
+  const setTestUri = (Key) => {
+    // console.log('Key: ', Key)
+    axios.get(`/api/aws/${Key}`)
+      .then(media => {
+        // console.log('media.data: ', media.data)
+        setDataUri(media.data)
+        setDisplayMessage(true);
+      })
+      .catch(e => console.log('error in getMediaMessage thunk: ', e))
+  }
+
+  const testUriKey = '30c7916d-186b-4a05-9e9a-e660c7003357'
+
+  setTestUri(testUriKey)
+
+  const onMarkerClick = async (props, marker, e, msg, distance) => {
     if (distance > minDistance) return;
     // store the selectedMessage in local state
     setSelectedMessage(msg);
     // store the selectedMarker in local state
     setActiveMarker(marker);
+    // check if it is a media message
+    if (msg.fileType !== 'text') {
+      const uri = await props.getMediaMessage(msg.id);
+      setDataUri(uri)
+    }
     // display message in overlay
     setDisplayMessage(true);
-    // ...
   };
 
   // console.log('container props: ', props)
@@ -89,15 +114,27 @@ const MapContainer = props => {
   };
 
   // console.log('displayMessage: ', displayMessage)
-
+  // console.log('dataUri: ', dataUri)
   return (
     <>
       {displayMessage ? (
-        <div>
-          <h2>{selectedMessage.messageTitle}</h2>
-          <p>{selectedMessage.messageContent}</p>
-          <button onClick={handleClose}>Close</button>
-        </div>
+        <>
+          {
+            dataUri ? (
+              <div>
+                {/* <h2>{selectedMessage.messageTitle}</h2> */}
+                <img src={dataUri} />
+                <button onClick={handleClose}>Close</button>
+              </div>
+            ) : (
+                <div>
+                  <h2>{selectedMessage.messageTitle}</h2>
+                  <p>{selectedMessage.messageContent}</p>
+                  <button onClick={handleClose}>Close</button>
+                </div>
+              )
+          }
+        </>
       ) : geoSupported ? (
         <Map
           google={props.google}
@@ -138,10 +175,10 @@ const MapContainer = props => {
             })}
         </Map>
       ) : (
-        <div className="container">
-          Location access must be turned on to view messages!
+            <div className="container">
+              Location access must be turned on to view messages!
         </div>
-      )}
+          )}
     </>
   );
 };
@@ -160,6 +197,7 @@ const mapDispatch = dispatch => {
   return {
     fetchMessages: () => dispatch(fetchUnreadMessages()),
     markAsRead: msgId => dispatch(markAsRead(msgId)),
+    // getMediaMessage: key => dispatch(getMediaMessage(key)),
   };
 };
 

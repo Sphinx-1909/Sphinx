@@ -23,6 +23,9 @@ import AddMessage from './components/message/AddMessage';
 import { fetchChannels, fetchAllChannels } from './redux/channels';
 import { fetchUnreadMessages } from './redux/messages';
 import { initialLogInAttempt } from './redux/authentication/authentication';
+import TakePhoto from './components/message/TakePhoto';
+import TakeVideo from './components/message/TakeVideo';
+import UploadFile from './components/message/Upload';
 
 class App extends React.Component {
   async componentDidMount() {
@@ -108,6 +111,9 @@ class App extends React.Component {
             <Route path="/login" component={LogIn} exact />
             <Route path="/user" component={MyAccount} exact />
             <Route path="/editaccount" component={EditAccount} exact />
+            <Route path='/takephoto' component={TakePhoto} exact />
+            <Route path='/takevideo' component={TakeVideo} exact />
+            <Route path='/upload' component={UploadFile} exact />
           </div>
           <BottomMenu />
         </div>

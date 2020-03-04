@@ -48,7 +48,13 @@ router.get('/channels', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  Message.create({ ...req.body, senderId: USER_ID })
+  let userId;
+  if (req.user) {
+    userId = req.user.id
+  } else {
+    userId = USER_ID
+  }
+  Message.create({ ...req.body, senderId: userId })
     .then(newMessage => {
       res.status(201).send(newMessage);
     })
