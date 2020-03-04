@@ -115,9 +115,9 @@ class App extends React.Component {
             <Route path="/login" component={LogIn} exact />
             <Route path="/user" component={MyAccount} exact />
             <Route path="/editaccount" component={EditAccount} exact />
-            <Route path='/takephoto' component={TakePhoto} exact />
+            {/* <Route path='/takephoto' component={TakePhoto} exact />
             <Route path='/takevideo' component={TakeVideo} exact />
-            <Route path='/upload' component={UploadFile} exact />
+            <Route path='/upload' component={UploadFile} exact /> */}
             <Route path="/signup" component={SignUp} exact />
           </div>
           <BottomMenu />
