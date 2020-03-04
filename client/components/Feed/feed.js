@@ -1,4 +1,6 @@
 import React from 'react';
+//React Redux
+import { connect } from 'react-redux';
 //icon
 import Smiley from './smileyIcon';
 //css
@@ -66,4 +68,4 @@ class Feed extends React.Component {
   }
 }
 
-export default Feed;
+export default connect()(Feed);

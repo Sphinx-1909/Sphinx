@@ -114,7 +114,7 @@ class App extends React.Component {
             <Route path="/editaccount" component={EditAccount} exact />
             <Route path="/signup" component={SignUp} exact />
           </div>
-          <BottomMenu />
+          <BottomMenu openSlide={this.props.openSlide} />
         </div>
       </main>
     );
