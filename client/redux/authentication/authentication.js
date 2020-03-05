@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { fetchAllChannels, fetchChannels } from '../channels';
+import { fetchUnreadMessages } from '../messages';
 
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';
@@ -37,16 +39,31 @@ export const logInAttempt = logInData => {
   //console.log('login datapassed in', logInData);
 
   return async dispatch => {
-    await axios
-      .post('/login', logInData)
-      .then(res => {
-        return dispatch(signIn(res.data));
-      })
-      .catch(e => {
-        console.log(e);
-        dispatch(setLogInError());
-        return dispatch(signOut());
-      });
+    try {
+      const res = await axios.post('/login', logInData)
+      await dispatch(signIn(res.data))
+      dispatch(fetchChannels());
+      dispatch(fetchAllChannels());
+      dispatch(fetchUnreadMessages())
+    } catch (e) {
+      console.log('error in logInAttempt thunK: ', e)
+      dispatch(setLogInError())
+    }
+    // axios
+    //   .post('/login', logInData)
+    //   .then(res => {
+    //     dispatch(signIn(res.data))
+    //       .then(() => {
+    //         dispatch(fetchChannels());
+    //         dispatch(fetchAllChannels());
+    //         dispatch(fetchUnreadMessages())
+    //       })
+    //   })
+    //   .catch(e => {
+    //     console.log(e);
+    //     dispatch(setLogInError());
+    //     return dispatch(signOut());
+    //   });
   };
 };
 export const logOutAttempt = () => {
@@ -61,7 +78,7 @@ export const logOutAttempt = () => {
 
       .catch(e => {
         console.error(e);
-        return dispatch(signOut());
+        // return dispatch(signOut());
       });
   };
 };
@@ -75,7 +92,7 @@ export const initialLogInAttempt = () => {
       })
       .catch(e => {
         console.error(e);
-        return dispatch(signOut());
+        // return dispatch(signOut());
       });
   };
 };
