@@ -5,14 +5,13 @@ const Message = require('./models/messages');
 const Session = require('./models/sessions');
 const Channel = require('./models/channels');
 const ChannelUser = require('./models/channelUser');
-const MessageUser = require('./models/messageUser');
+const Subscriptions = require('./models/subscriptions');
 
 //Associations
-// - No Associations yet
 
 //User
-User.hasMany(Message);
-Message.belongsTo(User);
+User.hasMany(Message, { as: 'sender' });
+Message.belongsTo(User, { as: 'sender' });
 
 //Sessions
 Session.hasOne(User);
@@ -23,22 +22,21 @@ Message.belongsTo(Channel);
 Channel.hasMany(Message);
 
 //ChannelUser
-User.hasMany(ChannelUser);
-Channel.hasMany(ChannelUser);
 
-//MessageUser
-Message.hasMany(MessageUser);
-MessageUser.belongsTo(User);
-MessageUser.belongsTo(Message);
-Message.hasOne(MessageUser);
+User.belongsToMany(Channel, { through: ChannelUser });
+Channel.belongsToMany(User, { through: ChannelUser });
+
+// the following enables us to remove read messages from a user's view
+
+User.belongsToMany(Message, { through: 'readBy' });
+Message.belongsToMany(User, { through: 'readBy' });
 
 module.exports = {
   db,
-  models: {
-    User,
-    Message,
-    Session,
-    Channel,
-    ChannelUser,
-  },
+  User,
+  Message,
+  Session,
+  Channel,
+  ChannelUser,
+  Subscriptions,
 };

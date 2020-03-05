@@ -1,13 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <script src="main.js" defer></script>
-    <title>S P H I N X</title>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <script src="main.js" defer></script>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" type="text/css" href="/main.css" />
+  <title>S P H I N X</title>
+  <script defer src="https://sdk.amazonaws.com/js/aws-sdk-2.283.1.min.js"></script>
+  <script async defer type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuvzQNuDiQUkXKwp5lUIc3fDLYkKS5Ru8&libraries=geometry"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then(reg => {
+          console.log('Service worker registered.', reg);
+        }).catch((err) => {
+          console.log(err);
+        });
+      });
+    } else {
+      console.log('Service Worker is not supported by browser.');
+    }
+  </script>
+</body>
+
+</html>
+</body>
+
 </html>

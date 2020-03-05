@@ -1,0 +1,40 @@
+.bottomMenu {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 90%;
+  margin: 0 5% 2% 5%;
+  height: 8%;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 10.5rem;
+  font-weight: bold;
+  align-self: center;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  z-index: 8;
+  background-color: rgb(128, 128, 128);
+  border-radius: 50px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.bottomMenu_icon {
+  align-self: inherit;
+}
+
+.bottomMenu_icon_svg {
+  transform: translateY(-15px);
+  transition: all 0.3s ease-in-out;
+  fill: #ffe4c4;
+  filter: drop-shadow(5px 10px 4px #0000001a);
+}
+
+.bottomMenu_icon_svg:hover {
+  transform: translateY(-20px);
+  transition: all 0.3s ease-in-out;
+  filter: drop-shadow(5px 25px 4px #00000015);
+  fill: rgb(255, 255, 255);
+  opacity: 1;
+}

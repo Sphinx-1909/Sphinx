@@ -10,6 +10,7 @@ const {
   DATE,
   BOOLEAN,
   DECIMAL,
+  DOUBLE,
 } = Sequelize;
 
 const Message = db.define('messages', {
@@ -17,12 +18,6 @@ const Message = db.define('messages', {
     primaryKey: true,
     type: UUID,
     defaultValue: UUIDV4,
-  },
-  userId: {
-    type: UUID,
-  },
-  channelId: {
-    type: UUID,
   },
   fileType: {
     type: STRING,
@@ -54,11 +49,11 @@ const Message = db.define('messages', {
     defaultValue: 0,
   },
   latitude: {
-    type: DECIMAL,
+    type: DOUBLE(null, 7),
     allowNull: false,
   },
   longitude: {
-    type: DECIMAL,
+    type: DOUBLE(null, 7),
     allowNull: false,
   },
   radius: {
@@ -71,14 +66,11 @@ const Message = db.define('messages', {
   key: {
     type: STRING,
   },
-  parentMessageId: {
-    type: UUID,
-  },
-  childMessageId: {
-    type: UUID,
-  },
   expirationTime: {
     type: DATE,
   },
+  // groupUnlock: {
+  //   type: INTEGER,
+  // },
 });
 module.exports = Message;

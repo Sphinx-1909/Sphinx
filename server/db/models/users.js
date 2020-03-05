@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./../db.js');
 
-const { UUID, UUIDV4, STRING } = Sequelize;
+const { UUID, UUIDV4, STRING, DOUBLE } = Sequelize;
 
 const User = db.define('users', {
   id: {
@@ -11,9 +11,15 @@ const User = db.define('users', {
   },
   firstName: {
     type: STRING,
+    validate: {
+      notEmpty: true,
+    },
   },
   lastName: {
     type: STRING,
+    validate: {
+      notEmpty: true,
+    },
   },
   email: {
     type: STRING,
@@ -23,21 +29,28 @@ const User = db.define('users', {
       notEmpty: true,
       isEmail: true,
     },
-    userType: {
-      type: STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-      values: ['admin', 'regUser'],
+  },
+  // you can remove this if you think username is excessive but its somewhat like a privacy layer to prevent people form knowing your email / name if we are going to display info on the user
+  userName: {
+    type: STRING,
+    allowNull: true,
+    unique: true,
+    validate: {
+      notEmpty: true,
     },
-    password: {
-      type: STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: true,
-      },
+  },
+  password: {
+    type: STRING,
+    allowNull: true,
+    validate: {
+      notEmpty: true,
     },
+  },
+  latitude: {
+    type: DOUBLE(null, 7),
+  },
+  longitude: {
+    type: DOUBLE(null, 7),
   },
 });
 

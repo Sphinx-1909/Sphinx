@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./../db.js');
 
-const { UUID, UUIDV4, STRING, DECIMAL, TEXT, BOOLEAN } = Sequelize;
+const { UUID, UUIDV4, STRING, DECIMAL, TEXT, BOOLEAN, DOUBLE } = Sequelize;
 
 const Channel = db.define('channels', {
   id: {
@@ -9,6 +9,7 @@ const Channel = db.define('channels', {
     type: UUID,
     defaultValue: UUIDV4,
   },
+
   channelTitle: {
     type: STRING,
     allowNull: false,
@@ -20,26 +21,23 @@ const Channel = db.define('channels', {
   },
   channelDescription: {
     type: TEXT,
-
-    isPrivate: {
-      type: BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
-    key: {
-      type: STRING,
-    },
-    latitude: {
-      type: DECIMAL,
-      allowNull: false,
-    },
-    longitude: {
-      type: DECIMAL,
-      allowNull: false,
-    },
-    radius: {
-      type: DECIMAL,
-    },
+  },
+  isPrivate: {
+    type: BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  key: {
+    type: STRING,
+  },
+  latitude: {
+    type: DOUBLE(null, 7),
+  },
+  longitude: {
+    type: DOUBLE(null, 7),
+  },
+  radius: {
+    type: DOUBLE(null, 2),
   },
 });
 module.exports = Channel;
