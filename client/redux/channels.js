@@ -36,6 +36,7 @@ const unsubToChannel = channel => {
 
 //thunks
 export const fetchChannels = () => {
+  // console.log('in fetchChannels thunk');
   return dispatch => {
     return axios
       .get('/api/channels')
@@ -45,6 +46,7 @@ export const fetchChannels = () => {
 };
 
 export const fetchAllChannels = () => {
+  // console.log('in fetchAllChannels thunk');
   return dispatch => {
     return axios
       .get('/api/channels/all')

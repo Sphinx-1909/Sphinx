@@ -31,20 +31,23 @@ import TakeVideo from './components/message/TakeVideo';
 import UploadFile from './components/message/Upload';
 
 class App extends React.Component {
+
   async componentDidMount() {
     await this.props.initialLogInAttempt();
-    await this.props.fetchChannels();
-    await this.props.fetchAllChannels();
-    await this.props.fetchUnreadMessages();
-    // Request to get notifications
+    if (this.props.activeUser.firstName) {
+      await this.props.fetchChannels();
+      await this.props.fetchAllChannels();
+      await this.props.fetchUnreadMessages();
+      // Request to get notifications
 
-    Notification.requestPermission(result => {
-      if (result !== 'granted') {
-        //console.log('no notification granted!');
-      } else {
-        this.configurePushSub();
-      }
-    });
+      Notification.requestPermission(result => {
+        if (result !== 'granted') {
+          //console.log('no notification granted!');
+        } else {
+          this.configurePushSub();
+        }
+      });
+    }
   }
 
   displayConfirmNotification = () => {

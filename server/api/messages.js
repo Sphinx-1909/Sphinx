@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const USER_ID = require('../../utils');
 const { Message, User, Subscriptions, Channel } = require('../db/index');
 const webpush = require('web-push');
 
@@ -31,7 +30,7 @@ router.get('/read', (req, res, next) => {
   if (req.user) {
     userId = req.user.id
   } else {
-    userId = USER_ID
+    console.log('no req.user in messages.js line 33')
   }
   User.findOne({
     where: {
@@ -63,7 +62,7 @@ router.post('/read/:messageId', (req, res, next) => {
   if (req.user) {
     userId = req.user.id
   } else {
-    userId = USER_ID
+    console.log('no req.user in message.js line 65')
   }
   Message.findOne({
     where: {
@@ -108,7 +107,7 @@ router.post('/', (req, res, next) => {
   if (req.user) {
     userId = req.user.id
   } else {
-    userId = USER_ID
+    console.log('no req.user in messages.js line 110')
   }
   Message.create({ ...req.body, senderId: userId })
     .then(newMessage => {

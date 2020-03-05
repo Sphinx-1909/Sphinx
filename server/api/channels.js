@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const { Op } = require('sequelize');
 const { Channel, User, Message, readBy } = require('../db/index');
-const USER_ID = require('../../utils');
 
 //get all channels
 router.get('/all', (req, res, next) => {
@@ -18,7 +17,7 @@ router.get('/all', (req, res, next) => {
 
 // adding this route for the use of feed? This a modified version of the api/channels route to get messages that are not read.
 router.get('/withunreadmessages', (req, res, next) => {
-  const userId = USER_ID;
+  const userId = req.user.id;
   // the above should eventually be changed to: const userId = req.user.id;
   User.findOne({
     where: {
@@ -64,8 +63,7 @@ router.get('/', (req, res, next) => {
   if (req.user) {
     userId = req.user.id
   } else {
-    // console.log('no req.user')
-    userId = USER_ID
+    console.log('no req.user in channel.js line 66')
   }
   // console.log("userId: ", userId)
   // the above should eventually be changed to: const userId = req.user.id;
@@ -127,7 +125,7 @@ router.post('/subscribe/:channelId', (req, res, next) => {
   if (req.user) {
     userId = req.user.id
   } else {
-    userId = USER_ID
+    console.log('no req.user in channel.js line 128')
   }
   User.findOne({
     where: {
@@ -165,7 +163,7 @@ router.delete('/unsubscribe/:channelId', (req, res, next) => {
   const { channelId } = req.params;
   User.findOne({
     where: {
-      id: USER_ID,
+      id: req.user.id,
     },
   }).then(user => {
     if (user) {
