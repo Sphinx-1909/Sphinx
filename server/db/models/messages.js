@@ -48,7 +48,6 @@ const Message = db.define('messages', {
     allowNull: false,
     defaultValue: 0,
   },
-  //alternative to lat long we can also use datatype GEOMETRY(POINT) to store lat long. Havent used google maps api to pass lat long so lets see which is easiest to use later.
   latitude: {
     type: DOUBLE(null, 7),
     allowNull: false,
