@@ -24,7 +24,7 @@ class SignUp extends React.Component {
   };
   handleSubmit = ev => {
     ev.preventDefault();
-    console.log('this.state inside SignUp', this.state);
+
     if (this.state.reTypePassword !== this.state.password) {
       alert("Passwords don't match");
     } else {

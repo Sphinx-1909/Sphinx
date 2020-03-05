@@ -4,6 +4,7 @@ const SET_CHANNELS = 'SET_CHANNELS';
 const SET_ALL_CHANNELS = 'SET_ALL_CHANNELS';
 const SUBSCRIBE_TO_CHANNEL = 'SUBSCRIBE_TO_CHANNEL';
 const UNSUBSCRIBE_TO_CHANNEL = 'UNSUBSCRIBE_TO_CHANNEL';
+const CREATE_CHANNEL = 'CREATE_CHANNEL';
 
 //action creators
 const setChannels = channels => {
@@ -31,6 +32,13 @@ const unsubToChannel = channel => {
   return {
     type: UNSUBSCRIBE_TO_CHANNEL,
     channel,
+  };
+};
+
+const createdChannel = newChannelInfo => {
+  return {
+    type: CREATE_CHANNEL,
+    newChannelInfo,
   };
 };
 
@@ -81,6 +89,18 @@ export const subscribeToChannel = channelId => {
   };
 };
 
+export const createChannelThunk = newChannelInfo => {
+  return async dispatch => {
+    try {
+      const theNewChannel = (await axios.post(`/api/channels`, newChannelInfo))
+        .data;
+      dispatch(createdChannel(theNewChannel));
+    } catch (e) {
+      console.log('error in thunk:', e);
+    }
+  };
+};
+
 // Leaving this here for now
 // export const unsubscribeToChannel = channelId => {
 //   return dispatch => {
@@ -124,6 +144,8 @@ export const channelsReducer = (state = initialState, action) => {
           channel => channel.id !== action.channel.id
         ),
       };
+    case CREATE_CHANNEL:
+      return { ...state, myChannels: action.newChannelInfo };
     default:
       return state;
   }

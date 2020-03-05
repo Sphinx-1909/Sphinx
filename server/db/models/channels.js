@@ -32,11 +32,9 @@ const Channel = db.define('channels', {
   },
   latitude: {
     type: DOUBLE(null, 7),
-    allowNull: false,
   },
   longitude: {
     type: DOUBLE(null, 7),
-    allowNull: false,
   },
   radius: {
     type: DOUBLE(null, 2),
