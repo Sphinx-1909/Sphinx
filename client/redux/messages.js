@@ -55,16 +55,50 @@ export const markAsRead = msgId => {
   };
 };
 
-export const addMessage = msg => {
+
+export const addMessage = (msg, media, file) => {
   return () => {
-    axios
-      .post('/api/messages', msg)
-      .then(() => console.log('success posting new message!'))
-      .catch(e => console.log('error in addMessage thunk: ', e));
-  };
-};
+    axios.post('/api/messages', msg)
+      .then(msg => {
+        console.log('success posting new message to DB!', msg.data)
+        if (media !== 'upload') {
+          if (!file) {
+            console.log('msg: ', msg, 'media: ', media, 'file: ', file)
+            axios.post('/api/aws', { Key: msg.data.id, Body: media })
+              .then(res => console.log('success posting to AWS! ', res))
+              .catch(e => console.log('error posting to AWS: ', e))
+          } else {
+            // media is a file that has been uploaded
+            console.log('msg: ', msg, 'media: ', media, 'file: ', file)
+            media.append('Key', msg.data.id)
+            for (const pair of media.entries()) {
+              console.log(pair[0] + ', ' + pair[1]);
+            }
+            axios.post('/api/aws/file', media, { headers: { 'content-type': 'multipart/form-data' } })
+              .then(res => console.log('success uploading file to AWS! ', res))
+              .catch(e => console.log('error uploading file to AWS: ', e))
+          }
+        } else return;
+      })
+      .catch(e => console.log('error in addMessage thunk: ', e))
+  }
+}
+
+// export const getMediaMessage = (Key) => {
+//   // return () => {
+//   axios.get(`/api/aws/${Key}`)
+//     .then(media => {
+//       console.log('media.data: ', media.data)
+//       return media.data;
+//     })
+//     .catch(e => console.log('error in getMediaMessage thunk: ', e))
+//   // }
+// }
+
+
 
 const initialState = [];
+
 
 export const messagesReducer = (state = initialState, action) => {
   switch (action.type) {

@@ -6,6 +6,7 @@ const enforce = require('express-sslify');
 const axios = require('axios');
 const session = require('express-session');
 const moment = require('moment');
+const bodyParser = require('body-parser')
 
 const { User, Session } = require('./db/index');
 const cookieParser = require('cookie-parser');
@@ -15,8 +16,22 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 //body parsing
-app.use(express.json());
+// app.use(express.json());
 app.use(cookieParser());
+
+app.use(bodyParser.json({ limit: '20mb', extended: true }))
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }))
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:4000"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+app.use((req, res, next) => {
+  req.referer = 'http://localhost:4000/'
+  next()
+})
 
 app.use((req, res, next) => {
   if (req.cookies.sessionId) {
@@ -27,8 +42,8 @@ app.use((req, res, next) => {
     })
       .then(foundUser => {
         if (foundUser) {
+          // console.log('user found!')
           req.user = foundUser;
-          //req.russell = 'You found a user!!';
         }
         next();
       })

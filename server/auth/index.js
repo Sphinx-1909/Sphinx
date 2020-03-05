@@ -2,8 +2,8 @@ const router = require('express').Router();
 const { User } = require('../db/index');
 
 router.post('/login', (req, res, next) => {
-  console.log(req.body.email);
-  console.log(req.body.password);
+  // console.log(req.body.email);
+  // console.log(req.body.password);
   User.findOne({
     where: {
       email: req.body.email,
@@ -11,6 +11,7 @@ router.post('/login', (req, res, next) => {
     },
   })
     .then(foundUser => {
+      // console.log('req.cookies.sessionId: ', req.cookies.sessionId)
       if (foundUser) {
         User.update(
           {
@@ -28,7 +29,7 @@ router.post('/login', (req, res, next) => {
       }
     })
     .catch(e => {
-      res.status(404).send('User not found');
+      res.status(404).send('User not found', e);
     });
 });
 

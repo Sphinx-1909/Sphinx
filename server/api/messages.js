@@ -27,8 +27,12 @@ router.get('/', (req, res, next) => {
 // get all READ messages for user
 
 router.get('/read', (req, res, next) => {
-  const userId = USER_ID;
-  // the above should eventually be changed to: const userId = req.user.id;
+  let userId;
+  if (req.user) {
+    userId = req.user.id
+  } else {
+    userId = USER_ID
+  }
   User.findOne({
     where: {
       id: userId,
@@ -55,8 +59,12 @@ router.get('/read', (req, res, next) => {
 router.post('/read/:messageId', (req, res, next) => {
   const { messageId } = req.params;
   // ** copy a userId from your local channelUsers table and paste it below **
-  const userId = USER_ID;
-  // the above should eventually be changed to: const userId = req.user.id;
+  let userId;
+  if (req.user) {
+    userId = req.user.id
+  } else {
+    userId = USER_ID
+  }
   Message.findOne({
     where: {
       id: messageId,
@@ -96,7 +104,13 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  Message.create({ ...req.body, senderId: USER_ID })
+  let userId;
+  if (req.user) {
+    userId = req.user.id
+  } else {
+    userId = USER_ID
+  }
+  Message.create({ ...req.body, senderId: userId })
     .then(newMessage => {
       //PUSH NOTIFICATION CODE *************
       webpush.setVapidDetails(
