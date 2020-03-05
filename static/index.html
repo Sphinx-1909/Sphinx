@@ -16,19 +16,19 @@
 
 <body>
   <div id="root"></div>
-  <!-- <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/service-worker.js').then(reg => {
-            console.log('Service worker registered.', reg);
-          }).catch((err)=> {
-            console.log(err);
-          });
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then(reg => {
+          console.log('Service worker registered.', reg);
+        }).catch((err) => {
+          console.log(err);
         });
-      } else {
-        console.log('Service Worker is not supported by browser.');
-      }
-    </script> -->
+      });
+    } else {
+      console.log('Service Worker is not supported by browser.');
+    }
+  </script>
 </body>
 
 </html>
