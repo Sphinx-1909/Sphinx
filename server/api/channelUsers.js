@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const { Message, User, Channel, ChannelUser } = require('../db/index');
-const USER_ID = require('../../utils');
 
 const userAttributes = [
   'id',

@@ -4,6 +4,7 @@ import ChannelSearch from './SearchForm';
 import MyChannelSubscriptions from './MyChannels';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
+//CAN DELETE THIS ENTIRE FILE. Leaving this here temporarily
 const ChannelContainer = () => (
   <Tabs>
     <TabList>

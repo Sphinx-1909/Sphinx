@@ -16,7 +16,6 @@ import SlideMenu from './components/SlideMenu/SlideMenu';
 import Feed from './components/Feed/feed';
 import MapView from './components/MapView';
 import LogIn from './components/login/logIn';
-import ChannelContainer from './components/Channel/ChannelsContainer';
 import ChannelSearch from './components/Channel/SearchForm';
 import EditAccount from './components/EditAccount/EditAccount';
 import MyAccount from './components/MyAccount/MyAccount';
@@ -33,18 +32,20 @@ import UploadFile from './components/message/Upload';
 class App extends React.Component {
   async componentDidMount() {
     await this.props.initialLogInAttempt();
-    await this.props.fetchChannels();
-    await this.props.fetchAllChannels();
-    await this.props.fetchUnreadMessages();
-    // Request to get notifications
+    if (this.props.activeUser.firstName) {
+      await this.props.fetchChannels();
+      await this.props.fetchAllChannels();
+      await this.props.fetchUnreadMessages();
+      // Request to get notifications
 
-    Notification.requestPermission(result => {
-      if (result !== 'granted') {
-        //console.log('no notification granted!');
-      } else {
-        this.configurePushSub();
-      }
-    });
+      Notification.requestPermission(result => {
+        if (result !== 'granted') {
+          //console.log('no notification granted!');
+        } else {
+          this.configurePushSub();
+        }
+      });
+    }
   }
 
   displayConfirmNotification = () => {
@@ -110,7 +111,6 @@ class App extends React.Component {
             <Route path="/" component={MapView} exact />
             <Route path="/feed" component={Feed} exact />
             <Route path="/post" component={AddMessage} exact />
-            <Route path="/mychannels" component={ChannelContainer} exact />
             <Route path="/channelsearch" component={ChannelSearch} exact />
             <Route path="/login" component={LogIn} exact />
             <Route path="/user" component={MyAccount} exact />

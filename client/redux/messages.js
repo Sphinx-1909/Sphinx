@@ -4,6 +4,7 @@ const SET_MESSAGES = 'SET_MESSAGES';
 
 //action creators
 const setMessages = messages => {
+  console.log('in setMessages action creator')
   return {
     type: SET_MESSAGES,
     messages,
@@ -12,6 +13,7 @@ const setMessages = messages => {
 
 //thunks
 export const fetchUnreadMessages = () => {
+  // console.log('in fetchUnreadMessages thunk')
   return async dispatch => {
     try {
       const subscriptions = (await axios.get('/api/channels')).data;

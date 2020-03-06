@@ -44,6 +44,7 @@ const createdChannel = newChannelInfo => {
 
 //thunks
 export const fetchChannels = () => {
+  // console.log('in fetchChannels thunk');
   return dispatch => {
     return axios
       .get('/api/channels')
@@ -53,6 +54,7 @@ export const fetchChannels = () => {
 };
 
 export const fetchAllChannels = () => {
+  // console.log('in fetchAllChannels thunk');
   return dispatch => {
     return axios
       .get('/api/channels/all')
@@ -146,9 +148,14 @@ export const channelsReducer = (state = initialState, action) => {
       };
     case CREATE_CHANNEL:
       return {
+<<<<<<< HEAD
         ...state,
         myChannels: action.newChannelInfo,
         allChannels: action.newChannelInfo,
+=======
+        allChannels: [...state.allChannels, action.newChannelInfo],
+        myChannels: [...state.myChannels, action.newChannelInfo],
+>>>>>>> 085563fde3e516ad4ee93d5881ad7feefef506bb
       };
     default:
       return state;
