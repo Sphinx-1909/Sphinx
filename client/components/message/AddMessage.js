@@ -6,6 +6,7 @@ import '../../app.css';
 import { setLogInError } from '../../redux/authentication/authentication';
 import TakePhoto from './TakePhoto';
 import TakeVideo from './TakeVideo';
+import PostLink from './PostLink';
 import { PostSuccess } from './PostSuccess';
 import Upload from './Upload';
 
@@ -67,95 +68,109 @@ const AddMessage = props => {
   return success ? (
     <PostSuccess />
   ) : (
-    <>
-      {positionLoaded && !success ? (
-        <>
-          {!media ? (
-            <form onSubmit={handleSubmit}>
-              <label>Channel</label>
-              <select onChange={ev => setChannelId(ev.target.value)}>
-                <option>{''}</option>
-                {channels.map(channel => (
-                  <option value={channel.id} key={channel.id}>
-                    {channel.channelTitle}
-                  </option>
-                ))}
-              </select>
-              <label>Title</label>
-              <input
-                placeholder="Title"
-                value={title}
-                name="messageTitle"
-                onChange={ev => setTitle(ev.target.value)}
-              />
-              <label>Body</label>
-              <textarea
-                placeholder="Message Body"
-                value={body}
-                name="messageBody"
-                onChange={ev => setBody(ev.target.value)}
-              />
-              <p>
-                Title and Channel must not be empty in order to upload
-                photo/video below
+      <>
+        {positionLoaded && !success ? (
+          <>
+            {!media ? (
+              <form onSubmit={handleSubmit}>
+                <label>Channel</label>
+                <select onChange={ev => setChannelId(ev.target.value)}>
+                  <option>{''}</option>
+                  {channels.map(channel => (
+                    <option value={channel.id} key={channel.id}>
+                      {channel.channelTitle}
+                    </option>
+                  ))}
+                </select>
+                <label>Title</label>
+                <input
+                  placeholder="Title"
+                  value={title}
+                  name="messageTitle"
+                  onChange={ev => setTitle(ev.target.value)}
+                />
+                <label>Body</label>
+                <textarea
+                  placeholder="Message Body"
+                  value={body}
+                  name="messageBody"
+                  onChange={ev => setBody(ev.target.value)}
+                />
+                <p>
+                  Title and Channel must not be empty in order to upload
+                  photo/video or post a link
               </p>
-              <button
-                disabled={!title || !channelId}
-                onClick={() => setMedia('photo')}
-              >
-                Take photo
+                <button
+                  disabled={!title || !channelId}
+                  onClick={() => setMedia('photo')}
+                >
+                  Take photo
               </button>
-              <button
-                disabled={!title || !channelId}
-                onClick={() => setMedia('video')}
-              >
-                Take video
+                <button
+                  disabled={!title || !channelId}
+                  onClick={() => setMedia('video')}
+                >
+                  Take video
               </button>
-              <button
-                disabled={!title || !channelId}
-                onClick={() => setMedia('upload')}
-              >
-                Upload photo or video
+                <button
+                  disabled={!title || !channelId}
+                  onClick={() => setMedia('upload')}
+                >
+                  Upload photo or video
               </button>
-              <button type="submit">POST</button>
-              {error && (
-                <div style={{ backgroundColor: 'red' }}>
-                  Error posting new message. Please refresh the page and try
-                  again.
+                <button
+                  disabled={!title || !channelId}
+                  onClick={() => setMedia('link')}
+                >
+                  Send link
+              </button>
+                <button type="submit">POST</button>
+                {error && (
+                  <div style={{ backgroundColor: 'red' }}>
+                    Error posting new message. Please refresh the page and try
+                    again.
                 </div>
-              )}
-            </form>
-          ) : media === 'photo' ? (
-            <TakePhoto
-              title={title}
-              latitude={latitude}
-              longitude={longitude}
-              channelId={channelId}
-            />
-          ) : media === 'video' ? (
-            <TakeVideo
-              title={title}
-              latitude={latitude}
-              longitude={longitude}
-              channelId={channelId}
-            />
-          ) : (
-            <Upload
-              title={title}
-              latitude={latitude}
-              longitude={longitude}
-              channelId={channelId}
-            />
+                )}
+              </form>
+            ) : media === 'photo' ? (
+              <TakePhoto
+                title={title}
+                latitude={latitude}
+                longitude={longitude}
+                channelId={channelId}
+              />
+            ) : media === 'video' ? (
+              <TakeVideo
+                title={title}
+                latitude={latitude}
+                longitude={longitude}
+                channelId={channelId}
+              />
+            ) : media === 'link' ? (
+              <PostLink
+                title={title}
+                latitude={latitude}
+                longitude={longitude}
+                channelId={channelId}
+              />
+            ) : (
+                      <Upload
+                        title={title}
+                        latitude={latitude}
+                        longitude={longitude}
+                        channelId={channelId}
+                      />
+                    )
+            }
+          </>
+        ) : (
+            <div>
+              <h3>Loading...</h3>
+              <div>{loadingArr[loadingTicker]}</div>
+            </div>
           )}
-        </>
-      ) : (
-        <div>
-          <h3>Loading...</h3>
-          <div>{loadingArr[loadingTicker]}</div>
-        </div>
-      )}
-    </>
-  );
+      </>
+    );
 };
 
 const mapState = ({ channels }) => {

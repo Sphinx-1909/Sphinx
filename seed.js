@@ -52,6 +52,16 @@ const seed = async () => {
         latitude: 40.7527,
         longitude: 73.9772,
       },
+      {
+        firstName: 'Jane',
+        lastName: 'Block',
+        email: 'jane.block@gmail.com',
+        username: 'jane123',
+        userType: 'regUser',
+        password: 'passJane',
+        latitude: 40.7527,
+        longitude: 73.9772,
+      },
     ];
     for (let i = 0; i < GENERATE_USERS; i++) {
       userList.push({
