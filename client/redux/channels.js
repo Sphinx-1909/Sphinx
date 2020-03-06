@@ -1,10 +1,12 @@
 import axios from 'axios';
+import history from '../history';
 //action types
 const SET_CHANNELS = 'SET_CHANNELS';
 const SET_ALL_CHANNELS = 'SET_ALL_CHANNELS';
 const SUBSCRIBE_TO_CHANNEL = 'SUBSCRIBE_TO_CHANNEL';
 const UNSUBSCRIBE_TO_CHANNEL = 'UNSUBSCRIBE_TO_CHANNEL';
 const CREATE_CHANNEL = 'CREATE_CHANNEL';
+const EDIT_CHANNEL = 'EDIT CHANNEL';
 
 //action creators
 const setChannels = channels => {
@@ -39,6 +41,14 @@ const createdChannel = newChannelInfo => {
   return {
     type: CREATE_CHANNEL,
     newChannelInfo,
+  };
+};
+
+const editChannel = editedChannelInfo => {
+  console.log('editedChannelInfo line 48', editedChannelInfo);
+  return {
+    type: EDIT_CHANNEL,
+    editedChannelInfo,
   };
 };
 
@@ -129,6 +139,21 @@ export const unsubscribeToChannel = channelId => {
   };
 };
 
+export const editChannelThunk = channelEdits => {
+  return async dispatch => {
+    try {
+      const editedChannel = (
+        await axios.put(`/api/channels/${channelEdits.channelId}`, channelEdits)
+      ).data;
+      console.log('edited channel info', editedChannel);
+      dispatch(editChannel(editedChannel));
+      history.push('/');
+    } catch (e) {
+      console.log('error in edit channel', e);
+    }
+  };
+};
+
 const initialState = { myChannels: [], allChannels: [] };
 
 export const channelsReducer = (state = initialState, action) => {
@@ -148,15 +173,42 @@ export const channelsReducer = (state = initialState, action) => {
       };
     case CREATE_CHANNEL:
       return {
-<<<<<<< HEAD
-        ...state,
-        myChannels: action.newChannelInfo,
-        allChannels: action.newChannelInfo,
-=======
         allChannels: [...state.allChannels, action.newChannelInfo],
         myChannels: [...state.myChannels, action.newChannelInfo],
->>>>>>> 085563fde3e516ad4ee93d5881ad7feefef506bb
       };
+    case EDIT_CHANNEL: {
+      const myUpdated_Channels = state.myChannels.map(myChannel => {
+        console.log('myChannel', myChannel);
+
+        if (myChannel.id !== action.editedChannelInfo.id) {
+          return myChannel;
+        } else {
+          return {
+            ...myChannel,
+            ...action.editedChannelInfo,
+          };
+        }
+      });
+      const allUpdated_Channels = state.allChannels.map(channel => {
+        console.log('channel', channel);
+
+        if (channel.id !== action.editedChannelInfo.id) {
+          return channel;
+        } else {
+          return {
+            ...channel,
+            ...action.editedChannelInfo,
+          };
+        }
+      });
+      console.log('allUpdated_Channels', allUpdated_Channels);
+      console.log('myUpdated_Channels', myUpdated_Channels);
+
+      return {
+        allChannels: [...state.allChannels, action.allUpdated_Channels],
+        myChannels: [...state.myChannels, action.myUpdated_Channels],
+      };
+    }
     default:
       return state;
   }

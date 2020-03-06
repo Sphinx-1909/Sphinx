@@ -2,18 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './CreateChannel.css';
 import { createChannelThunk } from '../../redux/channels';
-<<<<<<< HEAD
-
-class CreateChannel extends React.Component {
-=======
 import history from '../../history';
+
 class CreateAChannel extends React.Component {
->>>>>>> 085563fde3e516ad4ee93d5881ad7feefef506bb
   constructor() {
     super();
     this.state = {
       channelTitle: '',
-      channelDescrpition: '',
+      channelDescription: '',
     };
   }
 
@@ -42,7 +38,7 @@ class CreateAChannel extends React.Component {
           <h3>Create a new Channel</h3>
 
           <label>
-            <b>Channel Title</b>
+            <b>Name</b>
           </label>
 
           <input
@@ -52,7 +48,7 @@ class CreateAChannel extends React.Component {
           />
 
           <label>
-            <b>channel Description</b>
+            <b>Description</b>
           </label>
 
           <input
