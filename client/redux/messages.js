@@ -61,13 +61,13 @@ export const markAsRead = msgId => {
 export const addMessage = (msg, media) => {
   return () => {
     axios.post('/api/messages', msg)
-      .then(msg => {
-        console.log('success posting new message to DB!', msg.data)
+      .then(message => {
+        console.log('success posting new message to DB!', message.data)
         // media is set to 'upload' for file posts
         if (media && media !== 'upload') {
           // media is either image (dataUri) or video (BlobUrl)
           console.log('msg: ', msg, 'media: ', media)
-          axios.post('/api/aws', { Key: msg.data.id, Body: media })
+          axios.post(`/api/aws/${msg.fileType}`, { Key: message.data.id, Body: media })
             .then(res => console.log('success posting to AWS! ', res))
             .catch(e => console.log('error posting to AWS: ', e))
         } else {

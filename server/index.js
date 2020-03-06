@@ -7,6 +7,9 @@ const axios = require('axios');
 const session = require('express-session');
 const moment = require('moment');
 const bodyParser = require('body-parser')
+const dotenv = require('dotenv')
+
+dotenv.config();
 
 const { User, Session } = require('./db/index');
 const cookieParser = require('cookie-parser');
