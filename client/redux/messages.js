@@ -58,29 +58,23 @@ export const markAsRead = msgId => {
 };
 
 
-export const addMessage = (msg, media, file) => {
+export const addMessage = (msg, media) => {
+  // media is set to 'upload' for file posts
   return () => {
     axios.post('/api/messages', msg)
       .then(msg => {
         console.log('success posting new message to DB!', msg.data)
-        if (media !== 'upload') {
-          if (!file) {
-            console.log('msg: ', msg, 'media: ', media, 'file: ', file)
-            axios.post('/api/aws', { Key: msg.data.id, Body: media })
-              .then(res => console.log('success posting to AWS! ', res))
-              .catch(e => console.log('error posting to AWS: ', e))
-          } else {
-            // media is a file that has been uploaded
-            console.log('msg: ', msg, 'media: ', media, 'file: ', file)
-            media.append('Key', msg.data.id)
-            for (const pair of media.entries()) {
-              console.log(pair[0] + ', ' + pair[1]);
-            }
-            axios.post('/api/aws/file', media, { headers: { 'content-type': 'multipart/form-data' } })
-              .then(res => console.log('success uploading file to AWS! ', res))
-              .catch(e => console.log('error uploading file to AWS: ', e))
-          }
-        } else return;
+        if (media && media !== 'upload') {
+          // image (dataUri) or video (BlobUrl)
+          console.log('msg: ', msg, 'media: ', media)
+          axios.post('/api/aws', { Key: msg.data.id, Body: media })
+            .then(res => console.log('success posting to AWS! ', res))
+            .catch(e => console.log('error posting to AWS: ', e))
+        } else {
+          // media is equal to 'upload', which means it comes from Upload.js
+          // in this case, AWS post req. has been made directly in Upload form, so no need to post to AWS here
+          return;
+        }
       })
       .catch(e => console.log('error in addMessage thunk: ', e))
   }

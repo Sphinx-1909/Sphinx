@@ -31,40 +31,40 @@ const UploadFile = props => {
       channelId: props.channelId,
     };
 
-    await props.addMessage(postBody, 'upload', true);
+    await props.addMessage(postBody, 'upload');
     setSuccess(true);
   };
 
   return success ? (
     <PostSuccess />
   ) : (
-    <div>
-      <iframe
-        name="hiddenFrame"
-        width="0"
-        height="0"
-        border="0"
-        style={{ display: 'none' }}
-      ></iframe>
-      <form
-        action="/api/aws/file"
-        target="hiddenFrame"
-        encType="multipart/form-data"
-        method="POST"
-      >
-        <input type="file" name="media" onChange={ev => handleFileSelect(ev)} />
-        <input type="text" name="key" value={key} style={{ display: 'none' }} />
-        <button type="submit" onClick={handleUpload}>
-          Upload
+      <div>
+        <iframe
+          name="hiddenFrame"
+          width="0"
+          height="0"
+          border="0"
+          style={{ display: 'none' }}
+        ></iframe>
+        <form
+          action="/api/aws/file"
+          target="hiddenFrame"
+          encType="multipart/form-data"
+          method="POST"
+        >
+          <input type="file" name="media" onChange={ev => handleFileSelect(ev)} />
+          <input type="text" name="key" value={key} style={{ display: 'none' }} />
+          <button type="submit" onClick={handleUpload}>
+            Upload
         </button>
-      </form>
-    </div>
-  );
+        </form>
+      </div>
+    );
 };
 
 const mapDispatch = dispatch => {
   return {
-    addMessage: (msg, media, file) => dispatch(addMessage(msg, media, file)),
+    addMessage: (msg, media) => dispatch(addMessage(msg, media)),
   };
 };
 
