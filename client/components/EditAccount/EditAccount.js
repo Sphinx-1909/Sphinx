@@ -42,77 +42,89 @@ class EditAccount extends React.Component {
 
   render() {
     return (
-      <div className="editUser">
-        <form onSubmit={ev => this.handleSubmit(ev)} className="editUser_form">
-          <h3>Edit your account</h3>
-
-          <label>
-            <b>first name</b>
-          </label>
-
-          <input
-            type={'firstName'}
-            placeholder={`${this.props.activeUser.firstName}`}
-            name={'firstName'}
-            onChange={this.handleChange}
-          />
-
-          <label>
-            <b>last name</b>
-          </label>
-
-          <input
-            type={'lastName'}
-            placeholder={`${this.props.activeUser.lastName}`}
-            name={'lastName'}
-            onChange={this.handleChange}
-          />
-
-          <label>
-            <b>username</b>
-          </label>
-
-          <input
-            type={'userName'}
-            placeholder={`${this.props.activeUser.userName}`}
-            name={'userName'}
-            onChange={this.handleChange}
-          />
-
-          <label>
-            <b>Email</b>
-          </label>
-          <input
-            type={'text'}
-            placeholder={`${this.props.activeUser.email}`}
-            name={'email'}
-            onChange={this.handleChange}
-          />
-
-          <label>
-            <b>Password</b>
-          </label>
-          <input
-            type={'password'}
-            placeholder={`${this.props.activeUser.password}`}
-            name={'password'}
-            onChange={this.handleChange}
-          />
-          <button
+      <div className="liner">
+        <div className="contentCenter">
+          <form
             onSubmit={ev => this.handleSubmit(ev)}
-            type="submit"
-            class="saveupbtn"
+            className="editUser_form"
           >
-            Save
-          </button>
-          <button
-            onClick={() => history.push('/')}
-            type="button"
-            class="cancelbtn"
-          >
-            Cancel
-          </button>
-        </form>
+            <div className="editUser_form_subHeader">Edit your account</div>
+
+            <label className="editUser_form_item">
+              <b>first name</b>
+            </label>
+
+            <input
+              type={'firstName'}
+              placeholder={`${this.props.activeUser.firstName}`}
+              name={'firstName'}
+              onChange={this.handleChange}
+              className="editUser_form_input"
+            />
+
+            <label className="editUser_form_item">
+              <b>last name</b>
+            </label>
+
+            <input
+              type={'lastName'}
+              placeholder={`${this.props.activeUser.lastName}`}
+              name={'lastName'}
+              onChange={this.handleChange}
+              className="editUser_form_input"
+            />
+
+            <label className="editUser_form_item">
+              <b>username</b>
+            </label>
+
+            <input
+              type={'userName'}
+              placeholder={`${this.props.activeUser.userName}`}
+              name={'userName'}
+              onChange={this.handleChange}
+              className="editUser_form_input"
+            />
+
+            <label className="editUser_form_item">
+              <b>Email</b>
+            </label>
+            <input
+              type={'text'}
+              placeholder={`${this.props.activeUser.email}`}
+              name={'email'}
+              onChange={this.handleChange}
+              className="editUser_form_input"
+            />
+
+            <label className="editUser_form_item">
+              <b>Password</b>
+            </label>
+            <input
+              type={'password'}
+              placeholder={`${this.props.activeUser.password}`}
+              name={'password'}
+              onChange={this.handleChange}
+              className="editUser_form_input"
+            />
+            <div className="login_buttons">
+              <button
+                onSubmit={ev => this.handleSubmit(ev)}
+                type="submit"
+                class="editUser_form_links"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => history.push('/')}
+                type="button"
+                class="editUser_form_links_cancel"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }

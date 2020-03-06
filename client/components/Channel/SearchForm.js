@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ChannelsList from './ChannelsList';
 import { TextField } from '@material-ui/core';
+//css
+import './SearchForm.css';
 
 class ChannelSearch extends Component {
   constructor(props) {
@@ -56,8 +58,9 @@ class ChannelSearch extends Component {
 
   render() {
     return (
-      <div>
-        {/* <TextField
+      <div className="liner">
+        <div className="contentCenter">
+          {/* <TextField
           id="outlined-basic"
           label="Outlined"
           variant="outlined"
@@ -66,13 +69,15 @@ class ChannelSearch extends Component {
           onChange={this.handleChange}
           placeholder="Search for different channels..."
         /> */}
-        <input
-          type="text"
-          className="input"
-          onChange={this.handleChange}
-          placeholder="Search for different channels..."
-        />
-        <ChannelsList channels={this.state.filtered} />
+          <div className="searchBox_search_subHeader">SEARCH CHANNELS</div>
+          <input
+            type="text"
+            className="searchBox_search_subHeader_input"
+            onChange={this.handleChange}
+            placeholder="Search for different channels..."
+          />
+          <ChannelsList channels={this.state.filtered} />
+        </div>
       </div>
     );
   }

@@ -1,25 +1,7 @@
-.feedBox {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  font-size: 4rem;
-  color: white;
-}
-
-.feedBox_feed {
-  width: 70vw;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-}
-
 .feedBox_feed_subHeader {
   width: 100%;
   text-align: center;
-  background-color: black;
+  background-color: rgb(128, 128, 128);
 }
 
 .feedBox_feed_item {
@@ -42,6 +24,7 @@
 .feedBox_feed_item_link {
   align-items: center;
   color: black;
+  font-size: 1.5rem;
   text-decoration: none;
 }
 

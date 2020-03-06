@@ -1,46 +1,23 @@
-.card {
-  /* max-width: 300px;
-  margin: auto;
-  text-align: center; */
-  text-transform: none;
+.login_buttons {
+  width: 100%;
+  text-align: center;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
-.inner_card {
-  width: 70vw;
-  height: 100%;
-  text-align: center;
-  padding: 0;
-  margin: 0;
-}
-
-.title {
-  color: grey;
-  font-size: 8px;
-}
-
-button {
+.login_buttons_links {
+  align-self: center;
   border: none;
   outline: 0;
   display: inline-block;
   padding: 8px;
   color: white;
-  background-color: #000;
   text-align: center;
   cursor: pointer;
   width: 100%;
-  font-size: 10px;
 }
 
-a {
-  text-decoration: none;
-  font-size: 7px;
-  color: black;
-}
-
-button:hover,
-a:hover {
+.login_buttons_links:hover {
   opacity: 0.7;
 }

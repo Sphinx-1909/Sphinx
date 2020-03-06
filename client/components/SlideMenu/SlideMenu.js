@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 //css
 import './SlideMenu.css';
+//actions
+import { setToggleSlideMenu } from '../../redux/nav/action/nav.action';
 //import { StyledMenu } from './Menu.styled';
 import { Link } from 'react-router-dom';
 import MyChannelSubscriptions from '../Channel/MyChannels';
@@ -12,22 +14,38 @@ class SlideMenu extends React.Component {
     super(props);
     this.state = {};
   }
+
+  onHandleClick = e => {
+    if (e.target.title === 'outside') {
+      this.props.setToggleSlideMenu();
+    }
+  };
   render() {
     return (
       <div
-        className="slideMenu"
+        className="slideMenu-wrapper"
+        title="outside"
         style={{
           transform: this.props.openSlide
             ? 'translateX(0)'
             : 'translateX(-100%)',
         }}
+        onClick={e => this.onHandleClick(e)}
       >
-       
+        <div
+          className="slideMenu"
+          style={{
+            transform: this.props.openSlide
+              ? 'translateX(0)'
+              : 'translateX(-100%)',
+          }}
+        >
           <span>CHANNELS</span>
-      <MyChannelSubscriptions />
-        <Link to="/createnewchannel">
-          <span>Create a new channel</span>
-        </Link>
+          <MyChannelSubscriptions />
+          <Link to="/createnewchannel">
+            <span>Create a new channel</span>
+          </Link>
+        </div>
       </div>
     );
   }
@@ -39,6 +57,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   signout: () => dispatch(logOutAttempt()),
+  setToggleSlideMenu: () => dispatch(setToggleSlideMenu()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SlideMenu);
