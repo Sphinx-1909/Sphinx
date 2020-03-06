@@ -54,7 +54,6 @@
     "sequelize": "^5.21.2",
     "styled-components": "^5.0.1",
     "uuid": "^7.0.2",
-    "video-react": "^0.14.1",
     "web-push": "^3.4.3"
   },
   "devDependencies": {
