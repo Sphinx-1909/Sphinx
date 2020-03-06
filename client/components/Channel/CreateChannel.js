@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './CreateChannel.css';
-import createChannelThunk from '../../redux/channels';
-
-class CreateChannel extends React.Component {
+import { createChannelThunk } from '../../redux/channels';
+import history from '../../history';
+class CreateAChannel extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -23,7 +23,9 @@ class CreateChannel extends React.Component {
     console.log('this.state inside CreateChannel', this.state);
     const { channelTitle, channelDescription } = this.state;
     this.props.createChannel({ channelTitle, channelDescription });
+    history.push('/');
   };
+
   render() {
     console.log('props in createChannel', this.props);
     return (
@@ -85,5 +87,5 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateChannel);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateAChannel);
 // need to add error message if passwords don't match
