@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import './SlideMenu.css';
 //import { StyledMenu } from './Menu.styled';
 import { Link } from 'react-router-dom';
-
+import MyChannelSubscriptions from '../Channel/MyChannels';
 import { logOutAttempt } from '../../redux/authentication/authentication';
 class SlideMenu extends React.Component {
   constructor(props) {
@@ -21,9 +21,13 @@ class SlideMenu extends React.Component {
             : 'translateX(-100%)',
         }}
       >
-        <Link to="/mychannels">
-          <a>CHANNELS</a>
-        </Link>
+        <span>CHANNELS</span>
+        <MyChannelSubscriptions />
+        <div>
+          <Link to="/createnewchannel">
+            <span>Create a new channel</span>
+          </Link>
+        </div>
       </div>
     );
   }

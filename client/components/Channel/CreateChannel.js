@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './CreateChannel.css';
-import createChannelThunk from '../../redux/channels';
+import { createChannelThunk } from '../../redux/channels';
 
 class CreateChannel extends React.Component {
   constructor() {

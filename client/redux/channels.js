@@ -145,7 +145,11 @@ export const channelsReducer = (state = initialState, action) => {
         ),
       };
     case CREATE_CHANNEL:
-      return { ...state, myChannels: action.newChannelInfo };
+      return {
+        ...state,
+        myChannels: action.newChannelInfo,
+        allChannels: action.newChannelInfo,
+      };
     default:
       return state;
   }
