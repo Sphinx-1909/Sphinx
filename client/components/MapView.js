@@ -1,5 +1,6 @@
 import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import React, { useState, useEffect } from 'react';
+import ReactPlayer from 'react-player'
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { fetchUnreadMessages, markAsRead } from '../redux/messages';
@@ -61,7 +62,7 @@ const MapContainer = props => {
     setSelectedMessage(msg);
     setActiveMarker(marker);
     // check if it is a media message
-    if (msg.fileType !== 'text') {
+    if (msg.fileType !== 'text' && msg.fileType !== 'link') {
       axios.get(`/api/aws/${msg.id}`)
         .then(media => {
           setDataUri(media.data)
@@ -110,7 +111,7 @@ const MapContainer = props => {
         <>
           {
             dataUri ? (
-              selectedMessage.type === 'image' ? (
+              selectedMessage.fileType !== 'text' && selectedMessage.fileType !== 'link' ? (
                 // message type is 'image':
                 <div>
                   <img src={dataUri} />
@@ -124,12 +125,22 @@ const MapContainer = props => {
                   </div>
                 )
             ) : (
-                // message type is 'text':
-                <div>
-                  <h2>{selectedMessage.messageTitle}</h2>
-                  <p>{selectedMessage.messageContent}</p>
-                  <button onClick={handleClose}>Close</button>
-                </div>
+                // message type is 'link':
+                selectedMessage.fileType === 'link' ? (
+                  <div>
+                    <ReactPlayer
+                      url={selectedMessage.messageContent}
+                      playing />
+                    <button onClick={handleClose}>Close</button>
+                  </div>
+                ) : (
+                    // message type is 'text':
+                    <div>
+                      <h2>{selectedMessage.messageTitle}</h2>
+                      <p>{selectedMessage.messageContent}</p>
+                      <button onClick={handleClose}>Close</button>
+                    </div>
+                  )
               )
           }
         </>
@@ -399,7 +410,8 @@ const MapContainer = props => {
             <div className="container">
               Location access must be enabled to view messages!
         </div>
-          )}
+          )
+      }
     </>
   );
 };
