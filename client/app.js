@@ -16,12 +16,11 @@ import SlideMenu from './components/SlideMenu/SlideMenu';
 import Feed from './components/Feed/feed';
 import MapView from './components/MapView';
 import LogIn from './components/login/logIn';
-import ChannelContainer from './components/Channel/ChannelsContainer';
 import ChannelSearch from './components/Channel/SearchForm';
 import EditAccount from './components/EditAccount/EditAccount';
 import MyAccount from './components/MyAccount/MyAccount';
 import AddMessage from './components/message/AddMessage';
-
+import CreateAChannel from './components/channel/CreateChannel';
 import SignUp from './components/SignUp/SignUp';
 import { fetchChannels, fetchAllChannels } from './redux/channels';
 import { fetchUnreadMessages } from './redux/messages';
@@ -31,7 +30,6 @@ import TakeVideo from './components/message/TakeVideo';
 import UploadFile from './components/message/Upload';
 
 class App extends React.Component {
-
   async componentDidMount() {
     await this.props.initialLogInAttempt();
     if (this.props.activeUser.firstName) {
@@ -113,7 +111,6 @@ class App extends React.Component {
             <Route path="/" component={MapView} exact />
             <Route path="/feed" component={Feed} exact />
             <Route path="/post" component={AddMessage} exact />
-            <Route path="/mychannels" component={ChannelContainer} exact />
             <Route path="/channelsearch" component={ChannelSearch} exact />
             <Route path="/login" component={LogIn} exact />
             <Route path="/user" component={MyAccount} exact />
@@ -122,6 +119,7 @@ class App extends React.Component {
             <Route path='/takevideo' component={TakeVideo} exact />
             <Route path='/upload' component={UploadFile} exact /> */}
             <Route path="/signup" component={SignUp} exact />
+            <Route path="/createnewchannel" component={CreateAChannel} exact />
           </div>
           <BottomMenu openSlide={this.props.openSlide} />
         </div>
