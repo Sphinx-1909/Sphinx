@@ -1,46 +1,66 @@
-.createUser {
+.signUp_form_subHeader {
   width: 100%;
-  height: 100%;
+  text-align: center;
+  background-color: rgb(128, 128, 128);
+}
+
+.signUp_form_item {
+  width: 100%;
+  text-align: center;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: start;
+  color: white;
+  font-size: 1.5rem;
+  text-decoration: none;
 }
 
-.createUser_form {
-  width: 70vw;
-  height: 100%;
-  text-align: center;
-  padding: 0;
-  margin: 0;
-}
-
-input {
+.signUp_form_input {
   width: 100%;
-  padding: 15px;
+  padding: 10px;
   margin: 5px 0 22px 0;
   display: inline-block;
   border: none;
   background: #f1f1f1;
 }
 
-/* Set a style for all buttons */
-button {
-  background-color: #626262;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
+.signUp_form_buttons {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.signUp_form_links {
+  align-self: center;
   border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  text-align: center;
   cursor: pointer;
   width: 100%;
-  opacity: 0.9;
 }
 
-button:hover {
-  opacity: 1;
+.signUp_form_links_cancel {
+  align-self: center;
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  background-color: rgb(201, 89, 89);
 }
 
-/* Extra styles for the cancel button */
-.cancelbtn {
-  padding: 14px 20px;
-  background-color: #f44336;
+.signUp_form_links:hover {
+  opacity: 0.7;
+}
+
+.signUp_form_links_cancel:hover {
+  opacity: 0.7;
 }

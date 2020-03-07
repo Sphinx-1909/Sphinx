@@ -1,10 +1,10 @@
-.editUser_form_subHeader {
+.message_form_subHeader {
   width: 100%;
   text-align: center;
   background-color: rgb(128, 128, 128);
 }
 
-.editUser_form_item {
+.message_form_item {
   width: 100%;
   text-align: center;
   display: flex;
@@ -15,7 +15,7 @@
   text-decoration: none;
 }
 
-.editUser_form_input {
+.message_form_input {
   width: 100%;
   padding: 10px;
   margin: 5px 0 22px 0;
@@ -24,15 +24,15 @@
   background: #f1f1f1;
 }
 
-.editUser_form_buttons {
+.message_form_buttons {
   width: 100%;
   text-align: center;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
 }
 
-.editUser_form_links {
+.message_form_links {
   align-self: center;
   border: none;
   outline: 0;
@@ -44,7 +44,7 @@
   width: 100%;
 }
 
-.editUser_form_links_cancel {
+.message_form_links_cancel {
   align-self: center;
   border: none;
   outline: 0;
@@ -57,7 +57,7 @@
   background-color: rgb(201, 89, 89);
 }
 
-.editUser_form_links:hover {
+.message_form_links:hover {
   opacity: 0.7;
 }
 

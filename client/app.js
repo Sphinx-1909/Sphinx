@@ -29,6 +29,7 @@ import TakePhoto from './components/message/TakePhoto';
 import TakeVideo from './components/message/TakeVideo';
 import UploadFile from './components/message/Upload';
 import EditAChannel from './components/Channel/EditChannel';
+import LinkTest from './components/message/LinkTest';
 
 class App extends React.Component {
   async componentDidMount() {
@@ -120,6 +121,7 @@ class App extends React.Component {
             <Route path='/takevideo' component={TakeVideo} exact />
             <Route path='/upload' component={UploadFile} exact /> */}
             <Route path="/signup" component={SignUp} exact />
+            <Route path="/linktest" component={LinkTest} exact />
             <Route path="/createnewchannel" component={CreateAChannel} exact />
             <Route path="/editchannel/:id" component={EditAChannel} />
           </div>

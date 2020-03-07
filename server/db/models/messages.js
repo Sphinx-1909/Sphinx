@@ -25,7 +25,7 @@ const Message = db.define('messages', {
     validate: {
       notEmpty: true,
     },
-    values: ['video', 'text', 'audio', 'image'],
+    values: ['video', 'text', 'link', 'audio', 'image'],
   },
   messageTitle: {
     type: STRING,

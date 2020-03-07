@@ -24,7 +24,10 @@ class ChannelLineItem extends Component {
   };
   render() {
     return (
-      <ListItem divider={this.props.divider}>
+      <ListItem
+        divider={this.props.divider}
+        className="searchBox_search_subHeader_item"
+      >
         {/* <ListItemText primary={this.props.channelDetails.channelTitle} /> */}
         <Typography>{this.props.channelDetails.channelTitle}</Typography>
         <ListItemSecondaryAction>
