@@ -28,9 +28,9 @@ router.get('/', (req, res, next) => {
 router.get('/read', (req, res, next) => {
   let userId;
   if (req.user) {
-    userId = req.user.id
+    userId = req.user.id;
   } else {
-    console.log('no req.user in messages.js line 33')
+    console.log('no req.user in messages.js line 33');
   }
   User.findOne({
     where: {
@@ -60,9 +60,9 @@ router.post('/read/:messageId', (req, res, next) => {
   // ** copy a userId from your local channelUsers table and paste it below **
   let userId;
   if (req.user) {
-    userId = req.user.id
+    userId = req.user.id;
   } else {
-    console.log('no req.user in message.js line 65')
+    console.log('no req.user in message.js line 65');
   }
   Message.findOne({
     where: {
@@ -93,8 +93,8 @@ router.post('/read/:messageId', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
   Message.findByPk(req.params.id, {})
     .then(message => {
-      if (!message) res.status(404).send('Message is not found!');
-      res.status(200).send(message);
+      if (!message) return res.status(404).send('Message is not found!');
+      return res.status(200).send(message);
     })
     .catch(e => {
       console.error(e);
@@ -105,10 +105,11 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   let userId;
   if (req.user) {
-    userId = req.user.id
+    userId = req.user.id;
   } else {
-    console.log('no req.user in messages.js line 110')
+    console.log('no req.user in messages.js line 110');
   }
+  console.log('req.body in post', req.body);
   Message.create({ ...req.body, senderId: userId })
     .then(newMessage => {
       //PUSH NOTIFICATION CODE *************

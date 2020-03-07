@@ -62,7 +62,7 @@ const AddMessage = props => {
       channelId,
     };
     // console.log('postBody: ', postBody)
-    await props.addMessage(postBody);
+    props.addMessage(postBody);
     setSuccess(true);
   };
 
