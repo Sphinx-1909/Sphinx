@@ -121,8 +121,7 @@ const startServer = new Promise((res, rej) => {
 
 db.sync()
   .then(() => startServer)
-  .then(thing => {
-    console.log('this is the return from our startSever promise', thing);
+  .then(() => {
     console.log(chalk.bgMagentaBright(`application started`));
   })
   .catch(e => {
