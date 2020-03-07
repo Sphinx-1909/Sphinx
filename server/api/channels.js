@@ -58,18 +58,18 @@ router.get('/withunreadmessages', (req, res, next) => {
   });
 });
 
-router.get('/', (req, res, next) => {
+router.get('/:id?', (req, res, next) => {
   let userId;
   if (req.user) {
-    userId = req.user.id
+    userId = req.user.id;
   } else {
-    console.log('no req.user in channel.js line 66')
+    console.log('no req.user in channel.js line 66');
   }
-  // console.log("userId: ", userId)
+  console.log('userId: ', userId);
   // the above should eventually be changed to: const userId = req.user.id;
   User.findOne({
     where: {
-      id: userId,
+      id: req.params.id || userId,
     },
   }).then(user => {
     if (user) {
@@ -123,9 +123,9 @@ router.post('/subscribe/:channelId', (req, res, next) => {
   const { channelId } = req.params;
   let userId;
   if (req.user) {
-    userId = req.user.id
+    userId = req.user.id;
   } else {
-    console.log('no req.user in channel.js line 128')
+    console.log('no req.user in channel.js line 128');
   }
   User.findOne({
     where: {
@@ -198,6 +198,27 @@ router.delete('/:id', (req, res, next) => {
     .then(channelDelete => {
       if (channelDelete) return res.sendStatus(204);
       res.sendStatus(404);
+    })
+    .catch(e => {
+      console.error(e);
+      next(e);
+    });
+});
+
+//get channel to edit that the user is an owner of adn add moderators
+router.put('/:id', (req, res, next) => {
+  // async/awwait
+  Channel.findByPk(req.params.id)
+    .then(channel => {
+      if (channel) {
+        channel.update(req.body); // async deal with it!
+
+        //find users that are subscribed to channel with userName information
+        //add moderators
+        //
+        return res.status(202).send(channel);
+      }
+      res.status(404);
     })
     .catch(e => {
       console.error(e);

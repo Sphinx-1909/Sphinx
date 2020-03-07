@@ -9,6 +9,7 @@ import TakeVideo from './TakeVideo';
 import PostLink from './PostLink';
 import { PostSuccess } from './PostSuccess';
 import Upload from './Upload';
+import './message.css';
 
 const AddMessage = props => {
   const [title, setTitle] = useState('');
@@ -61,20 +62,25 @@ const AddMessage = props => {
       channelId,
     };
     // console.log('postBody: ', postBody)
-    await props.addMessage(postBody);
+    props.addMessage(postBody);
     setSuccess(true);
   };
 
   return success ? (
     <PostSuccess />
   ) : (
-      <>
+    <div className="liner">
+      <div className="contentCenter">
+        <div className="message_form_subHeader">POST A MESSAGE</div>
         {positionLoaded && !success ? (
           <>
             {!media ? (
               <form onSubmit={handleSubmit}>
-                <label>Channel</label>
-                <select onChange={ev => setChannelId(ev.target.value)}>
+                <label className="message_form_item">Channel</label>
+                <select
+                  onChange={ev => setChannelId(ev.target.value)}
+                  className="message_form_input"
+                >
                   <option>{''}</option>
                   {channels.map(channel => (
                     <option value={channel.id} key={channel.id}>
@@ -82,54 +88,60 @@ const AddMessage = props => {
                     </option>
                   ))}
                 </select>
-                <label>Title</label>
+                <label className="message_form_item">Title</label>
                 <input
                   placeholder="Title"
                   value={title}
                   name="messageTitle"
                   onChange={ev => setTitle(ev.target.value)}
+                  className="message_form_input"
                 />
-                <label>Body</label>
+                <label className="message_form_item">Body</label>
                 <textarea
                   placeholder="Message Body"
                   value={body}
                   name="messageBody"
                   onChange={ev => setBody(ev.target.value)}
+                  className="message_form_input"
                 />
-                <p>
-                  Title and Channel must not be empty in order to upload
-                  photo/video or post a link
-              </p>
-                <button
-                  disabled={!title || !channelId}
-                  onClick={() => setMedia('photo')}
-                >
-                  Take photo
-              </button>
-                <button
-                  disabled={!title || !channelId}
-                  onClick={() => setMedia('video')}
-                >
-                  Take video
-              </button>
-                <button
-                  disabled={!title || !channelId}
-                  onClick={() => setMedia('upload')}
-                >
-                  Upload photo or video
-              </button>
-                <button
-                  disabled={!title || !channelId}
-                  onClick={() => setMedia('link')}
-                >
-                  Send link
-              </button>
-                <button type="submit">POST</button>
+                <div className="message_form_buttons">
+                  <button
+                    disabled={!title || !channelId}
+                    onClick={() => setMedia('photo')}
+                    className="message_form_links"
+                  >
+                    PHOTO
+                  </button>
+                  <button
+                    disabled={!title || !channelId}
+                    onClick={() => setMedia('video')}
+                    className="message_form_links"
+                  >
+                    VIDEO
+                  </button>
+                  <button
+                    disabled={!title || !channelId}
+                    onClick={() => setMedia('upload')}
+                    className="message_form_links"
+                  >
+                    UPLOAD
+                  </button>
+                  <button
+                    disabled={!title || !channelId}
+                    onClick={() => setMedia('link')}
+                    className="message_form_links"
+                  >
+                    LINK
+                  </button>
+                  <button type="submit" className="message_form_links">
+                    POST
+                  </button>
+                </div>
                 {error && (
                   <div style={{ backgroundColor: 'red' }}>
                     Error posting new message. Please refresh the page and try
                     again.
-                </div>
+                  </div>
                 )}
               </form>
             ) : media === 'photo' ? (
@@ -154,23 +166,23 @@ const AddMessage = props => {
                 channelId={channelId}
               />
             ) : (
-                      <Upload
-                        title={title}
-                        latitude={latitude}
-                        longitude={longitude}
-                        channelId={channelId}
-                      />
-                    )
-            }
+              <Upload
+                title={title}
+                latitude={latitude}
+                longitude={longitude}
+                channelId={channelId}
+              />
+            )}
           </>
         ) : (
-            <div>
-              <h3>Loading...</h3>
-              <div>{loadingArr[loadingTicker]}</div>
-            </div>
-          )}
-      </>
-    );
+          <div>
+            <h3>Loading...</h3>
+            <div>{loadingArr[loadingTicker]}</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 const mapState = ({ channels }) => {

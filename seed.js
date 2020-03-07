@@ -196,6 +196,7 @@ const seed = async () => {
     await ChannelUser.bulkCreate(channelUserList);
   } catch (err) {
     console.log(chalk.red(err));
+    throw 'error in seed';
   }
 };
 

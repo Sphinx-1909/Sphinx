@@ -18,12 +18,17 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// logger
+if (process.env.NODE_ENV !== 'production') {
+  app.use(require('morgan')('dev'));
+}
+
 //body parsing
 // app.use(express.json());
 app.use(cookieParser());
 
-app.use(bodyParser.json({ limit: '20mb', extended: true }))
-app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }))
+app.use(bodyParser.json({ limit: '20mb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
 
 // app.use(function (req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "http://localhost:4000"); // update to match the domain you will make the request from
@@ -32,9 +37,9 @@ app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }))
 // });
 
 app.use((req, res, next) => {
-  req.referer = 'http://localhost:4000/'
-  next()
-})
+  req.referer = 'http://localhost:4000/';
+  next();
+});
 
 app.use((req, res, next) => {
   if (req.cookies.sessionId) {
@@ -77,7 +82,14 @@ app.use((req, res, next) => {
 
 // static Middleware
 app.use(express.static(path.join(__dirname, '../static')));
-
+app.use((req, res, next) => {
+  if (req.user) {
+    console.log('this is req.user &&&&&&&&&&&&&&&&&&&&&&', req.user.id);
+  } else {
+    console.log('no req.user');
+  }
+  next();
+});
 // service worker route
 app.use('/service-worker.js', (req, res) => {
   // res.send(path.resolve(__dirname, '../static', 'service-worker.js'));
@@ -108,10 +120,11 @@ const startServer = new Promise((res, rej) => {
 });
 
 db.sync()
-  .then(startServer)
-  .then(() => {
+  .then(() => startServer)
+  .then(thing => {
+    console.log('this is the return from our startSever promise', thing);
     console.log(chalk.bgMagentaBright(`application started`));
   })
   .catch(e => {
-    console.log(chalk.bgMagentaBright(`application failed to start`));
+    console.log(chalk.bgMagentaBright(e, `application failed to start`));
   });

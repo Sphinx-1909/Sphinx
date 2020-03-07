@@ -9,8 +9,8 @@ import './feed.css';
 class Feed extends React.Component {
   render() {
     return (
-      <div className="feedBox">
-        <div className="feedBox_feed">
+      <div className="liner">
+        <div className="contentCenter">
           <div className="feedBox_feed_subHeader">Channel Activity</div>
 
           <div className="feedBox_feed_item">

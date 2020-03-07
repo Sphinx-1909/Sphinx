@@ -1,10 +1,10 @@
-.creastChannel_form_subHeader {
+.editChannel_form_subHeader {
   width: 100%;
   text-align: center;
   background-color: rgb(128, 128, 128);
 }
 
-.creastChannel_form_item {
+.editChannel_form_item {
   width: 100%;
   text-align: center;
   display: flex;
@@ -15,7 +15,7 @@
   text-decoration: none;
 }
 
-.creastChannel_form_input {
+.editChannel_form_input {
   width: 100%;
   padding: 10px;
   margin: 5px 0 22px 0;
@@ -24,7 +24,7 @@
   background: #f1f1f1;
 }
 
-.creastChannel_form_buttons {
+.editChannel_form_buttons {
   width: 100%;
   text-align: center;
   display: flex;
@@ -32,20 +32,20 @@
   justify-content: space-between;
 }
 
-.creastChannel_form_links {
+.editChannel_form_links {
   align-self: center;
   border: none;
   outline: 0;
   display: inline-block;
   padding: 8px;
   color: white;
+  background-color: rgb(128, 128, 128);
   text-align: center;
   cursor: pointer;
   width: 100%;
-  background-color: rgb(128, 128, 128);
 }
 
-.creastChannel_form_links_cancel {
+.editChannel_form_links_cancel {
   align-self: center;
   border: none;
   outline: 0;
@@ -58,10 +58,10 @@
   background-color: rgb(201, 89, 89);
 }
 
-.creastChannel_form_links:hover {
+.editChannel_form_links:hover {
   opacity: 0.7;
 }
 
-.creastChannel_form_links_cancel:hover {
+.editChannel_form_links_cancel:hover {
   opacity: 0.7;
 }

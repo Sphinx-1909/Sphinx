@@ -22,8 +22,13 @@ router.post('/login', (req, res, next) => {
               id: foundUser.id,
             },
           }
-        );
-        res.status(202).send(foundUser);
+        )
+          .then(() => {
+            return res.status(202).send(foundUser);
+          })
+          .catch(e => {
+            console.log('error in login', e);
+          });
       } else {
         res.status(400).send('No matching user');
       }
@@ -61,7 +66,9 @@ router.get('/signout', (req, res, next) => {
 router.get('/me', (req, res, next) => {
   if (req.user) return res.send(req.user);
 
-  res.status(401).send('Unauthorized');
+  res
+    .status(401)
+    .send('Sending Unauthorized from index.js req.user line 64', req.user);
 });
 
 module.exports = router;

@@ -28,15 +28,16 @@ import { initialLogInAttempt } from './redux/authentication/authentication';
 import TakePhoto from './components/message/TakePhoto';
 import TakeVideo from './components/message/TakeVideo';
 import UploadFile from './components/message/Upload';
+import EditAChannel from './components/Channel/EditChannel';
 import LinkTest from './components/message/LinkTest';
 
 class App extends React.Component {
   async componentDidMount() {
-    await this.props.initialLogInAttempt();
+    this.props.initialLogInAttempt();
     if (this.props.activeUser.firstName) {
-      await this.props.fetchChannels();
-      await this.props.fetchAllChannels();
-      await this.props.fetchUnreadMessages();
+      // this.props.fetchChannels();
+      // this.props.fetchAllChannels();
+      // this.props.fetchUnreadMessages();
       // Request to get notifications
 
       Notification.requestPermission(result => {
@@ -122,6 +123,7 @@ class App extends React.Component {
             <Route path="/signup" component={SignUp} exact />
             <Route path="/linktest" component={LinkTest} exact />
             <Route path="/createnewchannel" component={CreateAChannel} exact />
+            <Route path="/editchannel/:id" component={EditAChannel} />
           </div>
           <BottomMenu openSlide={this.props.openSlide} />
         </div>

@@ -1,10 +1,12 @@
 import axios from 'axios';
+import history from '../history';
 //action types
 const SET_CHANNELS = 'SET_CHANNELS';
 const SET_ALL_CHANNELS = 'SET_ALL_CHANNELS';
 const SUBSCRIBE_TO_CHANNEL = 'SUBSCRIBE_TO_CHANNEL';
 const UNSUBSCRIBE_TO_CHANNEL = 'UNSUBSCRIBE_TO_CHANNEL';
 const CREATE_CHANNEL = 'CREATE_CHANNEL';
+const EDIT_CHANNEL = 'EDIT CHANNEL';
 
 //action creators
 const setChannels = channels => {
@@ -42,12 +44,20 @@ const createdChannel = newChannelInfo => {
   };
 };
 
+const editChannel = editedChannelInfo => {
+  console.log('!!!!!!!!editedChannelInfo line 48', editedChannelInfo);
+  return {
+    type: EDIT_CHANNEL,
+    editedChannelInfo,
+  };
+};
+
 //thunks
-export const fetchChannels = () => {
+export const fetchChannels = id => {
   // console.log('in fetchChannels thunk');
   return dispatch => {
     return axios
-      .get('/api/channels')
+      .get(`/api/channels/${id}`)
       .then(channels => dispatch(setChannels(channels.data)))
       .catch(e => console.log('Error in thunk:', e));
   };
@@ -90,7 +100,7 @@ export const subscribeToChannel = channelId => {
       .catch(e => console.log('Error in thunk at post:', e));
   };
 };
-
+//not assigning new channel to myChannels for creator
 export const createChannelThunk = newChannelInfo => {
   return async dispatch => {
     try {
@@ -129,6 +139,22 @@ export const unsubscribeToChannel = channelId => {
   };
 };
 
+export const editChannelThunk = channelEdits => {
+  console.log('edits line 143 channels.js', channelEdits);
+  return async dispatch => {
+    try {
+      const editedChannel = (
+        await axios.put(`/api/channels/${channelEdits.id}`, channelEdits)
+      ).data;
+      console.log('edited channel info', editedChannel);
+      dispatch(editChannel(editedChannel));
+      history.push('/');
+    } catch (e) {
+      console.log('error in edit channel', e);
+    }
+  };
+};
+
 const initialState = { myChannels: [], allChannels: [] };
 
 export const channelsReducer = (state = initialState, action) => {
@@ -151,6 +177,29 @@ export const channelsReducer = (state = initialState, action) => {
         allChannels: [...state.allChannels, action.newChannelInfo],
         myChannels: [...state.myChannels, action.newChannelInfo],
       };
+    case EDIT_CHANNEL: {
+      let updatedAllChannels = state.allChannels.map(channel => {
+        console.log('action.editedChannelInfo.id', action.editedChannelInfo.id);
+        if (channel.id === action.editedChannelInfo.id)
+          return action.editedChannelInfo;
+        return channel;
+      });
+      let updatedMyChannels = state.myChannels.map(channel => {
+        if (channel.id === action.editedChannelInfo.id) {
+          console.log('action.editedChannelInfo', action.editedChannelInfo);
+          return action.editedChannelInfo;
+        }
+
+        return channel;
+      });
+      console.log('updatedAllChannels', updatedAllChannels);
+      console.log('updatedMyChannels', updatedMyChannels);
+      return {
+        allChannels: updatedAllChannels,
+        myChannels: updatedMyChannels,
+      };
+    }
+
     default:
       return state;
   }
