@@ -15,7 +15,11 @@ class EditAChannel extends React.Component {
     };
   }
   componentDidMount() {
-    const { channelTitle, channelDescription } = this.props.channels;
+    console.log('CDM this.props.channels', this.props.channels);
+    const {
+      channelTitle,
+      channelDescription,
+    } = this.props.channels.myChannels[0];
 
     this.setState({
       channelTitle: channelTitle,
