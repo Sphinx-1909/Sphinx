@@ -27,7 +27,7 @@ class EditAccount extends React.Component {
     });
   }
 
-  handleChange = ({ target: { value, name } }) => {
+  handleChange = ({ target: { name, value } }) => {
     this.setState({
       [name]: value,
     });

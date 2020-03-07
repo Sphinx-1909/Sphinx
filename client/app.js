@@ -28,6 +28,7 @@ import { initialLogInAttempt } from './redux/authentication/authentication';
 import TakePhoto from './components/message/TakePhoto';
 import TakeVideo from './components/message/TakeVideo';
 import UploadFile from './components/message/Upload';
+import EditAChannel from './components/Channel/EditChannel';
 import LinkTest from './components/message/LinkTest';
 
 class App extends React.Component {
@@ -122,6 +123,7 @@ class App extends React.Component {
             <Route path="/signup" component={SignUp} exact />
             <Route path="/linktest" component={LinkTest} exact />
             <Route path="/createnewchannel" component={CreateAChannel} exact />
+            <Route path="/editchannel/:id" component={EditAChannel} />
           </div>
           <BottomMenu openSlide={this.props.openSlide} />
         </div>
