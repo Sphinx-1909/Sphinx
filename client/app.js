@@ -30,6 +30,7 @@ import TakeVideo from './components/message/TakeVideo';
 import UploadFile from './components/message/Upload';
 import EditAChannel from './components/Channel/EditChannel';
 import LinkTest from './components/message/LinkTest';
+import SelectMedia from './components/SelectMedia/Selectmedia';
 import PhoneInput from './components/login/2FA/PhoneInput'
 
 class App extends React.Component {
@@ -113,7 +114,8 @@ class App extends React.Component {
           <div className="container">
             <Route path="/" component={MapView} exact />
             <Route path="/feed" component={Feed} exact />
-            <Route path="/post" component={AddMessage} exact />
+            <Route path="/post" component={SelectMedia} exact />
+            <Route path="/message" component={AddMessage} exact />
             <Route path="/channelsearch" component={ChannelSearch} exact />
             <Route path="/login" component={LogIn} exact />
             <Route path="/user" component={MyAccount} exact />

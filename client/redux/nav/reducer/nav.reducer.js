@@ -3,6 +3,11 @@ import navType from '../type/nav.type';
 const INITIAL_STATE = {
   displaySlideMenu: false,
   displayOverlay: false,
+  currentLocation: {
+    latitude: 0,
+    longitude: 0,
+  },
+  mediaType: '',
 };
 
 export const navReducer = (state = INITIAL_STATE, action) => {
@@ -16,6 +21,16 @@ export const navReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         displayOverlay: !state.displayOverlay,
+      };
+    case navType.SET_MEDIA_TYPE:
+      return {
+        ...state,
+        mediaType: action.payload,
+      };
+    case navType.SET_CURRENT_LOCATION:
+      return {
+        ...state,
+        currentLocation: action.payload,
       };
     default:
       return state;
