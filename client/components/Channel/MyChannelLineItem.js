@@ -10,16 +10,25 @@ import {
   ListItemSecondaryAction,
   Typography,
   Button,
+  Collapse,
+  ListSubheader,
 } from '@material-ui/core';
-import Eject from '@material-ui/icons/Eject';
+import ExitToApp from '@material-ui/icons/ExitToApp';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import ExpandLess from '@material-ui/icons/ExpandLess';
 
 class MyChannelLineItem extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      open: false,
+    };
   }
 
-  // unsubscribe currently works but needs to be refreshed WIP.
-  // TODO: FIX IT
+  clickToOpen = () => {
+    this.setState({ open: !this.state.open });
+  };
+
   clickToUnsubscribeToChannel = (ev, channelId) => {
     ev.preventDefault();
     console.log('WHAT IS THE CHANNELID ON UNSUB', channelId);
@@ -28,21 +37,39 @@ class MyChannelLineItem extends Component {
 
   render() {
     return (
-      <ListItem divider={this.props.divider}>
-        {/* <ListItemText primary={this.props.channelDetails.channelTitle} /> */}
-        <Typography>{this.props.channelDetails.channelTitle}</Typography>
-        <ListItemSecondaryAction>
-          <ListItem
-            button={true}
-            onClick={ev =>
-              this.clickToUnsubscribeToChannel(ev, this.props.channelDetails.id)
-            }
-          >
-            {/* TODO: make an ternary op to change button from Add to a subscribe button / icon */}
-            <Eject />
-          </ListItem>
-        </ListItemSecondaryAction>
-      </ListItem>
+      <>
+        <ListItem divider={this.props.divider}>
+          {/* <ListItemText primary={this.props.channelDetails.channelTitle} /> */}
+          <Typography>{this.props.channelDetails.channelTitle}</Typography>
+          <ListItemSecondaryAction>
+            <ListItem button={true} onClick={ev => this.clickToOpen()}>
+              {this.state.open === true ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+          <List component={'div'}>
+            <ListSubheader>Channel Description</ListSubheader>
+            <ListItem>
+              {/* <ListItemText
+                primary={this.props.channelDetails.channelDescription}
+              /> */}
+            </ListItem>
+            <ListItem
+              button={true}
+              onClick={ev =>
+                this.clickToUnsubscribeToChannel(
+                  ev,
+                  this.props.channelDetails.id
+                )
+              }
+            >
+              <ListItemText primary={'UNSUBSCRIBE'} />
+              <ExitToApp />
+            </ListItem>
+          </List>
+        </Collapse>
+      </>
     );
   }
 }

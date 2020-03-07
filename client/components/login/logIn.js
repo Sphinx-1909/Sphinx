@@ -39,7 +39,7 @@ class LogIn extends Component {
       <div className="liner">
         <div className="contentCenter">
           <form onSubmit={ev => this.handleLogin(ev)}>
-            <h3>Sign into your account</h3>
+            <div className="login_subHeader">SIGN IN</div>
             <input type="email" name={'email'} onChange={this.handleChange} />
             <input
               type="password"

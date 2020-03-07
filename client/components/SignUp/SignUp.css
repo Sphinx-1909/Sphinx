@@ -42,6 +42,7 @@
   text-align: center;
   cursor: pointer;
   width: 100%;
+  background-color: rgb(128, 128, 128);
 }
 
 .signUp_form_links_cancel {

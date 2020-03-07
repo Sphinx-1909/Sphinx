@@ -42,11 +42,13 @@ export const logInAttempt = logInData => {
   return async dispatch => {
     try {
       const res = await axios.post('/login', logInData);
+
       dispatch(signIn(res.data));
       dispatch(fetchChannels(res.id));
       dispatch(fetchAllChannels());
       dispatch(fetchUnreadMessages());
       history.push('/');
+
     } catch (e) {
       console.log('error in logInAttempt thunK: ', e);
       dispatch(setLogInError());
@@ -69,7 +71,7 @@ export const logInAttempt = logInData => {
   };
 };
 export const logOutAttempt = () => {
-  console.log('logging out');
+  console.log('the logout thunk is firing!!!!!!!!!!!');
   return dispatch => {
     axios
 

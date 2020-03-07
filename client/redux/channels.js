@@ -144,7 +144,7 @@ export const editChannelThunk = channelEdits => {
   return async dispatch => {
     try {
       const editedChannel = (
-        await axios.put(`/api/channels/${channelEdits.channelId}`, channelEdits)
+        await axios.put(`/api/channels/${channelEdits.id}`, channelEdits)
       ).data;
       console.log('edited channel info', editedChannel);
       dispatch(editChannel(editedChannel));
@@ -179,13 +179,14 @@ export const channelsReducer = (state = initialState, action) => {
       };
     case EDIT_CHANNEL: {
       let updatedAllChannels = state.allChannels.map(channel => {
-        if (channel.id === action.editedChannelInfo)
+        console.log('action.editedChannelInfo.id', action.editedChannelInfo.id);
+        if (channel.id === action.editedChannelInfo.id)
           return action.editedChannelInfo;
         return channel;
       });
       let updatedMyChannels = state.myChannels.map(channel => {
-        if (channel.id === action.editedChannelInfo) {
-          console.log(action.editedChannelInfo);
+        if (channel.id === action.editedChannelInfo.id) {
+          console.log('action.editedChannelInfo', action.editedChannelInfo);
           return action.editedChannelInfo;
         }
 
