@@ -97,6 +97,15 @@ export const initialLogInAttempt = () => {
   };
 };
 
+export const authPhone = (phoneNum) => {
+  return () => {
+    axios.post('/api/nexmo', { phoneNum })
+      // receive the request ID back to use on the front end (When your user submits the correct PIN, you will need to plug both the PIN and the request ID into the check() function.)
+      .then(reqId => reqId.data)
+      .catch(e => console.log('error in authPhone thunk: ', e))
+  }
+}
+
 const initialState = {
   isLoggedIn: false,
   logInError: false,
