@@ -45,7 +45,7 @@ const createdChannel = newChannelInfo => {
 };
 
 const editChannel = editedChannelInfo => {
-  console.log('editedChannelInfo line 48', editedChannelInfo);
+  console.log('!!!!!!!!editedChannelInfo line 48', editedChannelInfo);
   return {
     type: EDIT_CHANNEL,
     editedChannelInfo,
@@ -100,7 +100,7 @@ export const subscribeToChannel = channelId => {
       .catch(e => console.log('Error in thunk at post:', e));
   };
 };
-
+//not assigning new channel to myChannels for creator
 export const createChannelThunk = newChannelInfo => {
   return async dispatch => {
     try {
@@ -140,6 +140,7 @@ export const unsubscribeToChannel = channelId => {
 };
 
 export const editChannelThunk = channelEdits => {
+  console.log('edits line 143 channels.js', channelEdits);
   return async dispatch => {
     try {
       const editedChannel = (
@@ -177,38 +178,27 @@ export const channelsReducer = (state = initialState, action) => {
         myChannels: [...state.myChannels, action.newChannelInfo],
       };
     case EDIT_CHANNEL: {
-      const myUpdated_Channels = state.myChannels.map(myChannel => {
-        console.log('myChannel', myChannel);
-
-        if (myChannel.id !== action.editedChannelInfo.id) {
-          return myChannel;
-        } else {
-          return {
-            ...myChannel,
-            ...action.editedChannelInfo,
-          };
-        }
+      let updatedAllChannels = state.allChannels.map(channel => {
+        if (channel.id === action.editedChannelInfo)
+          return action.editedChannelInfo;
+        return channel;
       });
-      const allUpdated_Channels = state.allChannels.map(channel => {
-        console.log('channel', channel);
-
-        if (channel.id !== action.editedChannelInfo.id) {
-          return channel;
-        } else {
-          return {
-            ...channel,
-            ...action.editedChannelInfo,
-          };
+      let updatedMyChannels = state.myChannels.map(channel => {
+        if (channel.id === action.editedChannelInfo) {
+          console.log(action.editedChannelInfo);
+          return action.editedChannelInfo;
         }
-      });
-      console.log('allUpdated_Channels', allUpdated_Channels);
-      console.log('myUpdated_Channels', myUpdated_Channels);
 
+        return channel;
+      });
+      console.log('updatedAllChannels', updatedAllChannels);
+      console.log('updatedMyChannels', updatedMyChannels);
       return {
-        allChannels: [...state.allChannels, action.allUpdated_Channels],
-        myChannels: [...state.myChannels, action.myUpdated_Channels],
+        allChannels: updatedAllChannels,
+        myChannels: updatedMyChannels,
       };
     }
+
     default:
       return state;
   }
