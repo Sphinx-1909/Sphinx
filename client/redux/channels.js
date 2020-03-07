@@ -57,7 +57,7 @@ export const fetchChannels = id => {
   // console.log('in fetchChannels thunk');
   return dispatch => {
     return axios
-      .get(`/api/channels/${id}`)
+      .get(`/api/channels/`)
       .then(channels => dispatch(setChannels(channels.data)))
       .catch(e => console.log('Error in thunk:', e));
   };
