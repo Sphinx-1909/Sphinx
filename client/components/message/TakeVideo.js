@@ -5,6 +5,7 @@ import MediaPreview from './MediaPreview';
 import { addMessage } from '../../redux/messages';
 import axios from 'axios'
 import { PostSuccess } from './PostSuccess';
+import { save } from 'save-file'
 
 function TakeVideo(props) {
 
@@ -24,8 +25,6 @@ function TakeVideo(props) {
     // console.log('videoUrl: ', videoUrl)
   }
 
-
-
   const handlePost = async () => {
     const postBody = {
       fileType: 'video',
@@ -36,7 +35,16 @@ function TakeVideo(props) {
       radius: 1,
       channelId: props.channelId,
     };
-    await props.addMessage(postBody, blobUrl)
+    blob.arrayBuffer()
+      .then(file => {
+        console.log('successfully buffered blob: ', file)
+        save(file, 'avideofile.mp4')
+          .then(() => console.log('saved file!'))
+          .catch(e => console.log('error saving file: ', e))
+        // props.addMessage(postBody, file)
+      })
+      .catch(e => console.log('error buffering blob: ', e))
+    // await props.addMessage(postBody, blobUrl)
     setSuccess(true)
   }
 

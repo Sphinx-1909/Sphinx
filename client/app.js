@@ -30,6 +30,7 @@ import TakeVideo from './components/message/TakeVideo';
 import UploadFile from './components/message/Upload';
 import EditAChannel from './components/Channel/EditChannel';
 import LinkTest from './components/message/LinkTest';
+import PhoneInput from './components/login/2FA/PhoneInput'
 
 class App extends React.Component {
   async componentDidMount() {
@@ -124,6 +125,7 @@ class App extends React.Component {
             <Route path="/linktest" component={LinkTest} exact />
             <Route path="/createnewchannel" component={CreateAChannel} exact />
             <Route path="/editchannel/:id" component={EditAChannel} />
+            <Route path='/phoneinput' component={PhoneInput} />
           </div>
           <BottomMenu openSlide={this.props.openSlide} />
         </div>

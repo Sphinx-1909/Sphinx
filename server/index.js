@@ -6,7 +6,10 @@ const enforce = require('express-sslify');
 const axios = require('axios');
 const session = require('express-session');
 const moment = require('moment');
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser')
+const dotenv = require('dotenv')
+
+dotenv.config();
 
 const { User, Session } = require('./db/index');
 const cookieParser = require('cookie-parser');
@@ -16,9 +19,9 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // logger
-if (process.env.NODE_ENV !== 'production') {
-  app.use(require('morgan')('dev'));
-}
+// if (process.env.NODE_ENV !== 'production') {
+//   app.use(require('morgan')('dev'));
+// }
 
 //body parsing
 // app.use(express.json());
@@ -81,7 +84,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, '../static')));
 app.use((req, res, next) => {
   if (req.user) {
-    console.log('this is req.user &&&&&&&&&&&&&&&&&&&&&&', req.user.id);
+    // console.log('this is req.user &&&&&&&&&&&&&&&&&&&&&&', req.user.id);
   } else {
     console.log('no req.user');
   }
@@ -118,8 +121,7 @@ const startServer = new Promise((res, rej) => {
 
 db.sync()
   .then(() => startServer)
-  .then(thing => {
-    console.log('this is the return from our startSever promise', thing);
+  .then(() => {
     console.log(chalk.bgMagentaBright(`application started`));
   })
   .catch(e => {
