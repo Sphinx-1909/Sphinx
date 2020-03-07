@@ -52,23 +52,18 @@ class ChannelSearch extends Component {
     this.setState({
       filtered: newFilteredList,
     });
-    console.log('currentChannelList', currentChannelList);
-    console.log('newFilteredList', newFilteredList);
+    // console.log('currentChannelList', currentChannelList);
+    // console.log('newFilteredList', newFilteredList);
+  };
+
+  checkIfSubscribed = () => {
+    return this.props.channelData.myChannels.map(channel => channel.id);
   };
 
   render() {
     return (
       <div className="liner">
         <div className="contentCenter">
-          {/* <TextField
-          id="outlined-basic"
-          label="Outlined"
-          variant="outlined"
-          type="text"
-          className="input"
-          onChange={this.handleChange}
-          placeholder="Search for different channels..."
-        /> */}
           <div className="searchBox_search_subHeader">SEARCH CHANNELS</div>
           <input
             type="text"
@@ -76,7 +71,10 @@ class ChannelSearch extends Component {
             onChange={this.handleChange}
             placeholder="Search for different channels..."
           />
-          <ChannelsList channels={this.state.filtered} />
+          <ChannelsList
+            channels={this.state.filtered}
+            checkList={this.checkIfSubscribed()}
+          />
         </div>
       </div>
     );

@@ -8,6 +8,7 @@ const ChannelsList = props => (
     {props.channels.map((channel, idx) => (
       <ChannelLineItem
         channelDetails={channel}
+        checkList={props.checkList}
         key={`channel.${idx}`}
         divider={idx !== props.channels.length - 1}
       />
