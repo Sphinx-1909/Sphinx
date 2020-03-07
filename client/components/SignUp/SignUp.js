@@ -91,7 +91,12 @@ class SignUp extends React.Component {
             <label className="signUp_form_item">
               <b>Email</b>
             </label>
-            <input type="text" name="email" onChange={this.handleChange} />
+            <input
+              type="text"
+              name="email"
+              className="signUp_form_input"
+              onChange={this.handleChange}
+            />
 
             <label className="signUp_form_item">
               <b>Password</b>

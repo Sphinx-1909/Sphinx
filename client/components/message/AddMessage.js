@@ -108,28 +108,34 @@ const AddMessage = props => {
                   <button
                     disabled={!title || !channelId}
                     onClick={() => setMedia('photo')}
+                    className="message_form_links"
                   >
                     PHOTO
                   </button>
                   <button
                     disabled={!title || !channelId}
                     onClick={() => setMedia('video')}
+                    className="message_form_links"
                   >
                     VIDEO
                   </button>
                   <button
                     disabled={!title || !channelId}
                     onClick={() => setMedia('upload')}
+                    className="message_form_links"
                   >
                     UPLOAD
                   </button>
                   <button
                     disabled={!title || !channelId}
                     onClick={() => setMedia('link')}
+                    className="message_form_links"
                   >
                     LINK
                   </button>
-                  <button type="submit">POST</button>
+                  <button type="submit" className="message_form_links">
+                    POST
+                  </button>
                 </div>
                 {error && (
                   <div style={{ backgroundColor: 'red' }}>
