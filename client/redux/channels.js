@@ -53,11 +53,11 @@ const editChannel = editedChannelInfo => {
 };
 
 //thunks
-export const fetchChannels = id => {
+export const fetchChannels = () => {
   // console.log('in fetchChannels thunk');
   return dispatch => {
     return axios
-      .get(`/api/channels/${id}`)
+      .get('/api/channels')
       .then(channels => dispatch(setChannels(channels.data)))
       .catch(e => console.log('Error in thunk:', e));
   };

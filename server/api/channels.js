@@ -58,7 +58,7 @@ router.get('/withunreadmessages', (req, res, next) => {
   });
 });
 
-router.get('/:id?', (req, res, next) => {
+router.get('/', (req, res, next) => {
   let userId;
   if (req.user) {
     userId = req.user.id;

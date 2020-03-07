@@ -19,9 +19,9 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // logger
-if (process.env.NODE_ENV !== 'production') {
-  app.use(require('morgan')('dev'));
-}
+// if (process.env.NODE_ENV !== 'production') {
+//   app.use(require('morgan')('dev'));
+// }
 
 //body parsing
 // app.use(express.json());
@@ -84,7 +84,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, '../static')));
 app.use((req, res, next) => {
   if (req.user) {
-    console.log('this is req.user &&&&&&&&&&&&&&&&&&&&&&', req.user.id);
+    // console.log('this is req.user &&&&&&&&&&&&&&&&&&&&&&', req.user.id);
   } else {
     console.log('no req.user');
   }

@@ -6,14 +6,27 @@ const nexmo = new Nexmo({
   apiSecret: process.env.NEXMO_API_SECRET,
 });
 
-router.post('/', (req, res, next) => {
+router.post('/verify', (req, res, next) => {
   const { phoneNum } = req.body;
   verify(phoneNum)
-    .then(res => {
+    .then(result => {
       // send the request ID over to the frontend for use when the user enters the verification code.
-      const reqId = res.request_id
+      console.log('result: ', result)
+      const reqId = result.request_id
       console.log("reqId: ", reqId)
       res.status(200).send(reqId)
+    })
+    .catch(e => {
+      res.status(400).send(e)
+      next(e)
+    })
+})
+
+router.post('/check', (req, res, next) => {
+  const { reqId, code } = req.body;
+  check(reqId, code)
+    .then(response => {
+      res.status(200).send(response)
     })
     .catch(e => {
       res.status(400).send(e)
