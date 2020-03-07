@@ -55,7 +55,7 @@ router.get('/read', (req, res, next) => {
 
 // mark a message as read
 
-router.post('/read/:messageId', (req, res, next) => {
+router.post('/readmessage/:messageId', (req, res, next) => {
   const { messageId } = req.params;
   // ** copy a userId from your local channelUsers table and paste it below **
   let userId;
