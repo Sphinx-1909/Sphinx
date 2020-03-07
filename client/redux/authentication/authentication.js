@@ -37,18 +37,17 @@ export const removeLogInError = () => {
 };
 
 export const logInAttempt = logInData => {
-  //console.log('login datapassed in', logInData);
+  console.log('login datapassed in', logInData);
 
   return async dispatch => {
     try {
       const res = await axios.post('/login', logInData);
 
       dispatch(signIn(res.data));
-      dispatch(fetchChannels(res.id));
+      dispatch(fetchChannels());
       dispatch(fetchAllChannels());
       dispatch(fetchUnreadMessages());
       history.push('/');
-
     } catch (e) {
       console.log('error in logInAttempt thunK: ', e);
       dispatch(setLogInError());
@@ -93,7 +92,7 @@ export const initialLogInAttempt = () => {
       .then(res => {
         const user = res.data;
         dispatch(signIn(user));
-        dispatch(fetchChannels(user.id));
+        dispatch(fetchChannels());
         dispatch(fetchAllChannels());
         dispatch(fetchUnreadMessages());
       })
@@ -103,6 +102,15 @@ export const initialLogInAttempt = () => {
       });
   };
 };
+
+// export const authPhone = (phoneNum) => {
+//   return () => {
+//     axios.post('/api/nexmo/test', { phoneNum })
+//       // receive the request ID back to use on the front end (When your user submits the correct PIN, you will need to plug both the PIN and the request ID into the check() function.)
+//       .then(reqId => reqId.data)
+//       .catch(e => console.log('error in authPhone thunk: ', e))
+//   }
+// }
 
 const initialState = {
   isLoggedIn: false,

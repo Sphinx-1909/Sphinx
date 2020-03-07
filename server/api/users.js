@@ -56,7 +56,7 @@ router.get('/:id', (req, res, next) => {
 // });
 
 router.post('/', (req, res, next) => {
-  User.create(req.body)
+  User.create({ ...req.body, sessionId: req.cookies.sessionId })
     .then(createdUser => {
       res.status(201).send(createdUser);
     })

@@ -28,6 +28,7 @@ class SignUp extends React.Component {
     if (this.state.reTypePassword !== this.state.password) {
       alert("Passwords don't match");
     } else {
+      console.log('line 31 in SignUp.js')
       const { firstName, lastName, userName, email, password } = this.state;
       this.props.createUserAndLogIn({
         firstName,
@@ -45,7 +46,7 @@ class SignUp extends React.Component {
   }
 
   render() {
-    console.log('props in signUp', this.props);
+    // console.log('props in signUp', this.props);
     return (
       <div className="liner">
         <div className="contentCenter">

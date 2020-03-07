@@ -58,14 +58,14 @@ router.get('/withunreadmessages', (req, res, next) => {
   });
 });
 
-router.get('/:id?', (req, res, next) => {
+router.get('/', (req, res, next) => {
   let userId;
   if (req.user) {
     userId = req.user.id;
   } else {
     console.log('no req.user in channel.js line 66');
   }
-  console.log('userId: ', userId);
+  // console.log('userId: ', userId);
   // the above should eventually be changed to: const userId = req.user.id;
   User.findOne({
     where: {
