@@ -37,7 +37,7 @@ export const removeLogInError = () => {
 };
 
 export const logInAttempt = logInData => {
-  //console.log('login datapassed in', logInData);
+  console.log('login datapassed in', logInData);
 
   return async dispatch => {
     try {
@@ -48,7 +48,6 @@ export const logInAttempt = logInData => {
       dispatch(fetchAllChannels());
       dispatch(fetchUnreadMessages());
       history.push('/');
-
     } catch (e) {
       console.log('error in logInAttempt thunK: ', e);
       dispatch(setLogInError());
@@ -93,7 +92,7 @@ export const initialLogInAttempt = () => {
       .then(res => {
         const user = res.data;
         dispatch(signIn(user));
-        dispatch(fetchChannels(user.id));
+        dispatch(fetchChannels());
         dispatch(fetchAllChannels());
         dispatch(fetchUnreadMessages());
       })

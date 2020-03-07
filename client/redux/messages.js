@@ -4,7 +4,7 @@ const SET_MESSAGES = 'SET_MESSAGES';
 
 //action creators
 const setMessages = messages => {
-  console.log('in setMessages action creator')
+  console.log('in setMessages action creator');
   return {
     type: SET_MESSAGES,
     messages,
@@ -51,33 +51,34 @@ export const markAsRead = msgId => {
   console.log('in markAsRead');
   return dispatch => {
     axios
-      .post(`/api/messages/read/${msgId}`)
+      .post(`/api/messages/readmessage/${msgId}`)
       .then(() => dispatch(fetchUnreadMessages()))
       .catch(e => console.log('error in markAsRead thunk: ', e));
   };
 };
 
-
 export const addMessage = (msg, media) => {
   return () => {
-    axios.post('/api/messages', msg)
-      .then(message => {
-        console.log('success posting new message to DB!', message.data)
+    axios
+      .post('/api/messages', msg)
+      .then(msg => {
+        console.log('success posting new message to DB!', msg.data);
         // media is set to 'upload' for file posts
         if (media && media !== 'upload') {
           // media is either image (dataUri) or video (BlobUrl)
-          console.log('msg: ', msg, 'media: ', media)
-          axios.post(`/api/aws/${msg.fileType}`, { Key: message.data.id, Body: media })
+          console.log('msg: ', msg, 'media: ', media);
+          axios
+            .post('/api/aws', { Key: msg.data.id, Body: media })
             .then(res => console.log('success posting to AWS! ', res))
-            .catch(e => console.log('error posting to AWS: ', e))
+            .catch(e => console.log('error posting to AWS: ', e));
         } else {
           // AWS post req. has been made directly in Upload form, so no need to post to AWS here
           return;
         }
       })
-      .catch(e => console.log('error in addMessage thunk: ', e))
-  }
-}
+      .catch(e => console.log('error in addMessage thunk: ', e));
+  };
+};
 
 // export const getMediaMessage = (Key) => {
 //   // return () => {
@@ -90,10 +91,7 @@ export const addMessage = (msg, media) => {
 //   // }
 // }
 
-
-
 const initialState = [];
-
 
 export const messagesReducer = (state = initialState, action) => {
   switch (action.type) {
