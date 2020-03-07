@@ -79,7 +79,14 @@ app.use((req, res, next) => {
 
 // static Middleware
 app.use(express.static(path.join(__dirname, '../static')));
-
+app.use((req, res, next) => {
+  if (req.user) {
+    console.log('this is req.user &&&&&&&&&&&&&&&&&&&&&&', req.user.id);
+  } else {
+    console.log('no req.user');
+  }
+  next();
+});
 // service worker route
 app.use('/service-worker.js', (req, res) => {
   // res.send(path.resolve(__dirname, '../static', 'service-worker.js'));
@@ -110,10 +117,11 @@ const startServer = new Promise((res, rej) => {
 });
 
 db.sync()
-  .then(startServer)
-  .then(() => {
+  .then(() => startServer)
+  .then(thing => {
+    console.log('this is the return from our startSever promise', thing);
     console.log(chalk.bgMagentaBright(`application started`));
   })
   .catch(e => {
-    console.log(chalk.bgMagentaBright(`application failed to start`));
+    console.log(chalk.bgMagentaBright(e, `application failed to start`));
   });

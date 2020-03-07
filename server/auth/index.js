@@ -22,8 +22,13 @@ router.post('/login', (req, res, next) => {
               id: foundUser.id,
             },
           }
-        );
-        res.status(202).send(foundUser);
+        )
+          .then(() => {
+            return res.status(202).send(foundUser);
+          })
+          .catch(e => {
+            console.log('error in login', e);
+          });
       } else {
         res.status(400).send('No matching user');
       }

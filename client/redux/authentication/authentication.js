@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { fetchAllChannels, fetchChannels } from '../channels';
 import { fetchUnreadMessages } from '../messages';
+import history from '../../history';
 
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';
@@ -41,10 +42,13 @@ export const logInAttempt = logInData => {
   return async dispatch => {
     try {
       const res = await axios.post('/login', logInData);
-      await dispatch(signIn(res.data));
-      dispatch(fetchChannels());
+
+      dispatch(signIn(res.data));
+      dispatch(fetchChannels(res.id));
       dispatch(fetchAllChannels());
       dispatch(fetchUnreadMessages());
+      history.push('/');
+
     } catch (e) {
       console.log('error in logInAttempt thunK: ', e);
       dispatch(setLogInError());
@@ -88,7 +92,10 @@ export const initialLogInAttempt = () => {
       .get('/me')
       .then(res => {
         const user = res.data;
-        return dispatch(signIn(user));
+        dispatch(signIn(user));
+        dispatch(fetchChannels(user.id));
+        dispatch(fetchAllChannels());
+        dispatch(fetchUnreadMessages());
       })
       .catch(e => {
         console.error(e);
