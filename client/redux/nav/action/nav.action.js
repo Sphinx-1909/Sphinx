@@ -7,3 +7,13 @@ export const setToggleSlideMenu = () => ({
 export const setToggleDisplayOverlay = () => ({
   type: navType.TOGGLE_SLIDE_MENU,
 });
+
+export const setCurrentLocation = location => ({
+  type: navType.SET_CURRENT_LOCATION,
+  payload: location,
+});
+
+export const setMediaType = media => ({
+  type: navType.SET_MEDIA_TYPE,
+  payload: media,
+});

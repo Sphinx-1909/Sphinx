@@ -32,23 +32,6 @@ const AddMessage = props => {
 
   const { channels } = props;
 
-  if (!positionLoaded) {
-    console.log('getting location data');
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        setPositionLoaded(true);
-        setLatitude(pos.coords.latitude);
-        setLongitude(pos.coords.longitude);
-        console.log('lat', pos.coords.latitude, 'lng', pos.coords.longitude);
-      },
-      () => {
-        console.log('oops');
-        setPositionLoaded(false);
-      },
-      { enableHighAccuracy: false, maximumAge: Infinity, timeout: 60000 }
-    );
-  }
-
   const handleSubmit = async ev => {
     ev.preventDefault();
 
