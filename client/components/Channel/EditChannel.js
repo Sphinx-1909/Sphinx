@@ -54,59 +54,65 @@ class EditAChannel extends React.Component {
       return <div>please hold</div>;
     } else {
       return (
-        <div className="editchannel">
-          <form
-            onSubmit={ev => ev.handleSubmit(ev)}
-            className="editChannel_form"
-          >
-            <h3>Edit a Channel</h3>
-
-            <label>
-              <b>Name</b>
-            </label>
-
-            <input
-              type="channelTitle"
-              name="channelTitle"
-              placeholder={`${myOneChannel.channelTitle}`}
-              onChange={ev => this.handleChange(ev)}
-            />
-
-            <label>
-              <b>Description</b>
-            </label>
-
-            <input
-              type="channelDescription"
-              name="channelDescription"
-              placeholder={`${myOneChannel.channelDescription}`}
-              onChange={ev => this.handleChange(ev)}
-            />
-            <label>
-              <b>Add Moderator</b>
-            </label>
-
-            <input
-              type="channelsModerators"
-              name="channelsModerators"
-              onChange={ev => this.handleChange(ev)}
-            />
-
-            <button
-              onClick={ev => this.handleSubmit(ev)}
-              type="submit"
-              class="editbtn"
+        <div className="liner">
+          <div className="contentCenter">
+            <form
+              onSubmit={ev => ev.handleSubmit(ev)}
+              className="editChannel_form"
             >
-              Save
-            </button>
-            <button
-              onClick={() => history.push('/')}
-              type="button"
-              class="cancelbtn"
-            >
-              Cancel
-            </button>
-          </form>
+              <div className="editChannel_form_subHeader">EDIT CHANNEL</div>
+
+              <label className="editChannel_form_item">
+                <b>Name</b>
+              </label>
+
+              <input
+                type="channelTitle"
+                name="channelTitle"
+                placeholder={`${myOneChannel.channelTitle}`}
+                onChange={ev => this.handleChange(ev)}
+                className="editChannel_form_input"
+              />
+
+              <label className="editChannel_form_item">
+                <b>Description</b>
+              </label>
+
+              <input
+                type="channelDescription"
+                name="channelDescription"
+                placeholder={`${myOneChannel.channelDescription}`}
+                onChange={ev => this.handleChange(ev)}
+                className="editChannel_form_input"
+              />
+              <label className="editChannel_form_item">
+                <b>Add Moderator</b>
+              </label>
+
+              <input
+                type="channelsModerators"
+                name="channelsModerators"
+                onChange={ev => this.handleChange(ev)}
+                className="editChannel_form_input"
+              />
+              <div className="editChannel_form_buttons">
+                <button
+                  onClick={ev => this.handleSubmit(ev)}
+                  type="submit"
+                  className="editChannel_form_links"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => history.push('/')}
+                  type="button"
+                  className="editChannel_form_links_cancel"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       );
     }

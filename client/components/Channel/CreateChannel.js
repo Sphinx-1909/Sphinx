@@ -30,48 +30,53 @@ class CreateAChannel extends React.Component {
   render() {
     console.log('props in createChannel', this.props);
     return (
-      <div className="createchannel">
-        <form
-          onSubmit={ev => ev.handleSubmit(ev)}
-          className="createChannel_form"
-        >
-          <h3>Create a new Channel</h3>
-
-          <label>
-            <b>Name</b>
-          </label>
-
-          <input
-            type="channelTitle"
-            name="channelTitle"
-            onChange={this.handleChange}
-          />
-
-          <label>
-            <b>Description</b>
-          </label>
-
-          <input
-            type="channelDescription"
-            name="channelDescription"
-            onChange={this.handleChange}
-          />
-
-          <button
-            onClick={ev => this.handleSubmit(ev)}
-            type="submit"
-            class="createbtn"
+      <div className="liner">
+        <div className="contentCenter">
+          <form
+            onSubmit={ev => ev.handleSubmit(ev)}
+            className="createChannel_form"
           >
-            Save
-          </button>
-          <button
-            onClick={() => history.push('/')}
-            type="button"
-            class="cancelbtn"
-          >
-            Cancel
-          </button>
-        </form>
+            <div className="creastChannel_form_subHeader">CREATE CHANNEL</div>
+
+            <label className="creastChannel_form_item">
+              <b>Name</b>
+            </label>
+
+            <input
+              type="channelTitle"
+              name="channelTitle"
+              onChange={this.handleChange}
+              className="creastChannel_form_input"
+            />
+
+            <label className="creastChannel_form_item">
+              <b>Description</b>
+            </label>
+
+            <input
+              type="channelDescription"
+              name="channelDescription"
+              onChange={this.handleChange}
+              className="creastChannel_form_input"
+            />
+            <div className="creastChannel_form_buttons">
+              <button
+                onClick={ev => this.handleSubmit(ev)}
+                type="submit"
+                className="creastChannel_form_links"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => history.push('/')}
+                type="button"
+                className="creastChannel_form_links_cancel"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }

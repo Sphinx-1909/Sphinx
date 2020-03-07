@@ -43,6 +43,7 @@
   text-align: center;
   cursor: pointer;
   width: 100%;
+  background-color: rgb(128, 128, 128);
 }
 
 .myAccountBox_buttons_links button {
