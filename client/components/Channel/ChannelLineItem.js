@@ -12,6 +12,7 @@ import {
   Button,
 } from '@material-ui/core';
 import Add from '@material-ui/icons/Add';
+import CheckCircle from '@material-ui/icons/CheckCircle';
 
 class ChannelLineItem extends Component {
   constructor(props) {
@@ -22,24 +23,31 @@ class ChannelLineItem extends Component {
     console.log('WHAT IS THE CHANNELID', channelId);
     this.props.subscribeToChannel(channelId);
   };
+
   render() {
+    // console.log(this.props.checkList);
     return (
       <ListItem
         divider={this.props.divider}
         className="searchBox_search_subHeader_item"
       >
-        {/* <ListItemText primary={this.props.channelDetails.channelTitle} /> */}
-        <Typography>{this.props.channelDetails.channelTitle}</Typography>
+        <ListItemText primary={this.props.channelDetails.channelTitle} />
+        {/* <Typography>{this.props.channelDetails.channelTitle}</Typography> */}
         <ListItemSecondaryAction>
-          <ListItem
-            button={true}
-            onClick={ev =>
-              this.clickToSubscribeToChannel(ev, this.props.channelDetails.id)
-            }
-          >
-            {/* TODO: make an ternary op to change button from Add to a subscribe button / icon */}
-            <Add />
-          </ListItem>
+          {!this.props.checkList.includes(this.props.channelDetails.id) ? (
+            <ListItem
+              button={true}
+              onClick={ev =>
+                this.clickToSubscribeToChannel(ev, this.props.channelDetails.id)
+              }
+            >
+              <Add />
+            </ListItem>
+          ) : (
+            <ListItem>
+              <CheckCircle />
+            </ListItem>
+          )}
         </ListItemSecondaryAction>
       </ListItem>
     );
