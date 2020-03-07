@@ -40,14 +40,14 @@ export const logInAttempt = logInData => {
 
   return async dispatch => {
     try {
-      const res = await axios.post('/login', logInData)
-      await dispatch(signIn(res.data))
+      const res = await axios.post('/login', logInData);
+      await dispatch(signIn(res.data));
       dispatch(fetchChannels());
       dispatch(fetchAllChannels());
-      dispatch(fetchUnreadMessages())
+      dispatch(fetchUnreadMessages());
     } catch (e) {
-      console.log('error in logInAttempt thunK: ', e)
-      dispatch(setLogInError())
+      console.log('error in logInAttempt thunK: ', e);
+      dispatch(setLogInError());
     }
     // axios
     //   .post('/login', logInData)
@@ -67,7 +67,7 @@ export const logInAttempt = logInData => {
   };
 };
 export const logOutAttempt = () => {
-  console.log('logging out');
+  console.log('the logout thunk is firing!!!!!!!!!!!');
   return dispatch => {
     axios
 
