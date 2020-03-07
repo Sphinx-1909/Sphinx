@@ -108,16 +108,61 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
+// router.post('/', (req, res, next) => {
+//   Channel.create(req.body)
+//     .then(newChannel => {
+
+//       res.status(201).send(newChannel);
+//     })
+//     .catch(e => {
+//       console.error(e);
+//       next(e);
+//     });
+// });
 router.post('/', (req, res, next) => {
-  Channel.create(req.body)
-    .then(newChannel => {
-      res.status(201).send(newChannel);
-    })
-    .catch(e => {
-      console.error(e);
-      next(e);
-    });
+  console.log('channels post route createNewChannel', req.body);
+  let userId;
+  if (req.user) {
+    userId = req.user.id;
+  } else {
+    console.log('no req.user in channel.js line 128');
+  }
+  User.findOne({
+    where: {
+      id: userId,
+    },
+  }).then(user => {
+    if (user) {
+      Channel.create(req.body)
+        .then(newChannel => {
+          user
+            .addChannel(newChannel, {
+              through: { isModerator: true, isOwner: true },
+            })
+            .then(() => {
+              console.log('createdSetAdmin new channel', newChannel);
+              Channel.findOne({
+                where: {
+                  id: newChannel.id,
+                },
+                include: { model: Message },
+              }).then(foundChannel => {
+                if (foundChannel) {
+                  return res.status(200).send(foundChannel);
+                }
+              });
+            });
+        })
+        .catch(e => console.log('error adding messages to channel', e));
+    } else {
+      res.status(400).send('user not found');
+    }
+  });
 });
+
+//create channel
+//update the join table by setting current user userId to isOwner
+// this channel should be added to myCHannels and allChannels
 
 router.post('/subscribe/:channelId', (req, res, next) => {
   const { channelId } = req.params;
