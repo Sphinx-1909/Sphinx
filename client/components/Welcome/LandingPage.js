@@ -1,15 +1,31 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+//css
+import './landing.css';
 
-const LandingPage = (props) => {
+const LandingPage = props => {
   return (
-    <div>
-      <h1>Welcome to Sphinx!</h1>
-      <h3>Please login to continue</h3>
-      <button onClick={() => props.history.push('/login')}>LOGIN</button>
-      <a href='/signup'>Create a free account</a>
+    <div className="liner">
+      <div className="contentCenter">
+        <div className="landing_Header">Welcome to Sphinx!</div>
+        <div className="landing_subHeader">Please login to continue</div>
+        <div className="landing_buttons">
+          <button
+            className="landing_buttons_links"
+            onClick={() => props.history.push('/login')}
+          >
+            LOGIN
+          </button>
+          <button
+            className="landing_buttons_links_new"
+            onClick={() => props.history.push('/signup')}
+          >
+            CREATE ACCOUNT
+          </button>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default withRouter(LandingPage)
+export default withRouter(LandingPage);
