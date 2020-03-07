@@ -101,8 +101,8 @@ const MapContainer = props => {
     return distance;
   };
 
-  const handleClose = async () => {
-    await markAsRead(selectedMessage.id);
+  const handleClose = () => {
+    props.markAsRead(selectedMessage.id);
     setDisplayMessage(false);
   };
 

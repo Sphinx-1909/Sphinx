@@ -58,12 +58,7 @@ router.get('/read', (req, res, next) => {
 router.post('/readmessage/:messageId', (req, res, next) => {
   const { messageId } = req.params;
   // ** copy a userId from your local channelUsers table and paste it below **
-  let userId;
-  if (req.user) {
-    userId = req.user.id;
-  } else {
-    console.log('no req.user in message.js line 65');
-  }
+  const userId = req.user.id;
   Message.findOne({
     where: {
       id: messageId,
