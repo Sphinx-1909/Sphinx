@@ -8,13 +8,14 @@ class EditAChannel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      channelId: this.props.match.params.id,
+      //channelId: this.props.match.params.id,
       channelTitle: '',
       channelDescrpition: '',
       //channelsModerators: '',
     };
   }
   componentDidMount() {
+    // console.log('CDM in EC this.props.channels', this.props.channels);
     const { channelTitle, channelDescription } = this.props.channels;
 
     this.setState({
@@ -33,23 +34,23 @@ class EditAChannel extends React.Component {
     ev.preventDefault();
     // console.log('this.props.match.params.id', this.props.match.params.id);
     // const channelId=this.props.match.params.id
-    const idOfChannelOwner = this.props.activeUser.id;
-    console.log('idOfChannelOwner', idOfChannelOwner);
-    const { channelTitle, channelDescription, channelId } = this.state;
+    //const idOfChannelOwner = this.props.activeUser.id;
+    const id = this.props.channels.myChannels[0].id;
+
+    const { channelTitle, channelDescription } = this.state;
     this.props.editChannelT({
-      channelId,
+      id,
       channelTitle,
       channelDescription,
     });
   };
   //only one channel passed in
   render() {
-    console.log('inside render', this.props);
     let myOneChannel = this.props.channels.myChannels[0];
-    console.log(
-      'this.props.channels.myChannels[0]',
-      this.props.channels.myChannels[0]
-    );
+    // console.log(
+    //   'this.props.channels.myChannels[0]',
+    //   this.props.channels.myChannels[0]
+    // );
     if (!myOneChannel) {
       return <div>please hold</div>;
     } else {
