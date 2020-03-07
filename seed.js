@@ -139,7 +139,7 @@ const seed = async () => {
     //generate list of messages
     let messageList = [
       {
-        fileType: 'video',
+        fileType: 'link',
         messageTitle: 'Crazy tourist',
         messageContent: 'https://www.youtube.com/watch?v=mLimnpQIwgY',
         positiveVotes: 300,

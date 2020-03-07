@@ -4,7 +4,7 @@ const SET_MESSAGES = 'SET_MESSAGES';
 
 //action creators
 const setMessages = messages => {
-  console.log('in setMessages action creator');
+  // console.log('in setMessages action creator');
   return {
     type: SET_MESSAGES,
     messages,
@@ -48,11 +48,12 @@ export const fetchUnreadMessagesV2 = () => {
 };
 
 export const markAsRead = msgId => {
-  console.log('in markAsRead');
   return dispatch => {
     axios
       .post(`/api/messages/readmessage/${msgId}`)
-      .then(() => dispatch(fetchUnreadMessages()))
+      .then(() => {
+        dispatch(fetchUnreadMessages())
+      })
       .catch(e => console.log('error in markAsRead thunk: ', e));
   };
 };
@@ -68,7 +69,7 @@ export const addMessage = (msg, media) => {
           // media is either image (dataUri) or video (BlobUrl)
           console.log('msg: ', msg, 'media: ', media);
           axios
-            .post('/api/aws', { Key: msg.data.id, Body: media })
+            .post('/api/aws/image', { Key: msg.data.id, Body: media })
             .then(res => console.log('success posting to AWS! ', res))
             .catch(e => console.log('error posting to AWS: ', e));
         } else {
