@@ -184,13 +184,13 @@ export const channelsReducer = (state = initialState, action) => {
       let updatedAllChannels = state.allChannels.map(channel => {
         console.log('action.editedChannelInfo.id', action.editedChannelInfo.id);
         if (channel.id === action.editedChannelInfo.id)
-          return action.editedChannelInfo;
+          return [...channel, action.editedChannelInfo];
         return channel;
       });
       let updatedMyChannels = state.myChannels.map(channel => {
         if (channel.id === action.editedChannelInfo.id) {
           console.log('action.editedChannelInfo', action.editedChannelInfo);
-          return action.editedChannelInfo;
+          return [...channel, action.editedChannelInfo];
         }
 
         return channel;

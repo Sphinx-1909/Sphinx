@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { subscribeToChannel, unsubscribeToChannel } from '../../redux/channels';
+import history from '../../history';
 
 import {
   List,
@@ -47,7 +48,6 @@ class MyChannelLineItem extends Component {
     return (
       <>
         <ListItem divider={this.props.divider}>
-          {/* <ListItemText primary={this.props.channelDetails.channelTitle} /> */}
           {this.props.isFilterOn === true ? (
             <Checkbox
               color="primary"
@@ -60,7 +60,8 @@ class MyChannelLineItem extends Component {
               }}
             />
           ) : null}
-          <Typography>{this.props.channelDetails.channelTitle}</Typography>
+          <ListItemText primary={this.props.channelDetails.channelTitle} />
+          {/* <Typography>{this.props.channelDetails.channelTitle}</Typography> */}
           <ListItemSecondaryAction>
             <ListItem button={true} onClick={() => this.clickToOpen()}>
               {this.state.open === true ? <ExpandLess /> : <ExpandMore />}
@@ -89,7 +90,13 @@ class MyChannelLineItem extends Component {
               <ExitToApp />
             </ListItem>
             {this.props.channelDetails.channelUser.isOwner ? (
-              <ListItem button={true} style={{ backgroundColor: 'dodgerBlue' }}>
+              <ListItem
+                button={true}
+                style={{ backgroundColor: 'dodgerBlue' }}
+                onClick={() =>
+                  history.push(`/editchannel/${this.props.channelDetails.id}`)
+                }
+              >
                 <ListItemText primary={'Edit Channel Details'} />
               </ListItem>
             ) : null}
