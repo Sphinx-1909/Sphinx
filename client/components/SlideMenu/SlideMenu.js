@@ -41,10 +41,7 @@ class SlideMenu extends React.Component {
         >
           <MyChannelSubscriptions />
           <Link to="/createnewchannel">
-            <span>Create a new channel</span>
-          </Link>
-          <Link to="/editchannel">
-            <span>Edit your channels</span>
+            <span>Create Channel</span>
           </Link>
         </div>
       </div>

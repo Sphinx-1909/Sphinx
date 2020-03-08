@@ -88,6 +88,11 @@ class MyChannelLineItem extends Component {
               <ListItemText primary={'Leave Channel'} />
               <ExitToApp />
             </ListItem>
+            {this.props.channelDetails.channelUser.isOwner ? (
+              <ListItem button={true} style={{ backgroundColor: 'dodgerBlue' }}>
+                <ListItemText primary={'Edit Channel Details'} />
+              </ListItem>
+            ) : null}
           </List>
         </Collapse>
       </>
