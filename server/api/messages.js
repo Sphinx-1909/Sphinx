@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { Message, User, Subscriptions, Channel } = require('../db/index');
 const webpush = require('web-push');
+const Sequelize = require('sequelize');
 
 // adding this route as it helps with debugging when looking at the JSON. Can remove later
 // get all messages
@@ -149,6 +150,42 @@ router.put('/:id', (req, res, next) => {
     .then(message => {
       if (message) {
         message.update(req.body);
+        return res.status(202).send(message);
+      }
+      res.status(404);
+    })
+    .catch(e => {
+      console.error(e);
+      next(e);
+    });
+});
+
+router.put('/upvote/:id', (req, res, next) => {
+  Message.findByPk(req.params.id)
+    .then(message => {
+      if (message) {
+        message.increment(
+          { positiveVotes: 1 },
+          { where: { id: req.params.id } }
+        );
+        return res.status(202).send(message);
+      }
+      res.status(404);
+    })
+    .catch(e => {
+      console.error(e);
+      next(e);
+    });
+});
+
+router.put('/downvote/:id', (req, res, next) => {
+  Message.findByPk(req.params.id)
+    .then(message => {
+      if (message) {
+        message.decrement(
+          { negativeVotes: 1 },
+          { where: { id: req.params.id } }
+        );
         return res.status(202).send(message);
       }
       res.status(404);
