@@ -90,23 +90,30 @@ export const markAsRead = msgId => {
   };
 };
 
-export const addMessage = (msg, media) => {
+export const addMessage = (message, media) => {
+  // console.log('media in addMessage thunk line 94: ', media)
   return () => {
-    axios
-      .post('/api/messages', msg)
+    return axios
+      .post('/api/messages', message)
       .then(msg => {
-        console.log('success posting new message to DB!', msg.data);
+        msg = msg.data
+        // console.log('success posting new message to DB line 100!', msg);
         // media is set to 'upload' for file posts
         if (media && media !== 'upload') {
           // media is either image (dataUri) or video (BlobUrl)
-          console.log('msg: ', msg, 'media: ', media);
-          axios
-            .post('/api/aws/image', { Key: msg.data.id, Body: media })
-            .then(res => console.log('success posting to AWS! ', res))
-            .catch(e => console.log('error posting to AWS: ', e));
-        } else {
-          // AWS post req. has been made directly in Upload form, so no need to post to AWS here
-          return;
+          // console.log(' line 104 msg: ', msg, 'media: ', media);
+          if (msg.fileType === 'image' || msg.fileType === 'video') {
+            axios
+              .post(`/api/aws/${msg.fileType}`, { Key: msg.id, Body: media })
+              .then(data => {
+                console.log('success posting to AWS! ', data)
+                // return data;
+              })
+              .catch(e => console.log('error posting to AWS: ', e));
+          } else {
+            // AWS post req. has been made directly in Upload form, so no need to post to AWS here
+            return;
+          }
         }
       })
       .catch(e => console.log('error in addMessage thunk: ', e));

@@ -12,20 +12,29 @@ function TakeVideo(props) {
   console.log('props in takeVideo: ', props)
 
   const [blobUrl, setBlobUrl] = useState('')
+  const [dataUrl, setDataUrl] = useState('');
   const [blob, setBlob] = useState('')
   const [success, setSuccess] = useState(false)
 
   function handleRecordingComplete(data) {
     // setDataUri(data)
-    // console.log('data (blob): ', data)
+    console.log('data (blob): ', data)
     setBlob(data)
     // console.log('blob: ', blob)
     const videoUrl = URL.createObjectURL(data)
     setBlobUrl(videoUrl)
-    // console.log('videoUrl: ', videoUrl)
+    console.log('videoUrl: ', videoUrl)
   }
 
-  const handlePost = async () => {
+  function bufferToDataUrl(callback) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      callback(reader.result);
+    };
+    reader.readAsDataURL(blob);
+  }
+
+  const handlePost = () => {
     const postBody = {
       fileType: 'video',
       messageTitle: props.title,
@@ -35,16 +44,13 @@ function TakeVideo(props) {
       radius: 1,
       channelId: props.channelId,
     };
-    blob.arrayBuffer()
-      .then(file => {
-        console.log('successfully buffered blob: ', file)
-        save(file, 'avideofile.mp4')
-          .then(() => console.log('saved file!'))
-          .catch(e => console.log('error saving file: ', e))
-        // props.addMessage(postBody, file)
-      })
-      .catch(e => console.log('error buffering blob: ', e))
-    // await props.addMessage(postBody, blobUrl)
+    bufferToDataUrl(url => {
+      console.log('dataUrl: ', url)
+      setDataUrl(url)
+      props.addMessage(postBody, url)
+
+    })
+
     setSuccess(true)
   }
 
@@ -59,7 +65,10 @@ function TakeVideo(props) {
               <button onClick={() => setBlobUrl('')}>RETAKE</button>
             </div>
           ) : (
-              <PostSuccess />
+              <div>
+                <video src={dataUrl} autoPlay={true}></video>
+                <PostSuccess />
+              </div>
             )
         }
       </>

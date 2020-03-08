@@ -78,14 +78,14 @@ class SelectMedia extends React.Component {
               >
                 PHOTO
               </div>
-              {/*<div
+              <div
                 className="selectMedia"
                 id="VIDEO"
                 style={{ backgroundColor: 'rgb(214, 186, 150)' }}
                 onClick={e => this.onHandleClick(e)}
               >
                 VIDEO
-              </div>*/}
+              </div>
               <div
                 className="selectMedia"
                 id="LINK"
@@ -112,8 +112,8 @@ class SelectMedia extends React.Component {
               </div>
             </>
           ) : (
-            <div> loading</div>
-          )}
+              <div> loading</div>
+            )}
         </div>
       </div>
     );

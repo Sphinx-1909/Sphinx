@@ -3,12 +3,12 @@ const router = require('express').Router();
 const multer = require('multer')
 const { Message } = require('../db/index');
 const fs = require('fs')
-const save = require('save-file')
 const upload = multer({ dest: 'uploads/' });
 
 router.post('/:fileType', (req, res, next) => {
   const { fileType } = req.params;
   if (fileType === 'image') {
+    // console.log('req.body: ', req.body)
     s3.putObject({ Bucket: bucketName, ...req.body }, (err, data) => {
       if (err) {
         console.log('error: ', err)
@@ -19,18 +19,18 @@ router.post('/:fileType', (req, res, next) => {
       }
     })
   } else {
-    console.log('in AWS post line 22')
-    console.log('req.body.Body: ', req.body.Body)
-    console.log('keys: ', Object.keys(req.body.Body))
-    // save(req.body.Body, `${req.body.Key}.mp4`)
-    //   .then(() => console.log('saved!'))
-    //   .catch(e => console.log('error: ', e))
-    // fs.appendFile(`${req.body.Key}.mp4`, req.body.Body, function (err) {
-    //   if (err) throw err;
-    //   else {
-    //     console.log('Saved!');
-    //   }
-    // });
+    // console.log('in AWS post line 22')
+    // console.log('req.body.Body: ', req.body)
+    // console.log('keys: ', Object.keys(req.body.Body))
+    s3.putObject({ Bucket: bucketName, ...req.body }, (err, data) => {
+      if (err) {
+        console.log('error: ', err)
+        res.status(400).send(err)
+      } else {
+        console.log('success! data: ', data)
+        res.status(200).send(data)
+      }
+    })
   }
 })
 
