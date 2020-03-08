@@ -24,6 +24,15 @@ const AddMessage = props => {
   // const [loadingDisplay, setLoadingDisplay] = useState('')
   const [media, setMedia] = useState('');
 
+  useEffect(() => {
+    setPositionLoaded(true);
+    setLatitude(props.coords.latitude);
+    setLongitude(props.coords.longitude);
+    setMedia(props.mediaType);
+    console.log(props.coords);
+    console.log(props.mediaType);
+  });
+
   const loadingArr = [
     'Accessing location data...',
     'Fetching your location...',
@@ -57,7 +66,7 @@ const AddMessage = props => {
         <div className="message_form_subHeader">POST A MESSAGE</div>
         {positionLoaded && !success ? (
           <>
-            {!media ? (
+            {media === 'POST' ? (
               <form onSubmit={handleSubmit}>
                 <label className="message_form_item">Channel</label>
                 <select
@@ -88,60 +97,26 @@ const AddMessage = props => {
                   className="message_form_input"
                 />
                 <div className="message_form_buttons">
-                  <button
-                    disabled={!title || !channelId}
-                    onClick={() => setMedia('photo')}
-                    className="message_form_links"
-                  >
-                    PHOTO
-                  </button>
-                  <button
-                    disabled={!title || !channelId}
-                    onClick={() => setMedia('video')}
-                    className="message_form_links"
-                  >
-                    VIDEO
-                  </button>
-                  <button
-                    disabled={!title || !channelId}
-                    onClick={() => setMedia('upload')}
-                    className="message_form_links"
-                  >
-                    UPLOAD
-                  </button>
-                  <button
-                    disabled={!title || !channelId}
-                    onClick={() => setMedia('link')}
-                    className="message_form_links"
-                  >
-                    LINK
-                  </button>
                   <button type="submit" className="message_form_links">
                     POST
                   </button>
                 </div>
-                {error && (
-                  <div style={{ backgroundColor: 'red' }}>
-                    Error posting new message. Please refresh the page and try
-                    again.
-                  </div>
-                )}
               </form>
-            ) : media === 'photo' ? (
+            ) : media === 'PHOTO' ? (
               <TakePhoto
                 title={title}
                 latitude={latitude}
                 longitude={longitude}
                 channelId={channelId}
               />
-            ) : media === 'video' ? (
+            ) : media === 'VIDEO' ? (
               <TakeVideo
                 title={title}
                 latitude={latitude}
                 longitude={longitude}
                 channelId={channelId}
               />
-            ) : media === 'link' ? (
+            ) : media === 'LINK' ? (
               <PostLink
                 title={title}
                 latitude={latitude}
@@ -168,9 +143,11 @@ const AddMessage = props => {
   );
 };
 
-const mapState = ({ channels }) => {
+const mapState = ({ channels, nav }) => {
   return {
     channels: channels.myChannels,
+    coords: nav.currentLocation,
+    mediaType: nav.mediaType,
   };
 };
 

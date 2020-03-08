@@ -25,7 +25,8 @@
   z-index: 9;
   transition: transform 0.3s ease-in-out;
   overflow: visible;
-  @media (max-width: 576px) {
+  width: 75vw;
+  @media (max-width: 300px) {
     width: 100%;
   }
 }
