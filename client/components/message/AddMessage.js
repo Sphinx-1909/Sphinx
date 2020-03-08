@@ -61,86 +61,86 @@ const AddMessage = props => {
   return success ? (
     <PostSuccess />
   ) : (
-    <div className="liner">
-      <div className="contentCenter">
-        <div className="message_form_subHeader">POST A MESSAGE</div>
-        {positionLoaded && !success ? (
-          <>
-            {media === 'POST' ? (
-              <form onSubmit={handleSubmit}>
-                <label className="message_form_item">Channel</label>
-                <select
-                  onChange={ev => setChannelId(ev.target.value)}
-                  className="message_form_input"
-                >
-                  <option>{''}</option>
-                  {channels.map(channel => (
-                    <option value={channel.id} key={channel.id}>
-                      {channel.channelTitle}
-                    </option>
-                  ))}
-                </select>
-                <label className="message_form_item">Title</label>
-                <input
-                  placeholder="Title"
-                  value={title}
-                  name="messageTitle"
-                  onChange={ev => setTitle(ev.target.value)}
-                  className="message_form_input"
-                />
-                <label className="message_form_item">Body</label>
-                <textarea
-                  placeholder="Message Body"
-                  value={body}
-                  name="messageBody"
-                  onChange={ev => setBody(ev.target.value)}
-                  className="message_form_input"
-                />
-                <div className="message_form_buttons">
-                  <button type="submit" className="message_form_links">
-                    POST
+      <div className="liner">
+        <div className="contentCenter">
+          <div className="message_form_subHeader">POST A MESSAGE</div>
+          {positionLoaded && !success ? (
+            <>
+              {media === 'POST' ? (
+                <form onSubmit={handleSubmit}>
+                  <label className="message_form_item">Channel</label>
+                  <select
+                    onChange={ev => setChannelId(ev.target.value)}
+                    className="message_form_input"
+                  >
+                    <option>{''}</option>
+                    {channels.map(channel => (
+                      <option value={channel.id} key={channel.id}>
+                        {channel.channelTitle}
+                      </option>
+                    ))}
+                  </select>
+                  <label className="message_form_item">Title</label>
+                  <input
+                    placeholder="Title"
+                    value={title}
+                    name="messageTitle"
+                    onChange={ev => setTitle(ev.target.value)}
+                    className="message_form_input"
+                  />
+                  <label className="message_form_item">Body</label>
+                  <textarea
+                    placeholder="Message Body"
+                    value={body}
+                    name="messageBody"
+                    onChange={ev => setBody(ev.target.value)}
+                    className="message_form_input"
+                  />
+                  <div className="message_form_buttons">
+                    <button type="submit" className="message_form_links">
+                      POST
                   </button>
-                </div>
-              </form>
-            ) : media === 'PHOTO' ? (
-              <TakePhoto
-                title={title}
-                latitude={latitude}
-                longitude={longitude}
-                channelId={channelId}
-              />
-            ) : media === 'VIDEO' ? (
-              <TakeVideo
-                title={title}
-                latitude={latitude}
-                longitude={longitude}
-                channelId={channelId}
-              />
-            ) : media === 'LINK' ? (
-              <PostLink
-                title={title}
-                latitude={latitude}
-                longitude={longitude}
-                channelId={channelId}
-              />
-            ) : (
-              <Upload
-                title={title}
-                latitude={latitude}
-                longitude={longitude}
-                channelId={channelId}
-              />
+                  </div>
+                </form>
+              ) : media === 'PHOTO' ? (
+                <TakePhoto
+                  title={title}
+                  latitude={latitude}
+                  longitude={longitude}
+                  channelId={channelId}
+                />
+              ) : media === 'VIDEO' ? (
+                <TakeVideo
+                  title={title}
+                  latitude={latitude}
+                  longitude={longitude}
+                  channelId={channelId}
+                />
+              ) : media === 'LINK' ? (
+                <PostLink
+                  title={title}
+                  latitude={latitude}
+                  longitude={longitude}
+                  channelId={channelId}
+                />
+              ) : (
+                        <Upload
+                          title={title}
+                          latitude={latitude}
+                          longitude={longitude}
+                          channelId={channelId}
+                        />
+                      )}
+            </>
+          ) : (
+              <div>
+                <h3>Loading...</h3>
+                <div>{loadingArr[loadingTicker]}</div>
+              </div>
             )}
-          </>
-        ) : (
-          <div>
-            <h3>Loading...</h3>
-            <div>{loadingArr[loadingTicker]}</div>
-          </div>
-        )}
+        </div>
       </div>
-    </div>
-  );
+    );
 };
 
 const mapState = ({ channels, nav }) => {
