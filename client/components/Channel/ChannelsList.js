@@ -1,6 +1,7 @@
 import React from 'react';
 import { List, Paper } from '@material-ui/core';
 import ChannelLineItem from './ChannelLineItem';
+import history from '../../history';
 
 const ChannelsList = props => (
   // <Paper style={{ margin: 8 }}>
@@ -13,6 +14,7 @@ const ChannelsList = props => (
         divider={idx !== props.channels.length - 1}
       />
     ))}
+    <button onClick={() => history.push('/')}>Back To Map</button>
   </List>
   // </Paper>
 );

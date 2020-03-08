@@ -47,5 +47,5 @@
   flex-direction: column;
   justify-content: start;
   background-color: rgb(195, 195, 195);
-  overflow: hidden;
+  overflow: scroll;
 }
