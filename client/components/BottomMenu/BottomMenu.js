@@ -11,6 +11,7 @@ import Feed from './feedIcon';
 import Add from './AddIcon';
 import Login from './loginIcon';
 import User from './userIcon';
+import Map from './mapIcon';
 
 class BottomMenu extends React.Component {
   render() {
@@ -32,8 +33,21 @@ class BottomMenu extends React.Component {
             </Link>
           ) : (
             <Search width={40} />
-          )}
+           )}
+          </div>
+
+        <div className="bottomMenu_icon">
+          {this.props.activeUser.id ? (
+          <Link to="/">
+            <Map width={40} />
+          </Link>
+           ) : (
+              <Map width={40} />
+               )}
         </div>
+
+
+
         <div className="bottomMenu_icon">
           {this.props.activeUser.id ? (
             <Link to="/post">

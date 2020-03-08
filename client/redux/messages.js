@@ -79,6 +79,28 @@ export const filteredMessages = arrOfChannelIds => {
   };
 };
 
+export const upVoteMessage = msgId => {
+  return dispatch => {
+    axios
+      .put(`/api/messages/upvote/${msgId}`)
+      .then(() => {
+        dispatch(fetchUnreadMessages());
+      })
+      .catch(e => console.log('error in upVote thunk: ', e));
+  };
+};
+
+export const downVoteMessage = msgId => {
+  return dispatch => {
+    axios
+      .put(`/api/messages/downvote/${msgId}`)
+      .then(() => {
+        dispatch(fetchUnreadMessages());
+      })
+      .catch(e => console.log('error in upVote thunk: ', e));
+  };
+};
+
 export const markAsRead = msgId => {
   return dispatch => {
     axios

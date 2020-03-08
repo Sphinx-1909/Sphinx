@@ -1,12 +1,19 @@
 import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
+import LandingPage from './Welcome/LandingPage';
 import axios from 'axios';
 import LandingPage from './Welcome/LandingPage';
 import { connect } from 'react-redux';
-import { fetchUnreadMessages, markAsRead } from '../redux/messages';
+import {
+  fetchUnreadMessages,
+  markAsRead,
+  upVoteMessage,
+  downVoteMessage,
+} from '../redux/messages';
 import { minDistance } from '../../utils';
 import { googleMapStyles } from '.././utils/utils';
+import './MapView.css';
 
 const MapContainer = props => {
   const [activeMarker, setActiveMarker] = useState({});
@@ -55,6 +62,7 @@ const MapContainer = props => {
   // setTestUri(testUriKey)
 
   const onMarkerClick = (props, marker, e, msg, distance) => {
+    console.log(msg);
     if (distance > minDistance) return;
     setSelectedMessage(msg);
     setActiveMarker(marker);
@@ -103,6 +111,16 @@ const MapContainer = props => {
     setDisplayMessage(false);
   };
 
+  const handelUpVote = () => {
+    props.upVoteMessage(selectedMessage.id);
+    selectedMessage.positiveVotes++;
+  };
+
+  const handleDownVote = () => {
+    props.downVoteMessage(selectedMessage.id);
+    selectedMessage.negativeVotes++;
+  };
+
   return !activeUser.firstName ? (
     <LandingPage />
   ) : (
@@ -113,29 +131,72 @@ const MapContainer = props => {
             selectedMessage.fileType !== 'text' &&
             selectedMessage.fileType !== 'link' ? (
               // message type is 'image':
-              <div>
-                <img src={dataUri} />
-                <button onClick={handleClose}>Close</button>
+              <div className="liner">
+                <div className="contentCenter">
+                  <img src={dataUri} />
+                  <div className="MapView_buttons">
+                    <button onClick={handleClose} className="MapView_links">
+                      Close
+                    </button>
+                  </div>
+                </div>
               </div>
             ) : (
               // message type is 'video':
-              <div>
-                <video src={props.data} autoPlay={true} />
-                <button onClick={handleClose}>Close</button>
+              <div className="liner">
+                <div className="contentCenter">
+                  <video src={props.data} autoPlay={true} />
+                  <div className="MapView_buttons">
+                    <button onClick={handleClose} className="MapView_links">
+                      Close
+                    </button>
+                  </div>
+                </div>
               </div>
             )
           ) : // message type is 'link':
           selectedMessage.fileType === 'link' ? (
-            <div>
-              <ReactPlayer url={selectedMessage.messageContent} playing />
-              <button onClick={handleClose}>Close</button>
+            <div className="liner">
+              <div className="contentCenter">
+                <ReactPlayer url={selectedMessage.messageContent} playing />
+                <div className="MapView_buttons">
+                  <button onClick={handleClose} className="MapView_links">
+                    Close
+                  </button>
+                </div>
+              </div>
             </div>
           ) : (
             // message type is 'text':
-            <div>
-              <h2>{selectedMessage.messageTitle}</h2>
-              <p>{selectedMessage.messageContent}</p>
-              <button onClick={handleClose}>Close</button>
+            <div className="liner">
+              <div className="contentCenter">
+                <div className="MapView_subHeader">
+                  {selectedMessage.messageTitle}
+                </div>
+                <div className="MapView_item">
+                  {selectedMessage.messageContent}
+                </div>
+                <div className="MapView_item">
+                  UpVotes: {selectedMessage.positiveVotes}, DownVotes:
+                  {selectedMessage.negativeVotes}
+                </div>
+                <div className="MapView_buttons">
+                  <button onClick={handelUpVote} className="MapView_links_up">
+                    VOTE UP
+                  </button>
+                  <button
+                    onClick={handleDownVote}
+                    className="MapView_links_down"
+                  >
+                    VOTE DOWN
+                  </button>
+                </div>
+                <div className="MapView_buttons">
+                  <button onClick={handleClose} className="MapView_links">
+                    Close
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </>
@@ -203,6 +264,8 @@ const mapDispatch = dispatch => {
   return {
     fetchMessages: () => dispatch(fetchUnreadMessages()),
     markAsRead: msgId => dispatch(markAsRead(msgId)),
+    upVoteMessage: msgId => dispatch(upVoteMessage(msgId)),
+    downVoteMessage: msgId => dispatch(downVoteMessage(msgId)),
     // getMediaMessage: key => dispatch(getMediaMessage(key)),
   };
 };
