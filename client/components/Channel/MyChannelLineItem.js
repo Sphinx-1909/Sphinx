@@ -12,21 +12,29 @@ import {
   Button,
   Collapse,
   ListSubheader,
+  Checkbox,
 } from '@material-ui/core';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ExpandLess from '@material-ui/icons/ExpandLess';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 class MyChannelLineItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
+      isVisible: false,
     };
   }
 
   clickToOpen = () => {
     this.setState({ open: !this.state.open });
+  };
+
+  clickToSwtichVisibility = () => {
+    this.setState({ isVisible: !this.state.isVisible });
   };
 
   clickToUnsubscribeToChannel = (ev, channelId) => {
@@ -38,15 +46,20 @@ class MyChannelLineItem extends Component {
   render() {
     return (
       <>
-        <ListItem
-          button={true}
-          onClick={() => {
-            this.props.filterFunction();
-            this.props.fetchFilteredMessage();
-          }}
-          divider={this.props.divider}
-        >
+        <ListItem divider={this.props.divider}>
           {/* <ListItemText primary={this.props.channelDetails.channelTitle} /> */}
+          {this.props.isFilterOn === true ? (
+            <Checkbox
+              color="primary"
+              icon={<VisibilityOff />}
+              checkedIcon={<Visibility />}
+              onChange={() => {
+                this.props.filterFunction();
+                this.props.fetchFilteredMessage();
+                this.clickToSwtichVisibility();
+              }}
+            />
+          ) : null}
           <Typography>{this.props.channelDetails.channelTitle}</Typography>
           <ListItemSecondaryAction>
             <ListItem button={true} onClick={() => this.clickToOpen()}>

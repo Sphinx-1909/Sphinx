@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MyChannelLineItem from './MyChannelLineItem';
-import { List } from '@material-ui/core';
-import { filteredMessages } from '../../redux/messages';
+import {
+  List,
+  ListItem,
+  Checkbox,
+  ListItemSecondaryAction,
+} from '@material-ui/core';
+import { filteredMessages, fetchUnreadMessages } from '../../redux/messages';
 
 class MyChannelSubscriptions extends Component {
   constructor() {
     super();
     this.state = {
       selectedChannels: [],
+      selectFilterOption: false,
     };
   }
-  // componentDidMount() {
-  //   this.setState({
-  //     filtered: this.props.channelData.allChannels,
-  //   });
-  // }
 
   addToFilterList = channelId => {
     const { selectedChannels } = this.state;
@@ -38,6 +39,24 @@ class MyChannelSubscriptions extends Component {
     return (
       <div>
         <List style={{ overflow: 'auto', height: '600px' }}>
+          <ListItem>
+            <span>CHANNELS</span>
+            <ListItemSecondaryAction>
+              <Checkbox
+                color="primary"
+                value="Filter Channel"
+                onChange={() => {
+                  this.setState({
+                    selectFilterOption: !this.state.selectFilterOption,
+                  });
+                  //At this point its going to be reverse logic so if its false then filtermessage is will be overriding the unread messages. A bit confusing but oh well... for now...
+                  this.state.selectFilterOption === false
+                    ? this.props.filteredMessages(this.state.selectedChannels)
+                    : this.props.fetchUnreadMessages();
+                }}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
           {this.props.channelData.myChannels.map((channel, idx) => (
             <MyChannelLineItem
               channelDetails={channel}
@@ -47,6 +66,7 @@ class MyChannelSubscriptions extends Component {
               fetchFilteredMessage={() =>
                 this.props.filteredMessages(this.state.selectedChannels)
               }
+              isFilterOn={this.state.selectFilterOption}
             />
           ))}
         </List>
@@ -64,6 +84,7 @@ const mapDispatchToProps = dispatch => {
   return {
     filteredMessages: arrOfChannelIds =>
       dispatch(filteredMessages(arrOfChannelIds)),
+    fetchUnreadMessages: () => dispatch(fetchUnreadMessages()),
   };
 };
 

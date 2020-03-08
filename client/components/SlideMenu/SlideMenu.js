@@ -39,14 +39,13 @@ class SlideMenu extends React.Component {
               : 'translateX(-100%)',
           }}
         >
-          <span>CHANNELS</span>
           <MyChannelSubscriptions />
           <Link to="/createnewchannel">
             <span>Create a new channel</span>
           </Link>
           <Link to="/editchannel">
-          <span>Edit your channels</span>
-        </Link>
+            <span>Edit your channels</span>
+          </Link>
         </div>
       </div>
     );
