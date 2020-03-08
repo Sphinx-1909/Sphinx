@@ -40,11 +40,23 @@ class LogIn extends Component {
         <div className="contentCenter">
           <form onSubmit={ev => this.handleLogin(ev)}>
             <div className="login_subHeader">SIGN IN</div>
-            <input type="email" name={'email'} onChange={this.handleChange} />
+            <label className="login_form_item">
+              <b>email</b>
+            </label>
+            <input
+              type="email"
+              name={'email'}
+              onChange={this.handleChange}
+              className="login_form_input"
+            />
+            <label className="login_form_item">
+              <b>password</b>
+            </label>
             <input
               type="password"
               name={'password'}
               onChange={this.handleChange}
+              className="login_form_input"
             />
             <div className="login_buttons">
               <button

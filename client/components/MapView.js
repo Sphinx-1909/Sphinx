@@ -1,6 +1,7 @@
 import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
+import LandingPage from './Welcome/LandingPage';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { fetchUnreadMessages, markAsRead } from '../redux/messages';
