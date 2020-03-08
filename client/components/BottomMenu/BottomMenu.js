@@ -11,6 +11,7 @@ import Feed from './feedIcon';
 import Add from './AddIcon';
 import Login from './loginIcon';
 import User from './userIcon';
+import Map from './mapIcon';
 
 class BottomMenu extends React.Component {
   render() {
@@ -24,6 +25,11 @@ class BottomMenu extends React.Component {
               : 'translateY(200%)',
         }}
       >
+        <div className="bottomMenu_icon">
+          <Link to="/">
+            <Map width={40} />
+          </Link>
+        </div>
         <div className="bottomMenu_icon">
           <Link to="/channelsearch">
             <Search width={40} />

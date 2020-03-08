@@ -31,10 +31,10 @@ import UploadFile from './components/message/Upload';
 import EditAChannel from './components/Channel/EditChannel';
 import LinkTest from './components/message/LinkTest';
 import SelectMedia from './components/SelectMedia/Selectmedia';
-import PhoneInput from './components/login/2FA/PhoneInput'
+import PhoneInput from './components/login/2FA/PhoneInput';
 
 class App extends React.Component {
-  async componentDidMount() {
+  componentDidMount() {
     this.props.initialLogInAttempt();
     if (this.props.activeUser.firstName) {
       // this.props.fetchChannels();
@@ -127,7 +127,7 @@ class App extends React.Component {
             <Route path="/linktest" component={LinkTest} exact />
             <Route path="/createnewchannel" component={CreateAChannel} exact />
             <Route path="/editchannel/:id" component={EditAChannel} />
-            <Route path='/phoneinput' component={PhoneInput} />
+            <Route path="/phoneinput" component={PhoneInput} />
           </div>
           <BottomMenu openSlide={this.props.openSlide} />
         </div>
