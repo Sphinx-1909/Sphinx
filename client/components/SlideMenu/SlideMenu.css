@@ -25,6 +25,7 @@
   z-index: 9;
   transition: transform 0.3s ease-in-out;
   overflow: visible;
+  width: 35vw;
   @media (max-width: 576px) {
     width: 100%;
   }
@@ -39,7 +40,7 @@
 }
 
 .slideMenu:before {
-  width: 15%;
+  width: 15px;
   height: 100%;
   right: -15px;
   top: -3px;
@@ -51,7 +52,7 @@
 }
 
 .slideMenu:after {
-  width: 15%;
+  width: 15px;
   height: 100%;
   right: 0px;
   background: linear-gradient(-45deg, #ffe4c4 8px, transparent 0) 0 8px,

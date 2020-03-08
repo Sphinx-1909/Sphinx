@@ -1,5 +1,6 @@
 import axios from 'axios';
 import history from '../history';
+import { fetchUnreadMessagesV2, fetchUnreadMessages } from './messages';
 //action types
 const SET_CHANNELS = 'SET_CHANNELS';
 const SET_ALL_CHANNELS = 'SET_ALL_CHANNELS';
@@ -93,9 +94,10 @@ export const subscribeToChannel = channelId => {
     return axios
       .post(`/api/channels/subscribe/${channelId}`)
       .then(() => {
-        axios
-          .get(`/api/channels/${channelId}`)
-          .then(channelObj => dispatch(subToChannel(channelObj.data)));
+        axios.get(`/api/channels/${channelId}`).then(channelObj => {
+          dispatch(subToChannel(channelObj.data));
+          dispatch(fetchUnreadMessages());
+        });
       })
       .catch(e => console.log('Error in thunk at post:', e));
   };
@@ -133,7 +135,8 @@ export const unsubscribeToChannel = channelId => {
       .get(`/api/channels/${channelId}`)
       .then(channelObj => {
         axios.delete(`/api/channels/unsubscribe/${channelId}`);
-        return dispatch(unsubToChannel(channelObj.data));
+        dispatch(unsubToChannel(channelObj.data));
+        dispatch(fetchUnreadMessages());
       })
       .catch(e => console.log('Error in thunk:', e));
   };
