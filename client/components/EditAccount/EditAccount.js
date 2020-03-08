@@ -12,7 +12,7 @@ class EditAccount extends React.Component {
       lastName: '',
       password: '',
       email: '',
-      userName: '',
+      username: '',
     };
   }
   componentDidMount() {
@@ -23,7 +23,7 @@ class EditAccount extends React.Component {
       lastName: activeUser.lastName,
       password: activeUser.password,
       email: activeUser.email,
-      userName: activeUser.userName,
+      username: activeUser.username,
     });
   }
 
@@ -79,9 +79,9 @@ class EditAccount extends React.Component {
             </label>
 
             <input
-              type={'userName'}
-              placeholder={`${this.props.activeUser.userName}`}
-              name={'userName'}
+              type={'username'}
+              placeholder={`${this.props.activeUser.username}`}
+              name={'username'}
               onChange={this.handleChange}
               className="editUser_form_input"
             />

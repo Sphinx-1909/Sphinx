@@ -13,7 +13,7 @@ class SignUp extends React.Component {
       password: '',
       repeatPassword: '',
       email: '',
-      userName: '',
+      username: '',
     };
   }
 
@@ -28,12 +28,12 @@ class SignUp extends React.Component {
     if (this.state.reTypePassword !== this.state.password) {
       alert("Passwords don't match");
     } else {
-      console.log('line 31 in SignUp.js')
-      const { firstName, lastName, userName, email, password } = this.state;
+      console.log('line 31 in SignUp.js');
+      const { firstName, lastName, username, email, password } = this.state;
       this.props.createUserAndLogIn({
         firstName,
         lastName,
-        userName,
+        username,
         email,
         password,
       });
@@ -83,8 +83,8 @@ class SignUp extends React.Component {
             </label>
 
             <input
-              type="userName"
-              name="userName"
+              type="username"
+              name="username"
               onChange={this.handleChange}
               className="signUp_form_input"
             />
