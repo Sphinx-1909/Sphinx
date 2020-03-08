@@ -21,7 +21,7 @@ const addUser = user => {
 export const fetchUsers = () => {
   return dispatch => {
     return axios
-      .get('/api/user')
+      .get('/api/users')
       .then(response => dispatch(setUsers(response.data)))
       .catch(e => console.log('Error in thunk:', e));
   };

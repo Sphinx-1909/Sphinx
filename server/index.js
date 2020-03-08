@@ -50,7 +50,7 @@ app.use((req, res, next) => {
     })
       .then(foundUser => {
         if (foundUser) {
-          console.log('user found!')
+          // console.log('user found!')
           req.user = foundUser;
         }
         next();
@@ -84,7 +84,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, '../static')));
 app.use((req, res, next) => {
   if (req.user) {
-    console.log('req.user exists');
+    // console.log('req.user exists');
   } else {
     console.log('no req.user');
   }
