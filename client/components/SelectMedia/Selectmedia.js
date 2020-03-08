@@ -64,20 +64,28 @@ class SelectMedia extends React.Component {
               <div className="selectMedia_subHeader">SELECT MEDIA</div>
               <div
                 className="selectMedia"
+                id="POST"
+                style={{ backgroundColor: 'rgb(243, 217, 184)' }}
+                onClick={e => this.onHandleClick(e)}
+              >
+                MESSAGE
+              </div>
+              <div
+                className="selectMedia"
                 id="PHOTO"
                 style={{ backgroundColor: 'rgb(243, 217, 184)' }}
                 onClick={e => this.onHandleClick(e)}
               >
                 PHOTO
               </div>
-              <div
+              {/*<div
                 className="selectMedia"
                 id="VIDEO"
                 style={{ backgroundColor: 'rgb(214, 186, 150)' }}
                 onClick={e => this.onHandleClick(e)}
               >
                 VIDEO
-              </div>
+              </div>*/}
               <div
                 className="selectMedia"
                 id="LINK"
