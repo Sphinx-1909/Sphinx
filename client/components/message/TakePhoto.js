@@ -11,6 +11,8 @@ import { PostSuccess } from './PostSuccess';
 
 function TakePhoto(props) {
 
+  const { channel } = props;
+
   console.log('props in takePhoto: ', props)
 
   const [dataUri, setDataUri] = useState('')
@@ -46,7 +48,7 @@ function TakePhoto(props) {
       latitude: props.latitude,
       longitude: props.longitude,
       radius: 1,
-      channelId: props.channelId,
+      channelId: channel,
     };
     await props.addMessage(postBody, dataUri)
     setSuccess(true)
@@ -89,10 +91,16 @@ function TakePhoto(props) {
   );
 }
 
+const mapState = ({ nav }) => {
+  return {
+    channel: nav.channel,
+  }
+}
+
 const mapDispatch = dispatch => {
   return {
     addMessage: (msg, media) => dispatch(addMessage(msg, media))
   }
 }
 
-export default connect(null, mapDispatch)(TakePhoto);
+export default connect(mapState, mapDispatch)(TakePhoto);

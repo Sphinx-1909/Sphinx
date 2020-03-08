@@ -35,6 +35,7 @@ router.post('/:fileType', (req, res, next) => {
 })
 
 router.post('/file', upload.single('media'), (req, res, next) => {
+  console.log('req.body in /file: ', req.body)
   const params = {
     Bucket: bucketName,
     Body: fs.createReadStream(req.file.path),
