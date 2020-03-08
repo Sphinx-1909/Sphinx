@@ -2,6 +2,7 @@ import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import axios from 'axios';
+import LandingPage from './Welcome/LandingPage';
 import { connect } from 'react-redux';
 import {
   fetchUnreadMessages,

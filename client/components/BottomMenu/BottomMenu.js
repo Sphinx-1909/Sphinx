@@ -15,6 +15,7 @@ import Map from './mapIcon';
 
 class BottomMenu extends React.Component {
   render() {
+    console.log('bottomMenu props', this.props);
     return (
       <div
         className="bottomMenu"
@@ -26,24 +27,44 @@ class BottomMenu extends React.Component {
         }}
       >
         <div className="bottomMenu_icon">
+          {this.props.activeUser.id ? (
+            <Link to="/channelsearch">
+              <Search width={40} />
+            </Link>
+          ) : (
+            <Search width={40} />
+           )}
+          </div>
+
+        <div className="bottomMenu_icon">
+          {this.props.activeUser.id ? (
           <Link to="/">
             <Map width={40} />
           </Link>
+           ) : (
+              <Map width={40} />
+               )}
         </div>
+
+
+
         <div className="bottomMenu_icon">
-          <Link to="/channelsearch">
-            <Search width={40} />
-          </Link>
-        </div>
-        <div className="bottomMenu_icon">
-          <Link to="/post">
+          {this.props.activeUser.id ? (
+            <Link to="/post">
+              <Add width={40} />
+            </Link>
+          ) : (
             <Add width={40} />
-          </Link>
+          )}
         </div>
         <div className="bottomMenu_icon">
-          <Link to="/feed">
+          {this.props.activeUser.id ? (
+            <Link to="/feed">
+              <Feed width={40} />
+            </Link>
+          ) : (
             <Feed width={40} />
-          </Link>
+          )}
         </div>
         {this.props.activeUser.id ? (
           <div className="bottomMenu_icon">

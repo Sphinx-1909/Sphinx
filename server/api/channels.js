@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { Op } = require('sequelize');
-const { Channel, User, Message, readBy } = require('../db/index');
+const { Channel, User, Message, readBy, ChannelUser } = require('../db/index');
 
 //get all channels
 router.get('/all', (req, res, next) => {
@@ -96,7 +96,7 @@ router.get('/', (req, res, next) => {
     }
   });
 });
-
+//include channel and include all subscribers
 router.get('/:id', (req, res, next) => {
   let userId;
   if (req.user) {

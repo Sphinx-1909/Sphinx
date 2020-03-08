@@ -63,6 +63,16 @@ export const fetchChannels = () => {
       .catch(e => console.log('Error in thunk:', e));
   };
 };
+//get one channel and users are included
+export const fetchOneChannelThunk = channelId => {
+  // console.log('in fetchOneChannel thunk');
+  return dispatch => {
+    return axios
+      .get(`/api/channels/${channelId}`)
+      .then(channels => dispatch(setChannels(channels.data)))
+      .catch(e => console.log('Error in thunk:', e));
+  };
+};
 
 export const fetchAllChannels = () => {
   // console.log('in fetchAllChannels thunk');
