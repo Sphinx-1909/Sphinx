@@ -12,12 +12,10 @@ import {
 } from '../redux/messages';
 import { minDistance } from '../../utils';
 import { googleMapStyles } from '.././utils/utils';
-import LandingPage from './Welcome/LandingPage';
 import {
   setCurrentLocation,
   setMediaType,
 } from '../redux/nav/action/nav.action';
-
 
 import './MapView.css';
 
@@ -40,13 +38,14 @@ const MapContainer = props => {
     if (!navigator.geolocation) {
       setGeoSupported(false);
     } else {
-      navigator.geolocation.getCurrentPosition(pos => {
-        console.log('lat', pos.coords.latitude, 'lng', pos.coords.longitude);
-        props.setCurrentLocation({
-          latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude,
-        });
-      },
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          console.log('lat', pos.coords.latitude, 'lng', pos.coords.longitude);
+          props.setCurrentLocation({
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+          });
+        },
         () => {
           console.log('did load geo');
         },
@@ -56,14 +55,14 @@ const MapContainer = props => {
   };
 
   useEffect(() => {
-    setInitialLoad(false)
-    grabLocation()
-  }, currentPosition)
+    setInitialLoad(false);
+    grabLocation();
+  }, currentPosition);
 
   const onMarkerClick = (props, marker, e, msg, distance) => {
     console.log(msg);
     if (distance > minDistance) return;
-    console.log('msg: ', msg)
+    console.log('msg: ', msg);
     setSelectedMessage(msg);
     setActiveMarker(marker);
     // check if it is a media message
@@ -111,7 +110,7 @@ const MapContainer = props => {
     setDisplayMessage(false);
   };
 
-  console.log('currentPosition.latitude: ', currentPosition.latitude)
+  console.log('currentPosition.latitude: ', currentPosition.latitude);
 
   const handelUpVote = () => {
     props.upVoteMessage(selectedMessage.id);
@@ -126,129 +125,136 @@ const MapContainer = props => {
   return !activeUser.firstName && !initialLoad ? (
     <LandingPage />
   ) : (
-      <>
-        {displayMessage ? (
-          <>
-            {dataUri ? (
-              selectedMessage.fileType !== 'text' &&
-                selectedMessage.fileType !== 'link' ? (
-                  // message type is 'image':
-                  <div className="liner">
-                    <div className="contentCenter">
-                      <img src={dataUri} />
-                      <div className="MapView_buttons">
-                        <button onClick={handleClose} className="MapView_links">
-                          Close
+    <>
+      {displayMessage ? (
+        <>
+          {dataUri ? (
+            selectedMessage.fileType !== 'text' &&
+            selectedMessage.fileType !== 'link' ? (
+              // message type is 'image':
+              <div className="liner">
+                <div className="contentCenter">
+                  <img src={dataUri} />
+                  <div className="MapView_buttons">
+                    <button onClick={handleClose} className="MapView_links">
+                      Close
                     </button>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  // message type is 'video':
-                  <div className="liner">
-                    <div className="contentCenter">
-                      <video src={dataUri} autoPlay={true} />
-                      <div className="MapView_buttons">
-                        <button onClick={handleClose} className="MapView_links">
-                          Close
-                    </button>
-                      </div>
-                    </div>
-                  </div>
-                )
-            ) : // message type is 'link':
-              selectedMessage.fileType === 'link' ? (
-                <div className="liner">
-                  <div className="contentCenter">
-                    <ReactPlayer url={selectedMessage.messageContent} playing />
-                    <div className="MapView_buttons">
-                      <button onClick={handleClose} className="MapView_links">
-                        Close
-                  </button>
-                    </div>
                   </div>
                 </div>
-              ) : (
-                  // message type is 'text':
-                  <div className="liner">
-                    <div className="contentCenter">
-                      <div className="MapView_subHeader">
-                        {selectedMessage.messageTitle}
-                      </div>
-                      <div className="MapView_item">
-                        {selectedMessage.messageContent}
-                      </div>
-                      <div className="MapView_item">
-                        UpVotes: {selectedMessage.positiveVotes}, DownVotes:
-                  {selectedMessage.negativeVotes}
-                      </div>
-                      <div className="MapView_buttons">
-                        <button onClick={handelUpVote} className="MapView_links_up">
-                          VOTE UP
-                  </button>
-                        <button
-                          onClick={handleDownVote}
-                          className="MapView_links_down"
-                        >
-                          VOTE DOWN
-                  </button>
-                      </div>
-                      <div className="MapView_buttons">
-                        <button onClick={handleClose} className="MapView_links">
-                          Close
-                  </button>
-                      </div>
-                    </div>
+              </div>
+            ) : (
+              // message type is 'video':
+              <div className="liner">
+                <div className="contentCenter">
+                  <video src={dataUri} autoPlay={true} />
+                  <div className="MapView_buttons">
+                    <button onClick={handleClose} className="MapView_links">
+                      Close
+                    </button>
                   </div>
-                )}
-          </>
-        ) : geoSupported && currentPosition.latitude && !initialLoad ? (
-          <Map
-            google={props.google}
-            disableDefaultUI={true}
-            zoom={16}
-            style={{
-              width: '100%',
-              height: '100%',
-              overfloe: 'hidden',
-              position: 'static',
-            }}
-            styles={googleMapStyles}
-            initialCenter={{ lat: currentPosition.latitude, lng: currentPosition.longitude }}
-          >
-            <Marker
-              icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
-              scaledSize={new props.google.maps.Size(12, 12)}
-              position={{ lat: currentPosition.latitude, lng: currentPosition.longitude }}
-            />
-            {messages.length > 0 &&
-              messages.map((msg, idx) => {
-                const distance = computeDistance(msg, currentPosition);
-                // console.log('distance: ', distance)
-                return (
-                  <Marker
-                    icon={distance < minDistance ? openMsgIcon : closedMsgIcon}
-                    name={msg.messageTitle}
-                    key={idx}
-                    position={{ lat: msg.latitude, lng: msg.longitude }}
-                    onClick={(props, marker, e) =>
-                      onMarkerClick(props, marker, e, msg, distance)
-                    }
-                  />
-                );
-              })}
-          </Map>
-        ) : (
-              !geoSupported && (
-                <div className="container">Location access must be enabled to view messages!</div>
-              ),
-              !currentPosition.latitude && (
-                <div className="container">Loading...</div>
-              )
+                </div>
+              </div>
             )
-        }
-      </>
-    );
+          ) : // message type is 'link':
+          selectedMessage.fileType === 'link' ? (
+            <div className="liner">
+              <div className="contentCenter">
+                <ReactPlayer url={selectedMessage.messageContent} playing />
+                <div className="MapView_buttons">
+                  <button onClick={handleClose} className="MapView_links">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            // message type is 'text':
+            <div className="liner">
+              <div className="contentCenter">
+                <div className="MapView_subHeader">
+                  {selectedMessage.messageTitle}
+                </div>
+                <div className="MapView_item">
+                  {selectedMessage.messageContent}
+                </div>
+                <div className="MapView_item">
+                  UpVotes: {selectedMessage.positiveVotes}, DownVotes:
+                  {selectedMessage.negativeVotes}
+                </div>
+                <div className="MapView_buttons">
+                  <button onClick={handelUpVote} className="MapView_links_up">
+                    VOTE UP
+                  </button>
+                  <button
+                    onClick={handleDownVote}
+                    className="MapView_links_down"
+                  >
+                    VOTE DOWN
+                  </button>
+                </div>
+                <div className="MapView_buttons">
+                  <button onClick={handleClose} className="MapView_links">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      ) : geoSupported && currentPosition.latitude && !initialLoad ? (
+        <Map
+          google={props.google}
+          disableDefaultUI={true}
+          zoom={16}
+          style={{
+            width: '100%',
+            height: '100%',
+            overfloe: 'hidden',
+            position: 'static',
+          }}
+          styles={googleMapStyles}
+          initialCenter={{
+            lat: currentPosition.latitude,
+            lng: currentPosition.longitude,
+          }}
+        >
+          <Marker
+            icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
+            scaledSize={new props.google.maps.Size(12, 12)}
+            position={{
+              lat: currentPosition.latitude,
+              lng: currentPosition.longitude,
+            }}
+          />
+          {messages.length > 0 &&
+            messages.map((msg, idx) => {
+              const distance = computeDistance(msg, currentPosition);
+              // console.log('distance: ', distance)
+              return (
+                <Marker
+                  icon={distance < minDistance ? openMsgIcon : closedMsgIcon}
+                  name={msg.messageTitle}
+                  key={idx}
+                  position={{ lat: msg.latitude, lng: msg.longitude }}
+                  onClick={(props, marker, e) =>
+                    onMarkerClick(props, marker, e, msg, distance)
+                  }
+                />
+              );
+            })}
+        </Map>
+      ) : (
+        (!geoSupported && (
+          <div className="container">
+            Location access must be enabled to view messages!
+          </div>
+        ),
+        !currentPosition.latitude && (
+          <div className="container">Loading...</div>
+        ))
+      )}
+    </>
+  );
 };
 
 const Wrapper = GoogleApiWrapper({

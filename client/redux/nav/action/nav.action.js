@@ -17,3 +17,8 @@ export const setMediaType = media => ({
   type: navType.SET_MEDIA_TYPE,
   payload: media,
 });
+
+export const setChannel = channel => ({
+  type: navType.SET_CHANNEL,
+  payload: channel,
+});
