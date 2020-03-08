@@ -98,7 +98,40 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  Channel.findByPk(req.params.id)
+  let userId;
+  if (req.user) {
+    userId = req.user.id;
+  } else {
+    console.log('no req.user in channel.js line 66');
+  }
+  // console.log('userId: ', userId);
+  // the above should eventually be changed to: const userId = req.user.id;
+  User.findOne({
+    where: {
+      id: userId,
+    },
+  }).then(user => {
+    if (user) {
+      user
+        .getChannels({
+          where: {
+            // don't include messages sent by current user
+            id: {
+              [Op.eq]: req.params.id,
+            },
+          },
+        })
+        //need to do index of 0 because when using sequelize methods for m:m you get an array. And this works here because we are always only finding 1 channel
+        .then(userChannel => res.status(200).send(userChannel[0]))
+        .catch(e => console.log('error finding userChannel: ', e));
+    } else {
+      res.status(400).send('user not found');
+    }
+  });
+});
+
+router.get('/users/:channelId', (req, res, next) => {
+  Channel.findByPk(req.params.channelId, { include: { model: User } })
     .then(channel => {
       if (!channel) return res.status(404).send('Channel is not found!');
       res.status(200).send(channel);
@@ -251,25 +284,25 @@ router.delete('/:id', (req, res, next) => {
     });
 });
 
-//get channel to edit that the user is an owner of adn add moderators
-router.put('/:id', (req, res, next) => {
-  // async/awwait
-  Channel.findByPk(req.params.id)
-    .then(channel => {
-      if (channel) {
-        channel.update(req.body); // async deal with it!
+// //get channel to edit that the user is an owner of adn add moderators
+// router.put('/:id', (req, res, next) => {
+//   // async/awwait
+//   Channel.findByPk(req.params.id)
+//     .then(channel => {
+//       if (channel) {
+//         channel.update(req.body); // async deal with it!
 
-        //find users that are subscribed to channel with userName information
-        //add moderators
-        //
-        return res.status(202).send(channel);
-      }
-      res.status(404);
-    })
-    .catch(e => {
-      console.error(e);
-      next(e);
-    });
-});
+//         //find users that are subscribed to channel with userName information
+//         //add moderators
+//         //
+//         return res.status(202).send(channel);
+//       }
+//       res.status(404);
+//     })
+//     .catch(e => {
+//       console.error(e);
+//       next(e);
+//     });
+// });
 
 module.exports = router;
