@@ -38,11 +38,18 @@ class MyChannelLineItem extends Component {
   render() {
     return (
       <>
-        <ListItem divider={this.props.divider}>
+        <ListItem
+          button={true}
+          onClick={() => {
+            this.props.filterFunction();
+            this.props.fetchFilteredMessage();
+          }}
+          divider={this.props.divider}
+        >
           {/* <ListItemText primary={this.props.channelDetails.channelTitle} /> */}
           <Typography>{this.props.channelDetails.channelTitle}</Typography>
           <ListItemSecondaryAction>
-            <ListItem button={true} onClick={ev => this.clickToOpen()}>
+            <ListItem button={true} onClick={() => this.clickToOpen()}>
               {this.state.open === true ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
           </ListItemSecondaryAction>
@@ -51,12 +58,13 @@ class MyChannelLineItem extends Component {
           <List component={'div'}>
             <ListSubheader>Channel Description</ListSubheader>
             <ListItem>
-              {/* <ListItemText
+              <ListItemText
                 primary={this.props.channelDetails.channelDescription}
-              /> */}
+              />
             </ListItem>
             <ListItem
               button={true}
+              style={{ backgroundColor: 'tomato' }}
               onClick={ev =>
                 this.clickToUnsubscribeToChannel(
                   ev,
@@ -64,7 +72,7 @@ class MyChannelLineItem extends Component {
                 )
               }
             >
-              <ListItemText primary={'UNSUBSCRIBE'} />
+              <ListItemText primary={'Leave Channel'} />
               <ExitToApp />
             </ListItem>
           </List>

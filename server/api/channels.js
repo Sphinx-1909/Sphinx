@@ -27,9 +27,10 @@ router.get('/withunreadmessages', (req, res, next) => {
     if (user) {
       // fetch all messages in messageUser / readBy table that is matching the user found from previous query and then map all messageIds to an array to be used in 46-48
       const userReadMessages = user
-        .getMessages({ attributes: ['id'] })
+        .getMessages({ joinTableAttributes: ['messageId'] })
         .map(message => message.id);
 
+      console.log('userReadMessages', userReadMessages);
       // fetch the channels and join the messages where messages are not created by user and messages not found in messageUser / readBy table
       user
         .getChannels({
@@ -44,7 +45,7 @@ router.get('/withunreadmessages', (req, res, next) => {
                 },
                 // added
                 id: {
-                  [Op.in]: userReadMessages,
+                  [Op.notIn]: userReadMessages,
                 },
               },
             },
