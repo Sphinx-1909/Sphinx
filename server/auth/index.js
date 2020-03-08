@@ -1,5 +1,7 @@
 const router = require('express').Router();
-const { User } = require('../db/index');
+const { User, Session } = require('../db/index');
+const chalk = require('chalk');
+const moment = require('moment');
 
 router.post('/login', (req, res, next) => {
   // console.log(req.body.email);
@@ -55,12 +57,24 @@ router.post('/signup', (req, res, next) => {
 
 router.get('/signout', (req, res, next) => {
   console.log('delete in index req.session.userId', req.cookies);
-
-  res
-    .status(204)
-    .clearCookie('sessionId')
-    .send();
-  // next();
+  res.clearCookie('sessionId')
+  Session.create()
+    .then(newSession => {
+      console.log('created new session in /signout route')
+      res.cookie('sessionId', newSession.id, {
+        path: '/',
+        expires: moment
+          .utc()
+          .add(1, 'day')
+          .toDate(),
+      });
+      next();
+    })
+    .catch(e => {
+      console.log(chalk.red('Error creating session'));
+      console.error(e);
+      next(e);
+    });
 });
 
 router.get('/me', (req, res, next) => {

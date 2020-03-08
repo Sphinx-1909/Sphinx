@@ -42,6 +42,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
+  // console.log('req.cookies.sessionId in app.use: ', req.cookies.sessionId)
   if (req.cookies.sessionId) {
     User.findOne({
       where: {
@@ -82,14 +83,14 @@ app.use((req, res, next) => {
 
 // static Middleware
 app.use(express.static(path.join(__dirname, '../static')));
-app.use((req, res, next) => {
-  if (req.user) {
-    // console.log('req.user exists');
-  } else {
-    console.log('no req.user');
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   if (req.user) {
+//     console.log('req.user exists');
+//   } else {
+//     console.log('no req.user in app.use');
+//   }
+//   next();
+// });
 // service worker route
 app.use('/service-worker.js', (req, res) => {
   // res.send(path.resolve(__dirname, '../static', 'service-worker.js'));
