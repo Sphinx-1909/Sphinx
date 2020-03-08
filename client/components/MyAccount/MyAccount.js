@@ -27,7 +27,7 @@ class MyAccount extends React.Component {
               password: {activeUser.password}
             </div>
             <div className="myAccountBox_account_info_item">
-              username: {activeUser.userName}
+              username: {activeUser.username}
             </div>
             <div className="myAccountBox_account_info_item">
               email: {activeUser.email}

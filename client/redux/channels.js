@@ -63,6 +63,16 @@ export const fetchChannels = () => {
       .catch(e => console.log('Error in thunk:', e));
   };
 };
+//get one channel and users are included
+export const fetchOneChannelThunk = channelId => {
+  // console.log('in fetchOneChannel thunk');
+  return dispatch => {
+    return axios
+      .get(`/api/channels/${channelId}`)
+      .then(channels => dispatch(setChannels(channels.data)))
+      .catch(e => console.log('Error in thunk:', e));
+  };
+};
 
 export const fetchAllChannels = () => {
   // console.log('in fetchAllChannels thunk');
@@ -184,13 +194,13 @@ export const channelsReducer = (state = initialState, action) => {
       let updatedAllChannels = state.allChannels.map(channel => {
         console.log('action.editedChannelInfo.id', action.editedChannelInfo.id);
         if (channel.id === action.editedChannelInfo.id)
-          return action.editedChannelInfo;
+          return [...channel, action.editedChannelInfo];
         return channel;
       });
       let updatedMyChannels = state.myChannels.map(channel => {
         if (channel.id === action.editedChannelInfo.id) {
           console.log('action.editedChannelInfo', action.editedChannelInfo);
-          return action.editedChannelInfo;
+          return [...channel, action.editedChannelInfo];
         }
 
         return channel;

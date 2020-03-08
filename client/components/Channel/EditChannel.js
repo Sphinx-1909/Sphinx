@@ -3,19 +3,17 @@ import { connect } from 'react-redux';
 import './EditChannel.css';
 import { editChannelThunk } from '../../redux/channels';
 import history from '../../history';
+import ShowSubscribers from './ShowSubscribers';
 
 class EditAChannel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      //channelId: this.props.match.params.id,
       channelTitle: '',
       channelDescrpition: '',
-      //channelsModerators: '',
     };
   }
   componentDidMount() {
-    // console.log('CDM in EC this.props.channels', this.props.channels);
     const { channelTitle, channelDescription } = this.props.channels;
 
     this.setState({
@@ -87,7 +85,8 @@ class EditAChannel extends React.Component {
                 className="editChannel_form_input"
               />
               <label className="editChannel_form_item">
-                <b>Add Moderator</b>
+                <b>Delete subscribers</b>
+                {/*} <ShowSubscribers />*/}
               </label>
 
               <input
@@ -134,7 +133,6 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditAChannel);
 
-//You can do an edit channels for channels that the user created
-//You’d need to utilize the api for channels and look at the ChannelUser to see if they are the owner
-//And put those channels info a component that lets them modify the details
-//edit name, description, moderators
+//get all users that have this channel as myChannels
+// drop down menu of everyone and select user to delete
+//delete subscribers from
