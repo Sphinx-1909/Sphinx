@@ -1,7 +1,6 @@
 import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
-import LandingPage from './Welcome/LandingPage';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import {
@@ -218,7 +217,7 @@ const MapContainer = props => {
           >
             <Marker
               icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
-              scaledSize={new props.google.maps.Size(10, 10)}
+              scaledSize={new props.google.maps.Size(12, 12)}
               position={{ lat: currentPosition.latitude, lng: currentPosition.longitude }}
             />
             {messages.length > 0 &&
