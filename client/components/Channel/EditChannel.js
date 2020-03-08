@@ -9,18 +9,18 @@ class EditAChannel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      channelTitle: '',
-      channelDescrpition: '',
+      channelTitle: null,
+      channelDescrpition: null,
     };
   }
-  componentDidMount() {
-    const { channelTitle, channelDescription } = this.props.channels;
+  // componentDidMount() {
+  //   const { channelTitle, channelDescription } = this.props.channels;
 
-    this.setState({
-      channelTitle: channelTitle,
-      channelDescrpition: channelDescription,
-    });
-  }
+  //   this.setState({
+  //     channelTitle: channelTitle,
+  //     channelDescrpition: channelDescription,
+  //   });
+  // }
 
   handleChange = ({ target: { name, value } }) => {
     this.setState({
@@ -42,16 +42,19 @@ class EditAChannel extends React.Component {
 
   render() {
     const channels = this.props.channels.myChannels;
-    const arrOfChanToEdit = channels.filter(chan => {
-      if (chan.id === this.props.match.params.id) {
-        return chan;
-      }
+    const ChanToEdit = channels.find(chan => {
+      return chan.id === this.props.match.params.id;
     });
 
-    const edtingChannel = arrOfChanToEdit[0];
-    if (!edtingChannel) {
+    if (!ChanToEdit) {
       return <div>please hold</div>;
     } else {
+      if (this.state.channelTitle === null) {
+        this.setState({
+          channelTitle: ChanToEdit.channelTitle,
+          channelDescription: ChanToEdit.channelDescription,
+        });
+      }
       return (
         <div className="liner">
           <div className="contentCenter">
@@ -68,7 +71,7 @@ class EditAChannel extends React.Component {
               <input
                 type="channelTitle"
                 name="channelTitle"
-                placeholder={`${edtingChannel.channelTitle}`}
+                value={this.state.channelTitle}
                 onChange={ev => this.handleChange(ev)}
                 className="editChannel_form_input"
               />
@@ -80,7 +83,8 @@ class EditAChannel extends React.Component {
               <input
                 type="channelDescription"
                 name="channelDescription"
-                placeholder={`${edtingChannel.channelDescription}`}
+                // placeholder={`${ChanToEdit.channelDescription}`}
+                value={this.state.channelDescription}
                 onChange={ev => this.handleChange(ev)}
                 className="editChannel_form_input"
               />
