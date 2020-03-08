@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { Op } = require('sequelize');
-const { Channel, User, Message, readBy } = require('../db/index');
+const { Channel, User, Message, readBy, ChannelUser } = require('../db/index');
 
 //get all channels
 router.get('/all', (req, res, next) => {
@@ -96,9 +96,11 @@ router.get('/', (req, res, next) => {
     }
   });
 });
-
+//include channel and include all subscribers
 router.get('/:id', (req, res, next) => {
-  Channel.findByPk(req.params.id)
+  Channel.findByPk(req.params.id, {
+    include: [{ model: User }],
+  })
     .then(channel => {
       if (!channel) return res.status(404).send('Channel is not found!');
       res.status(200).send(channel);
