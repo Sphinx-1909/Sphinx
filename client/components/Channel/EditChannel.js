@@ -30,10 +30,7 @@ class EditAChannel extends React.Component {
 
   handleSubmit = ev => {
     ev.preventDefault();
-    // console.log('this.props.match.params.id', this.props.match.params.id);
-    // const channelId=this.props.match.params.id
-    //const idOfChannelOwner = this.props.activeUser.id;
-    const id = this.props.channels.myChannels[0].id;
+    const id = this.props.match.params.id;
 
     const { channelTitle, channelDescription } = this.state;
     this.props.editChannelT({
@@ -42,14 +39,17 @@ class EditAChannel extends React.Component {
       channelDescription,
     });
   };
-  //only one channel passed in
+
   render() {
-    let myOneChannel = this.props.channels.myChannels[0];
-    // console.log(
-    //   'this.props.channels.myChannels[0]',
-    //   this.props.channels.myChannels[0]
-    // );
-    if (!myOneChannel) {
+    const channels = this.props.channels.myChannels;
+    const arrOfChanToEdit = channels.filter(chan => {
+      if (chan.id === this.props.match.params.id) {
+        return chan;
+      }
+    });
+
+    const edtingChannel = arrOfChanToEdit[0];
+    if (!edtingChannel) {
       return <div>please hold</div>;
     } else {
       return (
@@ -68,7 +68,7 @@ class EditAChannel extends React.Component {
               <input
                 type="channelTitle"
                 name="channelTitle"
-                placeholder={`${myOneChannel.channelTitle}`}
+                placeholder={`${edtingChannel.channelTitle}`}
                 onChange={ev => this.handleChange(ev)}
                 className="editChannel_form_input"
               />
@@ -80,12 +80,12 @@ class EditAChannel extends React.Component {
               <input
                 type="channelDescription"
                 name="channelDescription"
-                placeholder={`${myOneChannel.channelDescription}`}
+                placeholder={`${edtingChannel.channelDescription}`}
                 onChange={ev => this.handleChange(ev)}
                 className="editChannel_form_input"
               />
               <label className="editChannel_form_item">
-                <b>Delete subscribers</b>
+                {/*<b>Delete subscribers</b>*/}
                 {/*} <ShowSubscribers />*/}
               </label>
 

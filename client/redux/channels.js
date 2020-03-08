@@ -118,7 +118,10 @@ export const createChannelThunk = newChannelInfo => {
     try {
       const theNewChannel = (await axios.post(`/api/channels`, newChannelInfo))
         .data;
-      dispatch(createdChannel(theNewChannel));
+      const chanWithUser = (
+        await axios.get(`/api/channels/${theNewChannel.id}`)
+      ).data;
+      dispatch(createdChannel(chanWithUser));
     } catch (e) {
       console.log('error in thunk:', e);
     }
@@ -194,13 +197,13 @@ export const channelsReducer = (state = initialState, action) => {
       let updatedAllChannels = state.allChannels.map(channel => {
         console.log('action.editedChannelInfo.id', action.editedChannelInfo.id);
         if (channel.id === action.editedChannelInfo.id)
-          return [...channel, action.editedChannelInfo];
+          return { ...channel, ...action.editedChannelInfo };
         return channel;
       });
       let updatedMyChannels = state.myChannels.map(channel => {
         if (channel.id === action.editedChannelInfo.id) {
           console.log('action.editedChannelInfo', action.editedChannelInfo);
-          return [...channel, action.editedChannelInfo];
+          return { ...channel, ...action.editedChannelInfo };
         }
 
         return channel;
