@@ -12,7 +12,6 @@ import {
 } from '../redux/messages';
 import { minDistance } from '../../utils';
 import { googleMapStyles } from '.././utils/utils';
-
 import {
   setCurrentLocation,
   setMediaType,

@@ -10,6 +10,7 @@ import history from '../../history';
 import {
   setCurrentLocation,
   setMediaType,
+  setChannel,
 } from '../../redux/nav/action/nav.action';
 
 class SelectMedia extends React.Component {
@@ -55,6 +56,12 @@ class SelectMedia extends React.Component {
     history.push('/message');
   };
 
+  onChangeChannel = e => {
+    e.preventDefault();
+    console.log(e.target.value);
+    this.props.setChannel(e.target.value);
+  };
+
   render() {
     return (
       <div className="liner">
@@ -96,33 +103,49 @@ class SelectMedia extends React.Component {
               </div>
               <div
                 className="selectMedia"
-                id="MESSAGE"
-                style={{ backgroundColor: 'rgb(134, 108, 74)' }}
-                onClick={e => this.onHandleClick(e)}
-              >
-                MESSAGE
-              </div>
-              <div
-                className="selectMedia"
                 id="UPLOAD"
                 style={{ backgroundColor: 'rgb(97, 76, 48)' }}
                 onClick={e => this.onHandleClick(e)}
               >
                 UPLOAD
               </div>
+              <label className="message_form_item">
+                SELECT CHANNEL FIRST**************
+              </label>
+              <label className="message_form_item">Channel</label>
+              <select
+                onChange={ev => this.onChangeChannel(ev)}
+                className="message_form_input"
+              >
+                <option>{''}</option>
+                {this.props.channels.map(channel => (
+                  <option value={channel.id} key={channel.id}>
+                    {channel.channelTitle}
+                  </option>
+                ))}
+              </select>
             </>
           ) : (
-              <div> loading</div>
-            )}
+            <div> loading</div>
+          )}
         </div>
       </div>
     );
   }
 }
 
+const mapStateToProps = ({ channels }) => {
+  return {
+    channels: channels.myChannels,
+  };
+};
+
 const mapDispatchToProps = dispatch => ({
   setCurrentLocation: location => dispatch(setCurrentLocation(location)),
   setMediaType: mediaType => dispatch(setMediaType(mediaType)),
+  setChannel: channel => dispatch(setChannel(channel)),
 });
 
-export default withRouter(connect(null, mapDispatchToProps)(SelectMedia));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(SelectMedia)
+);

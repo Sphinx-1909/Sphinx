@@ -8,10 +8,16 @@ const INITIAL_STATE = {
     longitude: 0,
   },
   mediaType: '',
+  channel: '',
 };
 
 export const navReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case navType.SET_CHANNEL:
+      return {
+        ...state,
+        channel: action.payload,
+      };
     case navType.TOGGLE_SLIDE_MENU:
       return {
         ...state,
