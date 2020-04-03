@@ -1,16 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import history from '../../history';
-import { fetchOneChannelThunk } from '../../redux/channels';
+import { fetchSubscribersOfChanThunk } from '../../redux/channels';
 
 class ShowSubscribers extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      selectedUsers: [],
+    };
   }
-  componentDidMount() {
+  async componentDidMount() {
     //   const id = this.props.channels.myChannels[0].id;
-    //   this.props.fetchOneChannel(id);
+    try {
+      const id = this.props.chanToEdit.id;
+      await this.props.fetchSubscribersOfChan(id);
+    } catch (error) {
+      console.log(error);
+    }
   }
   handleSubmit = ev => {
     ev.preventDefault();
@@ -28,11 +35,9 @@ class ShowSubscribers extends React.Component {
   };
 
   render() {
-    console.log('channel', channel);
-    const channelId = this.props.channelId;
-    const channelWithSub = this.props.fetchOneChannel(id);
+    console.log('this.props insdie showSubscribers', this.props.chanToEdit);
 
-    if (!channel) {
+    if (!this.props.chanToEdit) {
       return <div>please hold</div>;
     } else {
       return <div>hi</div>;
@@ -46,7 +51,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchOneChannel: channelId => dispatch(fetchOneChannelThunk(channelId)),
+    fetchSubscribersOfChan: channelId =>
+      dispatch(fetchSubscribersOfChanThunk(channelId)),
   };
 };
 
@@ -55,3 +61,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(ShowSubscribers);
 //get all users that have this channel as myChannels
 // drop down menu of everyone and select user to delete
 //delete subscribers from
+
+//delete a user and message

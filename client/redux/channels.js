@@ -73,7 +73,18 @@ export const fetchOneChannelThunk = channelId => {
       .catch(e => console.log('Error in thunk:', e));
   };
 };
-
+//this thunk should get the channel and all the subscribed users to the channel. Getting
+// an error in the thunk
+export const fetchSubscribersOfChanThunk = channelId => {
+  console.log('inside channels reduxs fetchSubsvcribersChanThunk', channelId);
+  return dispatch => {
+    return axios
+      .get(`api/channels/users/${channelId}`)
+      .then(aChannel => dispatch(setChannels(aChannel.data)))
+      .catch(e => console.log('errror getting subscribers in thunk:', e));
+  };
+};
+//dispatch(setChannels(aChannel.data))
 export const fetchAllChannels = () => {
   // console.log('in fetchAllChannels thunk');
   return dispatch => {

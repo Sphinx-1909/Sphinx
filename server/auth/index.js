@@ -57,10 +57,10 @@ router.post('/signup', (req, res, next) => {
 
 router.get('/signout', (req, res, next) => {
   console.log('delete in index req.session.userId', req.cookies);
-  res.clearCookie('sessionId')
+  res.clearCookie('sessionId');
   Session.create()
     .then(newSession => {
-      console.log('created new session in /signout route')
+      console.log('created new session in /signout route');
       res.cookie('sessionId', newSession.id, {
         path: '/',
         expires: moment
@@ -78,9 +78,9 @@ router.get('/signout', (req, res, next) => {
 });
 
 router.get('/me', (req, res, next) => {
+  // heartbeat
   if (req.user) return res.send(req.user);
-  res
-    .status(400).send('Sending Unauthorized from index.js req.user line 64');
+  res.status(403).send('Sending Unauthorized from index.js req.user line 64');
 });
 
 module.exports = router;

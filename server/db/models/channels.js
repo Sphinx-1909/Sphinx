@@ -41,3 +41,17 @@ const Channel = db.define('channels', {
   },
 });
 module.exports = Channel;
+
+// `INSERT into USERS`
+// `SELECT * FROM USERS` => User.findaAll() => return {name: 'russell', aage: 36}
+
+// db {
+//   Channel: {
+//     findall(){
+//       get all channels from db
+//     }
+//     findOne(where) {
+//       find sutff that the where obj describes
+//     }
+//   }
+// }

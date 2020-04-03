@@ -32,6 +32,7 @@ import EditAChannel from './components/Channel/EditChannel';
 import LinkTest from './components/message/LinkTest';
 import SelectMedia from './components/SelectMedia/Selectmedia';
 import PhoneInput from './components/login/2FA/PhoneInput';
+import ShowSubscribers from './components/Channel/ShowSubscribers';
 
 class App extends React.Component {
   componentDidMount() {
@@ -120,14 +121,15 @@ class App extends React.Component {
             <Route path="/login" component={LogIn} exact />
             <Route path="/user" component={MyAccount} exact />
             <Route path="/editaccount" component={EditAccount} exact />
-            <Route path='/takephoto' component={TakePhoto} exact />
-            <Route path='/takevideo' component={TakeVideo} exact />
-            <Route path='/upload' component={UploadFile} exact />
+            <Route path="/takephoto" component={TakePhoto} exact />
+            <Route path="/takevideo" component={TakeVideo} exact />
+            <Route path="/upload" component={UploadFile} exact />
             <Route path="/signup" component={SignUp} exact />
             <Route path="/linktest" component={LinkTest} exact />
             <Route path="/createnewchannel" component={CreateAChannel} exact />
             <Route path="/editchannel/:id" component={EditAChannel} />
             <Route path="/phoneinput" component={PhoneInput} />
+            <Route path="/showSubscribers" component={ShowSubscribers} />
           </div>
           <BottomMenu openSlide={this.props.openSlide} />
         </div>

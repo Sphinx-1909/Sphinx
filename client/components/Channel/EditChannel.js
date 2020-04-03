@@ -42,6 +42,7 @@ class EditAChannel extends React.Component {
 
   render() {
     const channels = this.props.channels.myChannels;
+
     const ChanToEdit = channels.find(chan => {
       return chan.id === this.props.match.params.id;
     });
@@ -89,8 +90,8 @@ class EditAChannel extends React.Component {
                 className="editChannel_form_input"
               />
               <label className="editChannel_form_item">
-                {/*<b>Delete subscribers</b>*/}
-                {/*} <ShowSubscribers />*/}
+                <b>Delete subscribers</b>
+                <ShowSubscribers chanToEdit={ChanToEdit} />
               </label>
 
               <input

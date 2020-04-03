@@ -129,11 +129,12 @@ router.get('/:id', (req, res, next) => {
     }
   });
 });
-
+//includes the users/ subscribers of the channel
 router.get('/users/:channelId', (req, res, next) => {
   Channel.findByPk(req.params.channelId, { include: { model: User } })
     .then(channel => {
       if (!channel) return res.status(404).send('Channel is not found!');
+      console.log('channel inside router.get(/users/:channelId', channel);
       res.status(200).send(channel);
     })
     .catch(e => {
