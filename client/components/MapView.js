@@ -112,164 +112,180 @@ const MapContainer = props => {
 
   console.log('currentPosition.latitude: ', currentPosition.latitude);
 
+  // const [hasVoted, setVote] = useState(false);
+  // const vote = () => setVote(!hasVoted);
+
   const handelUpVote = () => {
+    // if (hasVoted === false) {
     props.upVoteMessage(selectedMessage.id);
     selectedMessage.positiveVotes++;
+    //   vote();
+    // }
   };
 
   const handleDownVote = () => {
+    // if (hasVoted === false) {
     props.downVoteMessage(selectedMessage.id);
     selectedMessage.negativeVotes++;
+    //   vote();
+    // }
   };
 
-  console.log('selectedMessage: ', selectedMessage)
-  console.log('fileType: ', selectedMessage.fileType)
+  console.log('selectedMessage: ', selectedMessage);
+  console.log('fileType: ', selectedMessage.fileType);
   // console.log('dataUri: ', dataUri)
 
   return !activeUser.firstName && !initialLoad ? (
     <LandingPage />
   ) : (
-      <>
-        {displayMessage ? (
-          <>
-            {
-              dataUri ? (
-                <>
-                  {
-                    selectedMessage.fileType === 'image' ? (
-                      // message type is 'image':
-                      <div className="liner">
-                        <div className="contentCenter">
-                          <img src={dataUri} />
-                          <div className="MapView_buttons">
-                            <button onClick={handleClose} className="MapView_links">
-                              Close
-                    </button>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                        // message type is 'video':
-                        <div className="liner">
-                          <div className="contentCenter">
-                            <video src={dataUri} autoPlay={true} />
-                            <div className="MapView_buttons">
-                              <button onClick={handleClose} className="MapView_links">
-                                Close
-                    </button>
-                            </div>
-                          </div>
-                        </div>
-                      )
-                  }
-                </>
+    <>
+      {displayMessage ? (
+        <>
+          {dataUri ? (
+            <>
+              {selectedMessage.fileType === 'image' ? (
+                // message type is 'image':
+                <div className="liner">
+                  <div className="contentCenter">
+                    <img src={dataUri} />
+                    <div className="MapView_buttons">
+                      <button onClick={handleClose} className="MapView_links">
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
               ) : (
-                  <>
-                    {
-                      // message type is 'link':
-                      selectedMessage.fileType === 'link' ? (
-                        <div className="liner">
-                          <div className="contentCenter">
-                            <ReactPlayer url={selectedMessage.messageContent} playing />
-                            <div className="MapView_buttons">
-                              <button onClick={handleClose} className="MapView_links">
-                                Close
-                  </button>
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                          // message type is 'text':
-                          <div className="liner">
-                            <div className="contentCenter">
-                              <div className="MapView_subHeader">
-                                {selectedMessage.messageTitle}
-                              </div>
-                              <div className="MapView_item">
-                                {selectedMessage.messageContent}
-                              </div>
-                              <div className="MapView_item">
-                                UpVotes: {selectedMessage.positiveVotes}, DownVotes:
-                  {selectedMessage.negativeVotes}
-                              </div>
-                              <div className="MapView_buttons">
-                                <button onClick={handelUpVote} className="MapView_links_up">
-                                  VOTE UP
-                  </button>
-                                <button
-                                  onClick={handleDownVote}
-                                  className="MapView_links_down"
-                                >
-                                  VOTE DOWN
-                  </button>
-                              </div>
-                              <div className="MapView_buttons">
-                                <button onClick={handleClose} className="MapView_links">
-                                  Close
-                  </button>
-                              </div>
-                            </div>
-                          </div>
-                        )
-                    }
-                  </>
-                )
-            }
-          </>
-        ) : geoSupported && currentPosition.latitude && !initialLoad ? (
-          <Map
-            google={props.google}
-            disableDefaultUI={true}
-            zoom={16}
-            style={{
-              width: '100%',
-              height: '100%',
-              overfloe: 'hidden',
-              position: 'static',
-            }}
-            styles={googleMapStyles}
-            initialCenter={{
+                // message type is 'video':
+                <div className="liner">
+                  <div className="contentCenter">
+                    <video src={dataUri} autoPlay={true} />
+                    <div className="MapView_buttons">
+                      <button onClick={handleClose} className="MapView_links">
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {// message type is 'link':
+              selectedMessage.fileType === 'link' ? (
+                <div className="liner">
+                  <div className="contentCenter">
+                    <ReactPlayer url={selectedMessage.messageContent} playing />
+                    <div className="MapView_buttons">
+                      <button onClick={handleClose} className="MapView_links">
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                // message type is 'text':
+                <div className="liner">
+                  <div className="contentCenter">
+                    <div className="MapView_subHeader">
+                      {selectedMessage.messageTitle}
+                    </div>
+                    <div className="MapView_item">
+                      {selectedMessage.messageContent}
+                    </div>
+                    <div className="MapView_item">
+                      UpVotes: {selectedMessage.positiveVotes}, DownVotes:
+                      {selectedMessage.negativeVotes}
+                    </div>
+                    <div className="MapView_buttons">
+                      <button
+                        // style={{
+                        //   backgroundColor: hasVoted
+                        //     ? 'rgb(128, 128, 128)'
+                        //     : 'rgb(164, 199, 165)',
+                        // }}
+                        onClick={handelUpVote}
+                        className="MapView_links_up"
+                      >
+                        VOTE UP
+                      </button>
+                      <button
+                        // style={{
+                        //   backgroundColor: hasVoted
+                        //     ? 'rgb(128, 128, 128)'
+                        //     : 'rgb(201, 89, 89)',
+                        // }}
+                        onClick={handleDownVote}
+                        className="MapView_links_down"
+                      >
+                        VOTE DOWN
+                      </button>
+                    </div>
+                    <div className="MapView_buttons">
+                      <button onClick={handleClose} className="MapView_links">
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </>
+      ) : geoSupported && currentPosition.latitude && !initialLoad ? (
+        <Map
+          google={props.google}
+          disableDefaultUI={true}
+          zoom={16}
+          style={{
+            width: '100%',
+            height: '100%',
+            overfloe: 'hidden',
+            position: 'static',
+          }}
+          styles={googleMapStyles}
+          initialCenter={{
+            lat: currentPosition.latitude,
+            lng: currentPosition.longitude,
+          }}
+        >
+          <Marker
+            icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
+            scaledSize={new props.google.maps.Size(12, 12)}
+            position={{
               lat: currentPosition.latitude,
               lng: currentPosition.longitude,
             }}
-          >
-            <Marker
-              icon="https://www.robotwoods.com/dev/misc/bluecircle.png"
-              scaledSize={new props.google.maps.Size(12, 12)}
-              position={{
-                lat: currentPosition.latitude,
-                lng: currentPosition.longitude,
-              }}
-            />
-            {messages.length > 0 &&
-              messages.map((msg, idx) => {
-                const distance = computeDistance(msg, currentPosition);
-                // console.log('distance: ', distance)
-                return (
-                  <Marker
-                    icon={distance < minDistance ? openMsgIcon : closedMsgIcon}
-                    name={msg.messageTitle}
-                    key={idx}
-                    position={{ lat: msg.latitude, lng: msg.longitude }}
-                    onClick={(props, marker, e) =>
-                      onMarkerClick(props, marker, e, msg, distance)
-                    }
-                  />
-                );
-              })}
-          </Map>
-        ) : (
-              (!geoSupported && (
-                <div className="container">
-                  Location access must be enabled to view messages!
+          />
+          {messages.length > 0 &&
+            messages.map((msg, idx) => {
+              const distance = computeDistance(msg, currentPosition);
+              // console.log('distance: ', distance)
+              return (
+                <Marker
+                  icon={distance < minDistance ? openMsgIcon : closedMsgIcon}
+                  name={msg.messageTitle}
+                  key={idx}
+                  position={{ lat: msg.latitude, lng: msg.longitude }}
+                  onClick={(props, marker, e) =>
+                    onMarkerClick(props, marker, e, msg, distance)
+                  }
+                />
+              );
+            })}
+        </Map>
+      ) : (
+        (!geoSupported && (
+          <div className="container">
+            Location access must be enabled to view messages!
           </div>
-              ),
-                !currentPosition.latitude && (
-                  <div className="container">Loading...</div>
-                ))
-            )}
-      </>
-    );
+        ),
+        !currentPosition.latitude && (
+          <div className="container">Loading...</div>
+        ))
+      )}
+    </>
+  );
 };
 
 const Wrapper = GoogleApiWrapper({
