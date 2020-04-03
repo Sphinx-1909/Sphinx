@@ -10,6 +10,7 @@ import PostLink from './PostLink';
 import { PostSuccess } from './PostSuccess';
 import Upload from './Upload';
 import './message.css';
+import './TakePhoto.css';
 
 const AddMessage = props => {
   const [title, setTitle] = useState('');
@@ -85,7 +86,7 @@ const AddMessage = props => {
                   className="message_form_input"
                 />
                 <div className="message_form_buttons">
-                  <button type="submit" className="message_form_links">
+                  <button type="submit" className="message_form_post">
                     POST
                   </button>
                 </div>

@@ -72,7 +72,7 @@ class SelectMedia extends React.Component {
               <div
                 className="selectMedia"
                 id="POST"
-                style={{ backgroundColor: 'rgb(243, 217, 184)' }}
+                style={{ backgroundColor: 'rgb(102, 179, 255)' }}
                 onClick={e => this.onHandleClick(e)}
               >
                 MESSAGE
@@ -80,7 +80,7 @@ class SelectMedia extends React.Component {
               <div
                 className="selectMedia"
                 id="PHOTO"
-                style={{ backgroundColor: 'rgb(243, 217, 184)' }}
+                style={{ backgroundColor: 'rgb(77, 166, 255)' }}
                 onClick={e => this.onHandleClick(e)}
               >
                 PHOTO
@@ -88,7 +88,7 @@ class SelectMedia extends React.Component {
               <div
                 className="selectMedia"
                 id="VIDEO"
-                style={{ backgroundColor: 'rgb(214, 186, 150)' }}
+                style={{ backgroundColor: 'rgb(51, 153, 255)' }}
                 onClick={e => this.onHandleClick(e)}
               >
                 VIDEO
@@ -96,7 +96,7 @@ class SelectMedia extends React.Component {
               <div
                 className="selectMedia"
                 id="LINK"
-                style={{ backgroundColor: 'rgb(177, 149, 112)' }}
+                style={{ backgroundColor: 'rgb(26, 140, 255)' }}
                 onClick={e => this.onHandleClick(e)}
               >
                 LINK
@@ -104,7 +104,7 @@ class SelectMedia extends React.Component {
               <div
                 className="selectMedia"
                 id="UPLOAD"
-                style={{ backgroundColor: 'rgb(97, 76, 48)' }}
+                style={{ backgroundColor: 'rgb(0, 128, 255)' }}
                 onClick={e => this.onHandleClick(e)}
               >
                 UPLOAD
