@@ -88,17 +88,7 @@ class EditAChannel extends React.Component {
                 onChange={ev => this.handleChange(ev)}
                 className="editChannel_form_input"
               />
-              <label className="editChannel_form_item">
-                {/*<b>Delete subscribers</b>*/}
-                {/*} <ShowSubscribers />*/}
-              </label>
 
-              <input
-                type="channelsModerators"
-                name="channelsModerators"
-                onChange={ev => this.handleChange(ev)}
-                className="editChannel_form_input"
-              />
               <div className="editChannel_form_buttons">
                 <button
                   onClick={ev => this.handleSubmit(ev)}

@@ -22,15 +22,15 @@ const postHelper = i => {
 };
 
 const generateRandomLat = () => {
-  let min = 40.495992,
-    max = 40.915568;
+  let min = 40.753733,
+    max = 40.769852; //
   let randomLat = (Math.random() * (max - min) + min).toFixed(6);
   return randomLat;
 };
 
 const generateRandomLong = () => {
-  let min = -74.257159,
-    max = -73.699215;
+  let min = -73.980793,
+    max = -73.992198;
   let randomLong = (Math.random() * (max - min) + min).toFixed(6);
 
   return randomLong;
@@ -50,7 +50,7 @@ const seed = async () => {
         userType: 'regUser',
         password: 'passSam',
         latitude: 40.7527,
-        longitude: 73.9772,
+        longitude: -73.9771,
       },
       {
         firstName: 'Jane',
@@ -60,7 +60,7 @@ const seed = async () => {
         userType: 'regUser',
         password: 'passJane',
         latitude: 40.7527,
-        longitude: 73.9772,
+        longitude: -73.9772,
       },
     ];
     for (let i = 0; i < GENERATE_USERS; i++) {
@@ -79,13 +79,13 @@ const seed = async () => {
     //generate list of channels
     let channelList = [
       {
-        channelTitle: 'Weird Shit',
+        channelTitle: 'Silly Selfie',
         channelDescription:
-          'THE channel for the craziest, weirdest shit out there',
+          'The channel for funny selfie posts. See your fellow New Yorks like never before!',
         isPrivate: false,
         key: 'asdfadfa',
-        latitude: 41.7527,
-        longitude: -73.9772,
+        latitude: 40.748476,
+        longitude: -73.988355,
       },
       {
         channelTitle: 'NYC Movie Scene Locations',
@@ -93,8 +93,8 @@ const seed = async () => {
           'Visit the locations from your favorite movies and learn the history behind shot',
         isPrivate: false,
         key: 'xyasdfadfa',
-        latitude: 40.758898,
-        longitude: -73.98513,
+        latitude: 40.718584,
+        longitude: -73.996301,
       },
       {
         channelTitle: 'From Gangsters To Gentrification',
@@ -102,7 +102,7 @@ const seed = async () => {
           "New York Mob Murder Scenes Then And Now. Grisly scenes from when John Gotti and Al Capone orchestrated hits on the streets of a violent New York that simply doesn't exist anymore",
         isPrivate: false,
         key: 'qqsdfaa',
-        latitude: 42.758897,
+        latitude: 40.782395,
         longitude: -71.98513,
       },
       {
@@ -115,16 +115,6 @@ const seed = async () => {
         longitude: -70.98513,
       },
     ];
-    // for (let i = 0; i < GENERATE_CHANNELS; i++) {
-    //   channelList.push({
-    //     channelTitle: faker.lorem.words(),
-    //     channelDescription: faker.lorem.sentence(),
-    //     isPrivate: faker.random.boolean(),
-    //     key: faker.internet.password(),
-    //     latitude: faker.address.latitude(),
-    //     longitude: faker.address.longitude(),
-    //   });
-    // }
 
     await db.sync({ force: true });
     await User.bulkCreate(userList);
@@ -146,7 +136,7 @@ const seed = async () => {
         negativeVotes: 2,
         latitude: 40.704701,
         longitude: -74.010751,
-        radius: 2,
+        radius: 0.001517,
         encrypted: false,
         key: 'xxswdks',
         expirationTime: Date(),
