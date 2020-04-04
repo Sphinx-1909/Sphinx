@@ -1,0 +1,25 @@
+.selectChannel_subHeader {
+  width: 100%;
+  text-align: center;
+  background-color: rgb(128, 128, 128);
+}
+
+.selectChannel_list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.selectChannel_list_item {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  cursor: pointer;
+}
+
+.selectChannel_list_item:hover {
+  color: red;
+  cursor: pointer;
+}
