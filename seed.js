@@ -49,8 +49,8 @@ const seed = async () => {
         username: 'sam123',
         userType: 'regUser',
         password: 'passSam',
-        latitude: 40.7527,
-        longitude: -73.9771,
+        latitude: 40.769852,
+        longitude: -73.980793,
       },
       {
         firstName: 'Jane',
@@ -59,8 +59,8 @@ const seed = async () => {
         username: 'jane123',
         userType: 'regUser',
         password: 'passJane',
-        latitude: 40.7527,
-        longitude: -73.9772,
+        latitude: 40.753733,
+        longitude: -73.992198,
       },
     ];
     for (let i = 0; i < GENERATE_USERS; i++) {
@@ -136,7 +136,7 @@ const seed = async () => {
         negativeVotes: 2,
         latitude: 40.704701,
         longitude: -74.010751,
-        radius: 0.001517,
+        radius: 2,
         encrypted: false,
         key: 'xxswdks',
         expirationTime: Date(),
