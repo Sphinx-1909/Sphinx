@@ -39,9 +39,12 @@ class MyChannelSubscriptions extends Component {
     return (
       <div>
         <List style={{ overflow: 'auto', height: '600px' }}>
+          <h2>
+            <u>CHANNELS</u>
+          </h2>
           <ListItem>
-            <span>CHANNELS</span>
             <ListItemSecondaryAction>
+              <span>Filter Channels</span>
               <Checkbox
                 color="primary"
                 value="Filter Channel"

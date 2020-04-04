@@ -33,24 +33,22 @@ class BottomMenu extends React.Component {
             </Link>
           ) : (
             <Search width={40} />
-           )}
-          </div>
-
-        <div className="bottomMenu_icon">
-          {this.props.activeUser.id ? (
-          <Link to="/">
-            <Map width={40} />
-          </Link>
-           ) : (
-              <Map width={40} />
-               )}
+          )}
         </div>
 
-
+        <div className="bottomMenu_icon">
+          {this.props.activeUser.id ? (
+            <Link to="/">
+              <Map width={40} />
+            </Link>
+          ) : (
+            <Map width={40} />
+          )}
+        </div>
 
         <div className="bottomMenu_icon">
           {this.props.activeUser.id ? (
-            <Link to="/post">
+            <Link to="/channelSelect">
               <Add width={40} />
             </Link>
           ) : (

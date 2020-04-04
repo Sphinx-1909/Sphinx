@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { subscribeToChannel } from '../../redux/channels';
+import { subscribeToChannel, unsubscribeToChannel } from '../../redux/channels';
 
 import {
   List,
@@ -24,6 +24,12 @@ class ChannelLineItem extends Component {
     this.props.subscribeToChannel(channelId);
   };
 
+  clickToUnsubscribeToChannel = (ev, channelId) => {
+    ev.preventDefault();
+    console.log('WHAT IS THE CHANNELID ON UNSUB', channelId);
+    this.props.unsubscribeToChannel(channelId);
+  };
+
   render() {
     // console.log(this.props.checkList);
     return (
@@ -41,11 +47,19 @@ class ChannelLineItem extends Component {
                 this.clickToSubscribeToChannel(ev, this.props.channelDetails.id)
               }
             >
-              <Add />
+              <Add fontSize="large" />
             </ListItem>
           ) : (
-            <ListItem>
-              <CheckCircle />
+            <ListItem
+              button={true}
+              onClick={ev =>
+                this.clickToUnsubscribeToChannel(
+                  ev,
+                  this.props.channelDetails.id
+                )
+              }
+            >
+              <CheckCircle fontSize="large" />
             </ListItem>
           )}
         </ListItemSecondaryAction>
@@ -61,6 +75,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     subscribeToChannel: channelId => dispatch(subscribeToChannel(channelId)),
+    unsubscribeToChannel: channelId =>
+      dispatch(unsubscribeToChannel(channelId)),
   };
 };
 
