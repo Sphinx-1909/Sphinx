@@ -36,23 +36,48 @@ class LogIn extends Component {
 
   render() {
     return (
-      <div className="logInUser">
-        <form onSubmit={ev => this.handleLogin(ev)} className="logInUser_form">
-          <h3>Sign into your account</h3>
-          <input type="email" name={'email'} onChange={this.handleChange} />
-          <input
-            type="password"
-            name={'password'}
-            onChange={this.handleChange}
-          />
-          <button onClick={ev => this.handleLogin(ev)}> Log In</button>
+      <div className="liner">
+        <div className="contentCenter">
+          <form onSubmit={ev => this.handleLogin(ev)}>
+            <div className="login_subHeader">SIGN IN</div>
+            <label className="login_form_item">
+              <b>email</b>
+            </label>
+            <input
+              type="email"
+              name={'email'}
+              onChange={this.handleChange}
+              className="login_form_input"
+            />
+            <label className="login_form_item">
+              <b>password</b>
+            </label>
+            <input
+              type="password"
+              name={'password'}
+              onChange={this.handleChange}
+              className="login_form_input"
+            />
+            <div className="login_buttons">
+              <button
+                className="login_buttons_links"
+                onClick={ev => this.handleLogin(ev)}
+              >
+                Log In
+              </button>
 
-          <button onClick={() => history.push('/signup')}> Sign up</button>
-
-          {/* <a href="/register" style={{ textDecoration: 'none' }}>
+              <button
+                className="login_buttons_links"
+                onClick={() => history.push('/signup')}
+              >
+                Sign up
+              </button>
+            </div>
+            {/* <a href="/register" style={{ textDecoration: 'none' }}>
           Sign Up
         </a> */}
-        </form>
+          </form>
+        </div>
       </div>
     );
   }

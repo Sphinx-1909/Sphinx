@@ -10,6 +10,9 @@ import { PostSuccess } from './PostSuccess';
 const key = uuidv4();
 
 const UploadFile = props => {
+
+  const { channel } = props;
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [success, setSuccess] = useState(false);
 
@@ -28,7 +31,7 @@ const UploadFile = props => {
       latitude: props.latitude,
       longitude: props.longitude,
       radius: 1,
-      channelId: props.channelId,
+      channelId: channel,
     };
 
     await props.addMessage(postBody, 'upload');
@@ -53,7 +56,7 @@ const UploadFile = props => {
           method="POST"
         >
           <input type="file" name="media" onChange={ev => handleFileSelect(ev)} />
-          <input type="text" name="key" value={key} style={{ display: 'none' }} />
+          <input type="text" name="Key" value={key} style={{ display: 'none' }} />
           <button type="submit" onClick={handleUpload}>
             Upload
         </button>
@@ -62,10 +65,16 @@ const UploadFile = props => {
     );
 };
 
+const mapState = ({ nav }) => {
+  return {
+    channel: nav.channel,
+  }
+}
+
 const mapDispatch = dispatch => {
   return {
     addMessage: (msg, media) => dispatch(addMessage(msg, media)),
   };
 };
 
-export default connect(null, mapDispatch)(UploadFile);
+export default connect(mapState, mapDispatch)(UploadFile);

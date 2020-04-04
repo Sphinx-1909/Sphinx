@@ -5,28 +5,38 @@ import MediaPreview from './MediaPreview';
 import { addMessage } from '../../redux/messages';
 import axios from 'axios'
 import { PostSuccess } from './PostSuccess';
+import { save } from 'save-file'
 
 function TakeVideo(props) {
+
+  const { channel } = props;
 
   console.log('props in takeVideo: ', props)
 
   const [blobUrl, setBlobUrl] = useState('')
+  const [dataUrl, setDataUrl] = useState('');
   const [blob, setBlob] = useState('')
   const [success, setSuccess] = useState(false)
 
   function handleRecordingComplete(data) {
     // setDataUri(data)
-    // console.log('data (blob): ', data)
+    console.log('data (blob): ', data)
     setBlob(data)
     // console.log('blob: ', blob)
     const videoUrl = URL.createObjectURL(data)
     setBlobUrl(videoUrl)
-    // console.log('videoUrl: ', videoUrl)
+    console.log('videoUrl: ', videoUrl)
   }
 
+  function bufferToDataUrl(callback) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      callback(reader.result);
+    };
+    reader.readAsDataURL(blob);
+  }
 
-
-  const handlePost = async () => {
+  const handlePost = () => {
     const postBody = {
       fileType: 'video',
       messageTitle: props.title,
@@ -34,9 +44,15 @@ function TakeVideo(props) {
       latitude: props.latitude,
       longitude: props.longitude,
       radius: 1,
-      channelId: props.channelId,
+      channelId: channel,
     };
-    await props.addMessage(postBody, blobUrl)
+    bufferToDataUrl(url => {
+      console.log('dataUrl: ', url)
+      setDataUrl(url)
+      props.addMessage(postBody, url)
+
+    })
+
     setSuccess(true)
   }
 
@@ -51,7 +67,10 @@ function TakeVideo(props) {
               <button onClick={() => setBlobUrl('')}>RETAKE</button>
             </div>
           ) : (
-              <PostSuccess />
+              <div>
+                <video src={dataUrl} autoPlay={true}></video>
+                <PostSuccess />
+              </div>
             )
         }
       </>
@@ -71,10 +90,16 @@ function TakeVideo(props) {
   );
 }
 
+const mapState = ({ nav }) => {
+  return {
+    channel: nav.channel,
+  }
+}
+
 const mapDispatch = dispatch => {
   return {
     addMessage: (msg, media) => dispatch(addMessage(msg, media))
   }
 }
 
-export default connect(null, mapDispatch)(TakeVideo);
+export default connect(mapState, mapDispatch)(TakeVideo);

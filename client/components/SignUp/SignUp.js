@@ -13,7 +13,7 @@ class SignUp extends React.Component {
       password: '',
       repeatPassword: '',
       email: '',
-      userName: '',
+      username: '',
     };
   }
 
@@ -28,11 +28,12 @@ class SignUp extends React.Component {
     if (this.state.reTypePassword !== this.state.password) {
       alert("Passwords don't match");
     } else {
-      const { firstName, lastName, userName, email, password } = this.state;
+      console.log('line 31 in SignUp.js');
+      const { firstName, lastName, username, email, password } = this.state;
       this.props.createUserAndLogIn({
         firstName,
         lastName,
-        userName,
+        username,
         email,
         password,
       });
@@ -45,66 +46,95 @@ class SignUp extends React.Component {
   }
 
   render() {
-    console.log('props in signUp', this.props);
+    // console.log('props in signUp', this.props);
     return (
-      <div className="createUser">
-        <form onSubmit={ev => ev.handleSubmit(ev)} className="createUser_form">
-          <h3>Create an account</h3>
-
-          <label>
-            <b>first name</b>
-          </label>
-
-          <input
-            type="firstName"
-            name="firstName"
-            onChange={this.handleChange}
-          />
-
-          <label>
-            <b>last name</b>
-          </label>
-
-          <input type="lastName" name="lastName" onChange={this.handleChange} />
-
-          <label>
-            <b>username</b>
-          </label>
-
-          <input type="userName" name="userName" onChange={this.handleChange} />
-
-          <label>
-            <b>Email</b>
-          </label>
-          <input type="text" name="email" onChange={this.handleChange} />
-
-          <label>
-            <b>Password</b>
-          </label>
-          <input type="password" name="password" onChange={this.handleChange} />
-          <label>
-            <b>Re-type Password</b>
-          </label>
-          <input
-            type="password"
-            name="reTypePassword"
-            onChange={this.handleChange}
-          />
-          <button
-            onClick={ev => this.handleSubmit(ev)}
-            type="submit"
-            class="signupbtn"
+      <div className="liner">
+        <div className="contentCenter">
+          <form
+            onSubmit={ev => ev.handleSubmit(ev)}
+            className="createUser_form"
           >
-            Save
-          </button>
-          <button
-            onClick={() => history.push('/')}
-            type="button"
-            class="cancelbtn"
-          >
-            Cancel
-          </button>
-        </form>
+            <div className="signUp_form_subHeader">Create an account</div>
+
+            <label className="signUp_form_item">
+              <b>first name</b>
+            </label>
+
+            <input
+              type="firstName"
+              name="firstName"
+              onChange={this.handleChange}
+              className="signUp_form_input"
+            />
+
+            <label className="signUp_form_item">
+              <b>last name</b>
+            </label>
+
+            <input
+              type="lastName"
+              name="lastName"
+              onChange={this.handleChange}
+              className="signUp_form_input"
+            />
+
+            <label className="signUp_form_item">
+              <b>username</b>
+            </label>
+
+            <input
+              type="username"
+              name="username"
+              onChange={this.handleChange}
+              className="signUp_form_input"
+            />
+
+            <label className="signUp_form_item">
+              <b>Email</b>
+            </label>
+            <input
+              type="text"
+              name="email"
+              className="signUp_form_input"
+              onChange={this.handleChange}
+            />
+
+            <label className="signUp_form_item">
+              <b>Password</b>
+            </label>
+            <input
+              type="password"
+              name="password"
+              onChange={this.handleChange}
+              className="signUp_form_input"
+            />
+            <label className="signUp_form_item">
+              <b>Re-type Password</b>
+            </label>
+            <input
+              type="password"
+              name="reTypePassword"
+              onChange={this.handleChange}
+              className="signUp_form_input"
+            />
+            <div className="signUp_form_buttons">
+              <button
+                onClick={ev => this.handleSubmit(ev)}
+                type="submit"
+                className="signUp_form_links"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => history.push('/')}
+                type="button"
+                className="signUp_form_links_cancel"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }

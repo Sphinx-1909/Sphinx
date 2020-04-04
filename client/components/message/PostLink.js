@@ -5,6 +5,8 @@ import { PostSuccess } from './PostSuccess';
 
 const PostLink = (props) => {
 
+  const { channel } = props;
+
   const [link, setLink] = useState('')
   const [success, setSuccess] = useState(false);
 
@@ -16,7 +18,7 @@ const PostLink = (props) => {
       latitude: props.latitude,
       longitude: props.longitude,
       radius: 1,
-      channelId: props.channelId,
+      channelId: channel,
     };
     await props.addMessage(postBody)
     setSuccess(true)
@@ -37,10 +39,16 @@ const PostLink = (props) => {
   )
 }
 
+const mapState = ({ nav }) => {
+  return {
+    channel: nav.channel,
+  }
+}
+
 const mapDispatch = dispatch => {
   return {
     addMessage: (msg) => dispatch(addMessage(msg))
   }
 }
 
-export default connect(null, mapDispatch)(PostLink);
+export default connect(mapState, mapDispatch)(PostLink);

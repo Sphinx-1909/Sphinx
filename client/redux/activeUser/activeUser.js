@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { SIGN_IN, SIGN_OUT } from '../authentication/authentication';
 import { signIn } from '../authentication/authentication';
+import { fetchAllChannels, fetchChannels } from '../channels';
+import { fetchUnreadMessages } from '../messages';
+import { fetchUsers } from '../users/users';
 import history from '../../history';
 const EDIT_USER = 'EDIT_USER';
 export const SIGN_UP = 'SIGN_UP';
@@ -37,10 +40,13 @@ export const createUserAndLogIn = newUserData => {
   return async dispatch => {
     try {
       const createdUser = (await axios.post(`/api/users`, newUserData)).data;
-
       console.log('create user thunk response data: ', createdUser);
       dispatch(signUp(createdUser));
       dispatch(signIn(createdUser));
+      dispatch(fetchChannels());
+      dispatch(fetchAllChannels());
+      dispatch(fetchUnreadMessages());
+      dispatch(fetchUsers());
     } catch (e) {
       console.log('Error in thunk:', e);
     }

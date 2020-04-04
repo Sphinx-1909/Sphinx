@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { Op } = require('sequelize');
-const { Channel, User, Message, readBy } = require('../db/index');
+const { Channel, User, Message, readBy, ChannelUser } = require('../db/index');
 
 //get all channels
 router.get('/all', (req, res, next) => {
@@ -27,9 +27,10 @@ router.get('/withunreadmessages', (req, res, next) => {
     if (user) {
       // fetch all messages in messageUser / readBy table that is matching the user found from previous query and then map all messageIds to an array to be used in 46-48
       const userReadMessages = user
-        .getMessages({ attributes: ['id'] })
+        .getMessages({ joinTableAttributes: ['messageId'] })
         .map(message => message.id);
 
+      console.log('userReadMessages', userReadMessages);
       // fetch the channels and join the messages where messages are not created by user and messages not found in messageUser / readBy table
       user
         .getChannels({
@@ -44,7 +45,7 @@ router.get('/withunreadmessages', (req, res, next) => {
                 },
                 // added
                 id: {
-                  [Op.in]: userReadMessages,
+                  [Op.notIn]: userReadMessages,
                 },
               },
             },
@@ -61,15 +62,15 @@ router.get('/withunreadmessages', (req, res, next) => {
 router.get('/', (req, res, next) => {
   let userId;
   if (req.user) {
-    userId = req.user.id
+    userId = req.user.id;
   } else {
-    console.log('no req.user in channel.js line 66')
+    console.log('no req.user in channel.js line 66');
   }
-  // console.log("userId: ", userId)
+  // console.log('userId: ', userId);
   // the above should eventually be changed to: const userId = req.user.id;
   User.findOne({
     where: {
-      id: userId,
+      id: req.params.id || userId,
     },
   }).then(user => {
     if (user) {
@@ -95,9 +96,42 @@ router.get('/', (req, res, next) => {
     }
   });
 });
-
+//include channel and include all subscribers
 router.get('/:id', (req, res, next) => {
-  Channel.findByPk(req.params.id)
+  let userId;
+  if (req.user) {
+    userId = req.user.id;
+  } else {
+    console.log('no req.user in channel.js line 66');
+  }
+  // console.log('userId: ', userId);
+  // the above should eventually be changed to: const userId = req.user.id;
+  User.findOne({
+    where: {
+      id: userId,
+    },
+  }).then(user => {
+    if (user) {
+      user
+        .getChannels({
+          where: {
+            // don't include messages sent by current user
+            id: {
+              [Op.eq]: req.params.id,
+            },
+          },
+        })
+        //need to do index of 0 because when using sequelize methods for m:m you get an array. And this works here because we are always only finding 1 channel
+        .then(userChannel => res.status(200).send(userChannel[0]))
+        .catch(e => console.log('error finding userChannel: ', e));
+    } else {
+      res.status(400).send('user not found');
+    }
+  });
+});
+
+router.get('/users/:channelId', (req, res, next) => {
+  Channel.findByPk(req.params.channelId, { include: { model: User } })
     .then(channel => {
       if (!channel) return res.status(404).send('Channel is not found!');
       res.status(200).send(channel);
@@ -108,24 +142,69 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
+// router.post('/', (req, res, next) => {
+//   Channel.create(req.body)
+//     .then(newChannel => {
+
+//       res.status(201).send(newChannel);
+//     })
+//     .catch(e => {
+//       console.error(e);
+//       next(e);
+//     });
+// });
 router.post('/', (req, res, next) => {
-  Channel.create(req.body)
-    .then(newChannel => {
-      res.status(201).send(newChannel);
-    })
-    .catch(e => {
-      console.error(e);
-      next(e);
-    });
+  console.log('channels post route createNewChannel', req.body);
+  let userId;
+  if (req.user) {
+    userId = req.user.id;
+  } else {
+    console.log('no req.user in channel.js line 128');
+  }
+  User.findOne({
+    where: {
+      id: userId,
+    },
+  }).then(user => {
+    if (user) {
+      Channel.create(req.body)
+        .then(newChannel => {
+          user
+            .addChannel(newChannel, {
+              through: { isModerator: true, isOwner: true },
+            })
+            .then(() => {
+              console.log('createdSetAdmin new channel', newChannel);
+              Channel.findOne({
+                where: {
+                  id: newChannel.id,
+                },
+                include: { model: Message },
+              }).then(foundChannel => {
+                if (foundChannel) {
+                  return res.status(200).send(foundChannel);
+                }
+              });
+            });
+        })
+        .catch(e => console.log('error adding messages to channel', e));
+    } else {
+      res.status(400).send('user not found');
+    }
+  });
 });
+
+//create channel
+//update the join table by setting current user userId to isOwner
+// this channel should be added to myCHannels and allChannels
 
 router.post('/subscribe/:channelId', (req, res, next) => {
   const { channelId } = req.params;
   let userId;
   if (req.user) {
-    userId = req.user.id
+    userId = req.user.id;
   } else {
-    console.log('no req.user in channel.js line 128')
+    console.log('no req.user in channel.js line 128');
   }
   User.findOne({
     where: {
@@ -204,5 +283,26 @@ router.delete('/:id', (req, res, next) => {
       next(e);
     });
 });
+
+// //get channel to edit that the user is an owner of adn add moderators
+// router.put('/:id', (req, res, next) => {
+//   // async/awwait
+//   Channel.findByPk(req.params.id)
+//     .then(channel => {
+//       if (channel) {
+//         channel.update(req.body); // async deal with it!
+
+//         //find users that are subscribed to channel with userName information
+//         //add moderators
+//         //
+//         return res.status(202).send(channel);
+//       }
+//       res.status(404);
+//     })
+//     .catch(e => {
+//       console.error(e);
+//       next(e);
+//     });
+// });
 
 module.exports = router;

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { fetchAllChannels, fetchChannels } from '../channels';
 import { fetchUnreadMessages } from '../messages';
+import history from '../../history';
+import { fetchUsers } from '../users/users';
 
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';
@@ -36,18 +38,20 @@ export const removeLogInError = () => {
 };
 
 export const logInAttempt = logInData => {
-  //console.log('login datapassed in', logInData);
+  console.log('login datapassed in', logInData);
 
   return async dispatch => {
     try {
-      const res = await axios.post('/login', logInData)
-      await dispatch(signIn(res.data))
+      const res = await axios.post('/login', logInData);
+      dispatch(signIn(res.data));
       dispatch(fetchChannels());
       dispatch(fetchAllChannels());
-      dispatch(fetchUnreadMessages())
+      dispatch(fetchUnreadMessages());
+      dispatch(fetchUsers());
+      history.push('/');
     } catch (e) {
-      console.log('error in logInAttempt thunK: ', e)
-      dispatch(setLogInError())
+      console.log('error in logInAttempt thunK: ', e);
+      dispatch(setLogInError());
     }
     // axios
     //   .post('/login', logInData)
@@ -67,7 +71,7 @@ export const logInAttempt = logInData => {
   };
 };
 export const logOutAttempt = () => {
-  console.log('logging out');
+  console.log('the logout thunk is firing!!!!!!!!!!!');
   return dispatch => {
     axios
 
@@ -88,7 +92,11 @@ export const initialLogInAttempt = () => {
       .get('/me')
       .then(res => {
         const user = res.data;
-        return dispatch(signIn(user));
+        dispatch(signIn(user));
+        dispatch(fetchChannels());
+        dispatch(fetchAllChannels());
+        dispatch(fetchUnreadMessages());
+        dispatch(fetchUsers());
       })
       .catch(e => {
         console.error(e);
@@ -96,6 +104,15 @@ export const initialLogInAttempt = () => {
       });
   };
 };
+
+// export const authPhone = (phoneNum) => {
+//   return () => {
+//     axios.post('/api/nexmo/test', { phoneNum })
+//       // receive the request ID back to use on the front end (When your user submits the correct PIN, you will need to plug both the PIN and the request ID into the check() function.)
+//       .then(reqId => reqId.data)
+//       .catch(e => console.log('error in authPhone thunk: ', e))
+//   }
+// }
 
 const initialState = {
   isLoggedIn: false,

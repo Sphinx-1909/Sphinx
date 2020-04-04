@@ -7,9 +7,16 @@ import { connect } from 'react-redux';
 import { setToggleSlideMenu } from '../../redux/nav/action/nav.action';
 
 class Burger extends React.Component {
+  handleClick = e => {
+    if (this.props.authentication.isLoggedIn) {
+      this.props.setToggleSlideMenu(e);
+    } else {
+      return '';
+    }
+  };
   render() {
     return (
-      <div className="burger" onClick={e => this.props.setToggleSlideMenu(e)}>
+      <div className="burger" onClick={e => this.handleClick(e)}>
         <div
           style={{
             transform: this.props.openSlide ? 'rotate(45deg)' : 'rotate(0)',
@@ -33,8 +40,12 @@ class Burger extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  authentication: state.authentication,
+});
+
 const mapDispatchToProps = dispatch => ({
   setToggleSlideMenu: () => dispatch(setToggleSlideMenu()),
 });
 
-export default connect(null, mapDispatchToProps)(Burger);
+export default connect(mapStateToProps, mapDispatchToProps)(Burger);

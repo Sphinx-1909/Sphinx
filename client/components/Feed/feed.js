@@ -5,67 +5,46 @@ import { connect } from 'react-redux';
 import Smiley from './smileyIcon';
 //css
 import './feed.css';
+import '../../app.css';
 
-class Feed extends React.Component {
-  render() {
-    return (
-      <div className="feedBox">
-        <div className="feedBox_feed">
-          <div className="feedBox_feed_subHeader">Channel Activity</div>
+const Feed = props => {
+  const { unreadMessages, users, channels } = props;
 
-          <div className="feedBox_feed_item">
-            <div className="feedBox_feed_item_image">
-              <Smiley width={30} />
+  unreadMessages.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  return (
+    <div className="liner">
+      <div className="contentCenter">
+        <div className="feedBox_feed_subHeader">Channel Activity</div>
+        {unreadMessages.map(msg => {
+          const sendingUser = users.filter(user => user.id === msg.senderId);
+          const channel = channels.filter(
+            channel => channel.id === msg.channelId
+          );
+          return (
+            <div className="feedBox_feed_item">
+              <div className="feedBox_feed_item_image">
+                <Smiley width={30} />
+              </div>
+              <div className="feedBox_feed_item_title">
+                <a className="feedBox_feed_item_link">
+                  {sendingUser[0].username} posted to {channel[0].channelTitle}
+                </a>
+              </div>
             </div>
-            <div className="feedBox_feed_item_title">
-              <a className="feedBox_feed_item_link">
-                John554 posted to weird stuff
-              </a>
-            </div>
-          </div>
-          <div className="feedBox_feed_item">
-            <div className="feedBox_feed_item_image">
-              <Smiley width={30} />
-            </div>
-            <div className="feedBox_feed_item_title">
-              <a className="feedBox_feed_item_link">
-                Sallykewl started following weird stuff
-              </a>
-            </div>
-          </div>
-          <div className="feedBox_feed_item">
-            <div className="feedBox_feed_item_image">
-              <Smiley width={30} />
-            </div>
-            <div className="feedBox_feed_item_title">
-              <a className="feedBox_feed_item_link">NYC tours added new post</a>
-            </div>
-          </div>
-          <div className="feedBox_feed_subHeader">Stats</div>
-          <div className="feedBox_feed_item">
-            <div className="feedBox_feed_item_image">
-              <Smiley width={30} />
-            </div>
-            <div className="feedBox_feed_item_title">
-              <a className="feedBox_feed_item_link">
-                Weird stuff most visited location 8th aveand 14th str
-              </a>
-            </div>
-          </div>
-          <div className="feedBox_feed_item">
-            <div className="feedBox_feed_item_image">
-              <Smiley width={30} />
-            </div>
-            <div className="feedBox_feed_item_title">
-              <a className="feedBox_feed_item_link">
-                NYC tour most liked location at 7th ave and 62nd str
-              </a>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
-export default connect()(Feed);
+const mapState = ({ unreadMessages, users, channels }) => {
+  return {
+    unreadMessages,
+    users,
+    channels: channels.allChannels,
+  };
+};
+
+export default connect(mapState)(Feed);

@@ -14,26 +14,6 @@
   background-color: bisque;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-transform: none;
-  font-size: 3rem;
-  width: 75%;
-  margin: 2em;
-  padding: 2em;
-}
-
-button {
-  width: 5em;
-  height: 3em;
-  background-color: rgb(87, 87, 87);
-  color: white;
-  font-weight: bold;
-}
-
 .container {
   width: 100%;
   height: 100%;
@@ -48,4 +28,24 @@ button {
   background-color: bisque;
   overflow: scroll;
   position: relative;
+}
+
+.liner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-size: 4rem;
+  color: white;
+}
+
+.contentCenter {
+  width: 70vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  background-color: rgb(195, 195, 195);
+  overflow: scroll;
 }

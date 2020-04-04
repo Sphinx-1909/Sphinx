@@ -7,6 +7,9 @@ const axios = require('axios');
 const session = require('express-session');
 const moment = require('moment');
 const bodyParser = require('body-parser')
+const dotenv = require('dotenv')
+
+dotenv.config();
 
 const { User, Session } = require('./db/index');
 const cookieParser = require('cookie-parser');
@@ -15,12 +18,17 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// logger
+// if (process.env.NODE_ENV !== 'production') {
+//   app.use(require('morgan')('dev'));
+// }
+
 //body parsing
 // app.use(express.json());
 app.use(cookieParser());
 
-app.use(bodyParser.json({ limit: '20mb', extended: true }))
-app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }))
+app.use(bodyParser.json({ limit: '20mb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
 
 // app.use(function (req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "http://localhost:4000"); // update to match the domain you will make the request from
@@ -29,11 +37,12 @@ app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }))
 // });
 
 app.use((req, res, next) => {
-  req.referer = 'http://localhost:4000/'
-  next()
-})
+  req.referer = 'http://localhost:4000/';
+  next();
+});
 
 app.use((req, res, next) => {
+  // console.log('req.cookies.sessionId in app.use: ', req.cookies.sessionId)
   if (req.cookies.sessionId) {
     User.findOne({
       where: {
@@ -74,7 +83,14 @@ app.use((req, res, next) => {
 
 // static Middleware
 app.use(express.static(path.join(__dirname, '../static')));
-
+// app.use((req, res, next) => {
+//   if (req.user) {
+//     console.log('req.user exists');
+//   } else {
+//     console.log('no req.user in app.use');
+//   }
+//   next();
+// });
 // service worker route
 app.use('/service-worker.js', (req, res) => {
   // res.send(path.resolve(__dirname, '../static', 'service-worker.js'));
@@ -105,10 +121,10 @@ const startServer = new Promise((res, rej) => {
 });
 
 db.sync()
-  .then(startServer)
+  .then(() => startServer)
   .then(() => {
     console.log(chalk.bgMagentaBright(`application started`));
   })
   .catch(e => {
-    console.log(chalk.bgMagentaBright(`application failed to start`));
+    console.log(chalk.bgMagentaBright(e, `application failed to start`));
   });

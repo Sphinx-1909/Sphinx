@@ -1,6 +1,6 @@
 import axios from 'axios';
 //action types
-const SET_USERS = 'SET_ALLUSERS';
+const SET_USERS = 'SET_USERS';
 const ADD_USER = 'ADD_USER';
 
 //action creators
@@ -21,7 +21,7 @@ const addUser = user => {
 export const fetchUsers = () => {
   return dispatch => {
     return axios
-      .get('/me')
+      .get('/api/users')
       .then(response => dispatch(setUsers(response.data)))
       .catch(e => console.log('Error in thunk:', e));
   };

@@ -40,6 +40,25 @@ router.get('/users', (req, res, next) => {
     });
 });
 
+// get all users that are subscribed to a specific channel
+// router.get('/users/:channelId', (req, res, next) => {
+//   User.findAll({
+//     attributes: userAttributes,
+//     where: {
+//       id: req.params.channelId,
+//     },
+//     include: { model: Channel },
+//   })
+//     .then(users => {
+//       console.log('users with this channelId', users);
+//       res.status(200).send(users);
+//     })
+//     .catch(e => {
+//       console.error(e);
+//       next(e);
+//     });
+// });
+
 // get link for users and channels from channel model perspective
 router.get('/channels', (req, res, next) => {
   Channel.findAll({

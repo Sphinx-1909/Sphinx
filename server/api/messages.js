@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { Message, User, Subscriptions, Channel } = require('../db/index');
 const webpush = require('web-push');
+const Sequelize = require('sequelize');
 
 // adding this route as it helps with debugging when looking at the JSON. Can remove later
 // get all messages
@@ -28,9 +29,9 @@ router.get('/', (req, res, next) => {
 router.get('/read', (req, res, next) => {
   let userId;
   if (req.user) {
-    userId = req.user.id
+    userId = req.user.id;
   } else {
-    console.log('no req.user in messages.js line 33')
+    console.log('no req.user in messages.js line 33');
   }
   User.findOne({
     where: {
@@ -55,15 +56,10 @@ router.get('/read', (req, res, next) => {
 
 // mark a message as read
 
-router.post('/read/:messageId', (req, res, next) => {
+router.post('/readmessage/:messageId', (req, res, next) => {
   const { messageId } = req.params;
   // ** copy a userId from your local channelUsers table and paste it below **
-  let userId;
-  if (req.user) {
-    userId = req.user.id
-  } else {
-    console.log('no req.user in message.js line 65')
-  }
+  const userId = req.user.id;
   Message.findOne({
     where: {
       id: messageId,
@@ -93,8 +89,8 @@ router.post('/read/:messageId', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
   Message.findByPk(req.params.id, {})
     .then(message => {
-      if (!message) res.status(404).send('Message is not found!');
-      res.status(200).send(message);
+      if (!message) return res.status(404).send('Message is not found!');
+      return res.status(200).send(message);
     })
     .catch(e => {
       console.error(e);
@@ -105,10 +101,11 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   let userId;
   if (req.user) {
-    userId = req.user.id
+    userId = req.user.id;
   } else {
-    console.log('no req.user in messages.js line 110')
+    console.log('no req.user in messages.js line 110');
   }
+  console.log('req.body in post', req.body);
   Message.create({ ...req.body, senderId: userId })
     .then(newMessage => {
       //PUSH NOTIFICATION CODE *************
@@ -153,6 +150,42 @@ router.put('/:id', (req, res, next) => {
     .then(message => {
       if (message) {
         message.update(req.body);
+        return res.status(202).send(message);
+      }
+      res.status(404);
+    })
+    .catch(e => {
+      console.error(e);
+      next(e);
+    });
+});
+
+router.put('/upvote/:id', (req, res, next) => {
+  Message.findByPk(req.params.id)
+    .then(message => {
+      if (message) {
+        message.increment(
+          { positiveVotes: 1 },
+          { where: { id: req.params.id } }
+        );
+        return res.status(202).send(message);
+      }
+      res.status(404);
+    })
+    .catch(e => {
+      console.error(e);
+      next(e);
+    });
+});
+
+router.put('/downvote/:id', (req, res, next) => {
+  Message.findByPk(req.params.id)
+    .then(message => {
+      if (message) {
+        message.decrement(
+          { negativeVotes: 1 },
+          { where: { id: req.params.id } }
+        );
         return res.status(202).send(message);
       }
       res.status(404);

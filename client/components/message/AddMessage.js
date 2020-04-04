@@ -9,6 +9,8 @@ import TakeVideo from './TakeVideo';
 import PostLink from './PostLink';
 import { PostSuccess } from './PostSuccess';
 import Upload from './Upload';
+import './message.css';
+import './TakePhoto.css';
 
 const AddMessage = props => {
   const [title, setTitle] = useState('');
@@ -23,6 +25,15 @@ const AddMessage = props => {
   // const [loadingDisplay, setLoadingDisplay] = useState('')
   const [media, setMedia] = useState('');
 
+  useEffect(() => {
+    setPositionLoaded(true);
+    setLatitude(props.coords.latitude);
+    setLongitude(props.coords.longitude);
+    setMedia(props.mediaType);
+    console.log(props.coords);
+    console.log(props.mediaType);
+  });
+
   const loadingArr = [
     'Accessing location data...',
     'Fetching your location...',
@@ -30,23 +41,6 @@ const AddMessage = props => {
   ];
 
   const { channels } = props;
-
-  if (!positionLoaded) {
-    console.log('getting location data');
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        setPositionLoaded(true);
-        setLatitude(pos.coords.latitude);
-        setLongitude(pos.coords.longitude);
-        console.log('lat', pos.coords.latitude, 'lng', pos.coords.longitude);
-      },
-      () => {
-        console.log('oops');
-        setPositionLoaded(false);
-      },
-      { enableHighAccuracy: false, maximumAge: Infinity, timeout: 60000 }
-    );
-  }
 
   const handleSubmit = async ev => {
     ev.preventDefault();
@@ -58,95 +52,60 @@ const AddMessage = props => {
       latitude,
       longitude,
       radius: 1,
-      channelId,
+      channelId: props.channel,
     };
     // console.log('postBody: ', postBody)
-    await props.addMessage(postBody);
+    props.addMessage(postBody);
     setSuccess(true);
   };
 
   return success ? (
     <PostSuccess />
   ) : (
-      <>
+    <div className="liner">
+      <div className="contentCenter">
+        <div className="message_form_subHeader">POST A MESSAGE</div>
         {positionLoaded && !success ? (
           <>
-            {!media ? (
+            {media === 'POST' ? (
               <form onSubmit={handleSubmit}>
-                <label>Channel</label>
-                <select onChange={ev => setChannelId(ev.target.value)}>
-                  <option>{''}</option>
-                  {channels.map(channel => (
-                    <option value={channel.id} key={channel.id}>
-                      {channel.channelTitle}
-                    </option>
-                  ))}
-                </select>
-                <label>Title</label>
+                <label className="message_form_item">Title</label>
                 <input
                   placeholder="Title"
                   value={title}
                   name="messageTitle"
                   onChange={ev => setTitle(ev.target.value)}
+                  className="message_form_input"
                 />
-                <label>Body</label>
+                <label className="message_form_item">Body</label>
                 <textarea
                   placeholder="Message Body"
                   value={body}
                   name="messageBody"
                   onChange={ev => setBody(ev.target.value)}
+                  className="message_form_input"
                 />
-                <p>
-                  Title and Channel must not be empty in order to upload
-                  photo/video or post a link
-              </p>
-                <button
-                  disabled={!title || !channelId}
-                  onClick={() => setMedia('photo')}
-                >
-                  Take photo
-              </button>
-                <button
-                  disabled={!title || !channelId}
-                  onClick={() => setMedia('video')}
-                >
-                  Take video
-              </button>
-                <button
-                  disabled={!title || !channelId}
-                  onClick={() => setMedia('upload')}
-                >
-                  Upload photo or video
-              </button>
-                <button
-                  disabled={!title || !channelId}
-                  onClick={() => setMedia('link')}
-                >
-                  Send link
-              </button>
-                <button type="submit">POST</button>
-                {error && (
-                  <div style={{ backgroundColor: 'red' }}>
-                    Error posting new message. Please refresh the page and try
-                    again.
+                <div className="message_form_buttons">
+                  <button type="submit" className="message_form_post">
+                    POST
+                  </button>
                 </div>
-                )}
               </form>
-            ) : media === 'photo' ? (
+            ) : media === 'PHOTO' ? (
               <TakePhoto
                 title={title}
                 latitude={latitude}
                 longitude={longitude}
                 channelId={channelId}
               />
-            ) : media === 'video' ? (
+            ) : media === 'VIDEO' ? (
               <TakeVideo
                 title={title}
                 latitude={latitude}
                 longitude={longitude}
                 channelId={channelId}
               />
-            ) : media === 'link' ? (
+            ) : media === 'LINK' ? (
               <PostLink
                 title={title}
                 latitude={latitude}
@@ -154,28 +113,31 @@ const AddMessage = props => {
                 channelId={channelId}
               />
             ) : (
-                      <Upload
-                        title={title}
-                        latitude={latitude}
-                        longitude={longitude}
-                        channelId={channelId}
-                      />
-                    )
-            }
+              <Upload
+                title={title}
+                latitude={latitude}
+                longitude={longitude}
+                channelId={channelId}
+              />
+            )}
           </>
         ) : (
-            <div>
-              <h3>Loading...</h3>
-              <div>{loadingArr[loadingTicker]}</div>
-            </div>
-          )}
-      </>
-    );
+          <div>
+            <h3>Loading...</h3>
+            <div>{loadingArr[loadingTicker]}</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
-const mapState = ({ channels }) => {
+const mapState = ({ channels, nav }) => {
   return {
     channels: channels.myChannels,
+    coords: nav.currentLocation,
+    mediaType: nav.mediaType,
+    channel: nav.channel,
   };
 };
 
