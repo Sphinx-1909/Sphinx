@@ -30,7 +30,7 @@ class MyChannelLineItem extends Component {
     };
   }
 
-  clickToOpen = () => {
+  clickToChangeOpenState = () => {
     this.setState({ open: !this.state.open });
   };
 
@@ -63,7 +63,10 @@ class MyChannelLineItem extends Component {
           <ListItemText primary={this.props.channelDetails.channelTitle} />
           {/* <Typography>{this.props.channelDetails.channelTitle}</Typography> */}
           <ListItemSecondaryAction>
-            <ListItem button={true} onClick={() => this.clickToOpen()}>
+            <ListItem
+              button={true}
+              onClick={() => this.clickToChangeOpenState()}
+            >
               {this.state.open === true ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
           </ListItemSecondaryAction>
@@ -79,12 +82,14 @@ class MyChannelLineItem extends Component {
             <ListItem
               button={true}
               style={{ backgroundColor: 'tomato' }}
-              onClick={ev =>
+              onClick={ev => {
                 this.clickToUnsubscribeToChannel(
                   ev,
                   this.props.channelDetails.id
-                )
-              }
+                );
+                // need this there to switch the open state back to false to prevent any channel line items below the one that you unsubscribed to be in an open state
+                this.clickToChangeOpenState();
+              }}
             >
               <ListItemText primary={'Leave Channel'} />
               <ExitToApp />
