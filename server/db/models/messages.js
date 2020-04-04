@@ -57,7 +57,7 @@ const Message = db.define('messages', {
     allowNull: false,
   },
   radius: {
-    type: DOUBLE(null, 7),
+    type: DECIMAL,
     allowNull: false,
   },
   encrypted: {
