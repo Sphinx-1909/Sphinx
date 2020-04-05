@@ -40,7 +40,9 @@ class SlideMenu extends React.Component {
           }}
         >
           <MyChannelSubscriptions />
-          <Link to="/createnewchannel">
+          <Link 
+            onClick={() => this.props.setToggleSlideMenu()}
+            to="/createnewchannel">
             <span>Create Channel</span>
           </Link>
         </div>
