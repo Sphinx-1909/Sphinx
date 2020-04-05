@@ -37,12 +37,6 @@ import SelectChannel from './components/SelectChannel/SelectChannel';
 class App extends React.Component {
   componentDidMount() {
     this.props.initialLogInAttempt();
-    if (this.props.activeUser.firstName) {
-      // this.props.fetchChannels();
-      // this.props.fetchAllChannels();
-      // this.props.fetchUnreadMessages();
-      // Request to get notifications
-
       Notification.requestPermission(result => {
         if (result !== 'granted') {
           //console.log('no notification granted!');
@@ -50,7 +44,6 @@ class App extends React.Component {
           this.configurePushSub();
         }
       });
-    }
   }
 
   displayConfirmNotification = () => {
