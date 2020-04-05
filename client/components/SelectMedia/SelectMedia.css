@@ -5,6 +5,12 @@
   margin: 2rem 10% 2rem 10%;
   padding: 2rem 0 2rem 0;
   border-radius: 25px;
+  background-color: rgb(147, 178, 224);
+}
+
+.selectMedia:hover {
+  background-color: rgb(113, 142, 185);
+  cursor: pointer;
 }
 
 .selectMedia_subHeader {
