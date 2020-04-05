@@ -78,14 +78,9 @@ function TakeVideo(props) {
     </>
   ) : (
     <VideoRecorder
-      // onTurnOnCamera={}
-      // onTurnOffCamera={}
-      // onStartRecording={}
-      // onStopRecording={}
+      renderDisconnectedView={() => { }}
+      isOnInitially={true}
       onRecordingComplete={data => handleRecordingComplete(data)}
-      // onOpenVideoInput={}
-      // onStopReplaying={}
-      // onError={}
       timeLimit={10000}
     />
   );
