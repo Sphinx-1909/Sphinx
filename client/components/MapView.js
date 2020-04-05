@@ -140,61 +140,33 @@ const MapContainer = props => {
   ) : (
     <>
       {displayMessage ? (
-        <>
+        <div className='liner'>
+    <div className='contentCenter'>
           {dataUri ? (
             <>
               {selectedMessage.fileType === 'image' ? (
                 // message type is 'image':
-                <div className="liner">
-                  <div className="contentCenter">
                     <img style={{ width: '80%', alignSelf: 'center' }}src={dataUri} />
-                    <div className="MapView_buttons">
-                      <button onClick={handleClose} className="MapView_links">
-                        Close
-                      </button>
-                    </div>
-                  </div>
-                </div>
               ) : (
                 // message type is 'video':
-                <div className="liner">
-                  <div className="contentCenter">
                     <video src={dataUri} autoPlay={true} />
-                    <div className="MapView_buttons">
-                      <button onClick={handleClose} className="MapView_links">
-                        Close
-                      </button>
-                    </div>
-                  </div>
-                </div>
               )}
             </>
           ) : (
             <>
               {// message type is 'link':
               selectedMessage.fileType === 'link' ? (
-                <div className="liner">
-                  <div className="contentCenter">
                     <ReactPlayer url={selectedMessage.messageContent} playing />
-                    <div className="MapView_buttons">
-                      <button onClick={handleClose} className="MapView_links">
-                        Close
-                      </button>
-                    </div>
-                  </div>
-                </div>
               ) : (
                 // message type is 'text':
-                <div className="liner">
-                  <div className="contentCenter">
+            <div>
                     <div className="MapView_subHeader">
                       {selectedMessage.messageTitle}
                     </div>
                     <div className="MapView_item">
                       {selectedMessage.messageContent}
                     </div>
-                  </div>
-                </div>
+            </div>
               )}
             </>
           )}
@@ -231,6 +203,8 @@ const MapContainer = props => {
                         Close
                       </button>
                     </div>
+</div>
+</div>
         </>
       ) : geoSupported && currentPosition.latitude && !initialLoad ? (
         <Map
