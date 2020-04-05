@@ -147,7 +147,7 @@ const MapContainer = props => {
                 // message type is 'image':
                 <div className="liner">
                   <div className="contentCenter">
-                    <img style={{ width: '80%' }}src={dataUri} />
+                    <img style={{ width: '80%', alignSelf: 'center' }}src={dataUri} />
                     <div className="MapView_buttons">
                       <button onClick={handleClose} className="MapView_links">
                         Close
