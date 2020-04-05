@@ -71,7 +71,6 @@ function TakeVideo(props) {
         </div>
       ) : (
         <div>
-          <video src={dataUrl} autoPlay={true} className="image"></video>
           <PostSuccess />
         </div>
       )}
