@@ -20,7 +20,7 @@ import ChannelSearch from './components/Channel/SearchForm';
 import EditAccount from './components/EditAccount/EditAccount';
 import MyAccount from './components/MyAccount/MyAccount';
 import AddMessage from './components/message/AddMessage';
-import CreateAChannel from './components/channel/CreateChannel';
+import CreateAChannel from './components/Channel/CreateChannel';
 import SignUp from './components/SignUp/SignUp';
 import { fetchChannels, fetchAllChannels } from './redux/channels';
 import { fetchUnreadMessages } from './redux/messages';
