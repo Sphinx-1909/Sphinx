@@ -205,7 +205,6 @@ const MapContainer = props => {
                     </div>
 </div>
 </div>
-        </>
       ) : geoSupported && currentPosition.latitude && !initialLoad ? (
         <Map
           google={props.google}
