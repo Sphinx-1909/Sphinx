@@ -147,7 +147,7 @@ const MapContainer = props => {
                 // message type is 'image':
                 <div className="liner">
                   <div className="contentCenter">
-                    <img src={dataUri} />
+                    <img style={{ width: '80%' }}src={dataUri} />
                     <div className="MapView_buttons">
                       <button onClick={handleClose} className="MapView_links">
                         Close
@@ -193,7 +193,12 @@ const MapContainer = props => {
                     <div className="MapView_item">
                       {selectedMessage.messageContent}
                     </div>
-                    <div className="MapView_item">
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+          <div className="MapView_item">
                       UpVotes: {selectedMessage.positiveVotes}, DownVotes:
                       {selectedMessage.negativeVotes}
                     </div>
@@ -226,11 +231,6 @@ const MapContainer = props => {
                         Close
                       </button>
                     </div>
-                  </div>
-                </div>
-              )}
-            </>
-          )}
         </>
       ) : geoSupported && currentPosition.latitude && !initialLoad ? (
         <Map
