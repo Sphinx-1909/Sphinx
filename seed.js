@@ -22,15 +22,15 @@ const postHelper = i => {
 };
 
 const generateRandomLat = () => {
-  let min = 40.753733,
-    max = 40.769852; //
+  let min = 40.776926,
+    max = 40.789367; //
   let randomLat = (Math.random() * (max - min) + min).toFixed(6);
   return randomLat;
 };
 
 const generateRandomLong = () => {
-  let min = -73.980793,
-    max = -73.992198;
+  let min = -73.977236,
+    max = -73.975629;
   let randomLong = (Math.random() * (max - min) + min).toFixed(6);
 
   return randomLong;
