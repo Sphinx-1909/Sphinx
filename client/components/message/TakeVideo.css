@@ -1,4 +1,4 @@
-.TakePhoto_buttons {
+.TakeVideo_buttons {
   width: 100%;
   text-align: center;
   display: flex;
@@ -6,7 +6,7 @@
   justify-content: space-between;
 }
 
-.TakePhoto_Post {
+.TakeVideo_Post {
   align-self: center;
   border: none;
   outline: 0;
@@ -19,7 +19,7 @@
   background-color: rgb(164, 199, 165);
 }
 
-.TakePhoto_Retake {
+.TakeVideo_Retake {
   align-self: center;
   border: none;
   outline: 0;
@@ -36,4 +36,9 @@
   width: 100%;
   text-align: center;
   background-color: rgb(128, 128, 128);
+}
+
+.image {
+  max-width: 50%;
+  height: auto;
 }
